@@ -6,33 +6,34 @@ import Navbar from "../../components/Navbar";
 
 export default function Register() {
   const router = useRouter();
-  const [showPass, setShowPass] = useState(false);
-  const [toast, setToast] = useState("");
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
 
-  function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState("");
 
   function handleRegister(e) {
     e.preventDefault();
 
-    if (!form.username || !form.email || !form.password) {
-      setToast("Please fill all fields");
+    if (!username || !email || !password) {
+      setType("error");
+      setMessage("Please fill all fields.");
       return;
     }
 
-    if (form.password.length < 6) {
-      setToast("Password must be at least 6 characters");
+    if (password.length < 6) {
+      setType("error");
+      setMessage("Password must be at least 6 characters.");
       return;
     }
 
-    localStorage.setItem("redditxUser", JSON.stringify(form));
-    setToast("Registration successful! Redirecting to login...");
+    const user = { username, email, password };
+    localStorage.setItem("redditxUser", JSON.stringify(user));
+
+    setType("success");
+    setMessage("Account created successfully! Redirecting...");
 
     setTimeout(() => {
       router.push("/login");
@@ -43,61 +44,142 @@ export default function Register() {
     <main style={page}>
       <Navbar />
 
-      {toast && <div style={toastBox}>{toast}</div>}
+      <style>{`
+        @keyframes floatCard {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+        }
 
-      <section style={wrap}>
-        <div style={card}>
-          <div style={badge}>🚀 Join RedditX</div>
+        @keyframes glowMove {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-25px, 20px) scale(1.08); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
 
-          <h1 style={title}>Create Account</h1>
-          <p style={sub}>Start posting, voting and joining communities.</p>
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-          <form onSubmit={handleRegister} style={formStyle}>
-            <input
-              style={input}
-              name="username"
-              type="text"
-              placeholder="Username"
-              value={form.username}
-              onChange={handleChange}
-            />
+        .register-input::placeholder {
+          color: #64748b;
+        }
+      `}</style>
 
-            <input
-              style={input}
-              name="email"
-              type="email"
-              placeholder="Email address"
-              value={form.email}
-              onChange={handleChange}
-            />
+      <div style={glowOne}></div>
+      <div style={glowTwo}></div>
+      <div style={gridOverlay}></div>
 
-            <div style={passWrap}>
-              <input
-                style={{ ...input, paddingRight: 80 }}
-                name="password"
-                type={showPass ? "text" : "password"}
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-              />
+      <section style={wrapper}>
+        <div style={leftPanel}>
+          <span style={badge}>✨ Join RedditX</span>
 
-              <button
-                type="button"
-                onClick={() => setShowPass(!showPass)}
-                style={showBtn}
-              >
-                {showPass ? "Hide" : "Show"}
-              </button>
+          <h1 style={heroTitle}>
+            Start your own
+            <span style={gradientText}> community journey.</span>
+          </h1>
+
+          <p style={heroText}>
+            Create an account to publish posts, join communities, vote on
+            content, and participate in discussions.
+          </p>
+
+          <div style={miniStats}>
+            <div style={miniCard}>
+              <strong>Free</strong>
+              <span>Create Account</span>
             </div>
 
-            <button type="submit" style={button}>
-              Create Account
+            <div style={miniCard}>
+              <strong>Fast</strong>
+              <span>Demo Signup</span>
+            </div>
+
+            <div style={miniCard}>
+              <strong>Secure</strong>
+              <span>Local Demo</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={card}>
+          <div style={iconBox}>🧡</div>
+
+          <h2 style={title}>Create Account</h2>
+          <p style={subtitle}>Register to become part of RedditX</p>
+
+          {message && (
+            <div
+              style={{
+                ...toast,
+                borderColor:
+                  type === "success"
+                    ? "rgba(34,197,94,0.45)"
+                    : "rgba(244,63,94,0.45)",
+                color: type === "success" ? "#86efac" : "#fda4af",
+              }}
+            >
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleRegister} style={form}>
+            <div>
+              <label style={label}>Username</label>
+              <input
+                className="register-input"
+                style={input}
+                type="text"
+                placeholder="Choose username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label style={label}>Email Address</label>
+              <input
+                className="register-input"
+                style={input}
+                type="email"
+                placeholder="example@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label style={label}>Password</label>
+
+              <div style={passwordBox}>
+                <input
+                  className="register-input"
+                  style={passwordInput}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Minimum 6 characters"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button
+                  type="button"
+                  style={showBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" style={registerBtn}>
+              Create RedditX Account
             </button>
           </form>
 
-          <p style={text}>
+          <p style={bottomText}>
             Already have an account?{" "}
-            <a style={link} href="/login">
+            <a href="/login" style={link}>
               Login
             </a>
           </p>
@@ -109,122 +191,235 @@ export default function Register() {
 
 const page = {
   minHeight: "100vh",
-  background:
-    "radial-gradient(circle at top right, rgba(124,58,237,.35), transparent 32%), radial-gradient(circle at bottom left, rgba(255,69,0,.25), transparent 35%), #070b18",
+  background: "#070b18",
   color: "white",
   fontFamily: "Arial, sans-serif",
+  position: "relative",
+  overflow: "hidden",
 };
 
-const wrap = {
+const glowOne = {
+  position: "absolute",
+  width: "430px",
+  height: "430px",
+  top: "-140px",
+  right: "-120px",
+  background: "#8b5cf6",
+  filter: "blur(140px)",
+  opacity: 0.22,
+  animation: "glowMove 7s ease-in-out infinite",
+};
+
+const glowTwo = {
+  position: "absolute",
+  width: "460px",
+  height: "460px",
+  bottom: "-160px",
+  left: "-130px",
+  background: "#f97316",
+  filter: "blur(150px)",
+  opacity: 0.24,
+  animation: "glowMove 8s ease-in-out infinite",
+};
+
+const gridOverlay = {
+  position: "absolute",
+  inset: 0,
+  backgroundImage:
+    "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+  backgroundSize: "50px 50px",
+  opacity: 0.2,
+};
+
+const wrapper = {
+  position: "relative",
+  zIndex: 5,
   minHeight: "85vh",
-  display: "flex",
+  maxWidth: "1180px",
+  margin: "0 auto",
+  padding: "50px 24px",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+  gap: "36px",
   alignItems: "center",
-  justifyContent: "center",
-  padding: 24,
 };
 
-const card = {
-  width: "100%",
-  maxWidth: 460,
-  padding: 36,
-  borderRadius: 34,
-  background: "rgba(255,255,255,.075)",
-  border: "1px solid rgba(255,255,255,.14)",
-  boxShadow: "0 35px 90px rgba(124,58,237,.22)",
-  backdropFilter: "blur(20px)",
+const leftPanel = {
+  animation: "fadeIn .8s ease both",
 };
 
 const badge = {
-  width: "fit-content",
-  margin: "0 auto 18px",
-  padding: "9px 16px",
-  borderRadius: 999,
-  background: "rgba(255,255,255,.08)",
-  border: "1px solid rgba(255,255,255,.12)",
-  color: "#fbcfe8",
-  fontWeight: 700,
+  display: "inline-block",
+  padding: "10px 16px",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.07)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  color: "#c084fc",
+  fontWeight: "800",
+  marginBottom: "22px",
 };
 
-const title = {
-  fontSize: 44,
-  fontWeight: 900,
-  textAlign: "center",
-  background: "linear-gradient(90deg,#a78bfa,#ec4899,#fb923c)",
+const heroTitle = {
+  fontSize: "clamp(42px, 6vw, 72px)",
+  lineHeight: "1.05",
+  fontWeight: "900",
+  margin: 0,
+};
+
+const gradientText = {
+  display: "block",
+  background: "linear-gradient(90deg,#8b5cf6,#ec4899,#fb923c)",
   WebkitBackgroundClip: "text",
   color: "transparent",
 };
 
-const sub = {
-  textAlign: "center",
+const heroText = {
+  maxWidth: "560px",
   color: "#94a3b8",
-  marginTop: 12,
-  marginBottom: 30,
-  lineHeight: 1.6,
+  fontSize: "19px",
+  lineHeight: "1.7",
+  marginTop: "22px",
 };
 
-const formStyle = {
+const miniStats = {
   display: "grid",
-  gap: 16,
+  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+  gap: "14px",
+  marginTop: "32px",
+  maxWidth: "560px",
+};
+
+const miniCard = {
+  padding: "18px",
+  borderRadius: "20px",
+  background: "rgba(255,255,255,0.06)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  display: "grid",
+  gap: "6px",
+};
+
+const card = {
+  width: "100%",
+  maxWidth: "470px",
+  margin: "0 auto",
+  padding: "38px",
+  borderRadius: "34px",
+  background: "rgba(255,255,255,0.075)",
+  border: "1px solid rgba(255,255,255,0.14)",
+  backdropFilter: "blur(22px)",
+  boxShadow: "0 30px 90px rgba(139,92,246,0.2)",
+  animation: "floatCard 5s ease-in-out infinite, fadeIn .9s ease both",
+};
+
+const iconBox = {
+  width: "76px",
+  height: "76px",
+  borderRadius: "24px",
+  background: "linear-gradient(135deg,#8b5cf6,#db2777)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "34px",
+  margin: "0 auto 20px",
+  boxShadow: "0 15px 35px rgba(139,92,246,0.3)",
+};
+
+const title = {
+  textAlign: "center",
+  fontSize: "42px",
+  fontWeight: "900",
+  margin: 0,
+};
+
+const subtitle = {
+  textAlign: "center",
+  color: "#94a3b8",
+  marginTop: "10px",
+  marginBottom: "26px",
+};
+
+const toast = {
+  padding: "14px",
+  borderRadius: "16px",
+  background: "rgba(255,255,255,0.08)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  textAlign: "center",
+  marginBottom: "20px",
+  fontWeight: "700",
+};
+
+const form = {
+  display: "grid",
+  gap: "18px",
+};
+
+const label = {
+  display: "block",
+  marginBottom: "8px",
+  color: "#cbd5e1",
+  fontSize: "14px",
+  fontWeight: "700",
 };
 
 const input = {
   width: "100%",
-  padding: "16px 17px",
-  borderRadius: 16,
-  border: "1px solid rgba(255,255,255,.14)",
-  background: "rgba(255,255,255,.09)",
+  padding: "16px",
+  borderRadius: "16px",
+  border: "1px solid rgba(255,255,255,0.14)",
+  background: "rgba(255,255,255,0.08)",
   color: "white",
   outline: "none",
-  fontSize: 16,
+  fontSize: "15px",
 };
 
-const passWrap = {
-  position: "relative",
+const passwordBox = {
+  display: "flex",
+  alignItems: "center",
+  borderRadius: "16px",
+  border: "1px solid rgba(255,255,255,0.14)",
+  background: "rgba(255,255,255,0.08)",
+};
+
+const passwordInput = {
+  flex: 1,
+  padding: "16px",
+  background: "transparent",
+  border: "none",
+  outline: "none",
+  color: "white",
+  fontSize: "15px",
 };
 
 const showBtn = {
-  position: "absolute",
-  right: 12,
-  top: "50%",
-  transform: "translateY(-50%)",
-  border: 0,
+  border: "none",
   background: "transparent",
-  color: "#fb7185",
-  fontWeight: 800,
+  color: "#c084fc",
+  padding: "0 16px",
   cursor: "pointer",
+  fontWeight: "900",
 };
 
-const button = {
+const registerBtn = {
+  marginTop: "8px",
   padding: "16px",
-  borderRadius: 16,
-  border: 0,
-  background: "linear-gradient(90deg,#8b5cf6,#db2777,#f97316)",
+  borderRadius: "18px",
+  border: "none",
+  background: "linear-gradient(90deg,#8b5cf6,#db2777)",
   color: "white",
-  fontWeight: 900,
-  fontSize: 16,
+  fontSize: "16px",
+  fontWeight: "900",
   cursor: "pointer",
-  boxShadow: "0 15px 35px rgba(236,72,153,.28)",
+  boxShadow: "0 16px 35px rgba(139,92,246,0.25)",
 };
 
-const text = {
+const bottomText = {
   textAlign: "center",
   color: "#94a3b8",
-  marginTop: 24,
+  marginTop: "24px",
 };
 
 const link = {
-  color: "#fb7185",
-  fontWeight: 900,
-};
-
-const toastBox = {
-  position: "fixed",
-  top: 88,
-  right: 24,
-  zIndex: 100,
-  padding: "14px 18px",
-  borderRadius: 16,
-  background: "rgba(15,23,42,.95)",
-  border: "1px solid rgba(255,255,255,.14)",
-  boxShadow: "0 15px 40px rgba(0,0,0,.35)",
+  color: "#c084fc",
+  fontWeight: "900",
+  textDecoration: "none",
 };
