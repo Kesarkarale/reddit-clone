@@ -2,62 +2,160 @@ import Navbar from "../components/Navbar";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#070b18] text-white overflow-hidden">
+    <main
+      style={{
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at top left, rgba(255,69,0,0.25), transparent 35%), radial-gradient(circle at bottom right, rgba(124,58,237,0.25), transparent 35%), #070b18",
+        color: "white",
+        fontFamily: "Arial, sans-serif",
+        overflow: "hidden",
+      }}
+    >
       <Navbar />
 
-      <section className="relative px-6 py-24 text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,#ff450044,transparent_35%),radial-gradient(circle_at_bottom_right,#7c3aed44,transparent_35%)]"></div>
-
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <p className="inline-block mb-5 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-orange-300">
+      <section
+        style={{
+          padding: "90px 24px 60px",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+          <p
+            style={{
+              display: "inline-block",
+              padding: "10px 18px",
+              borderRadius: "999px",
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(255,255,255,0.06)",
+              color: "#fb923c",
+              marginBottom: "24px",
+              fontWeight: "600",
+            }}
+          >
             🚀 Modern Reddit Clone MVP
           </p>
 
-          <h1 className="text-5xl md:text-7xl font-black leading-tight">
+          <h1
+            style={{
+              fontSize: "clamp(44px, 7vw, 82px)",
+              lineHeight: "1.05",
+              fontWeight: "900",
+              marginBottom: "24px",
+            }}
+          >
             Create. Discuss.
-            <span className="block bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+            <span
+              style={{
+                display: "block",
+                background: "linear-gradient(90deg,#fb923c,#ec4899,#8b5cf6)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+              }}
+            >
               Vote. Connect.
             </span>
           </h1>
 
-          <p className="mt-6 text-slate-400 text-lg max-w-2xl mx-auto">
+          <p
+            style={{
+              maxWidth: "680px",
+              margin: "0 auto",
+              color: "#94a3b8",
+              fontSize: "20px",
+              lineHeight: "1.7",
+            }}
+          >
             RedditX is a modern social media platform where users can create
             communities, share posts, vote, and comment.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/communities"
-              className="rounded-2xl bg-gradient-to-r from-orange-500 to-pink-600 px-8 py-4 font-bold hover:scale-105 transition"
-            >
+          <div
+            style={{
+              marginTop: "38px",
+              display: "flex",
+              gap: "16px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <a href="/communities" style={primaryBtn}>
               Explore Communities
             </a>
 
-            <a
-              href="/create-post"
-              className="rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold hover:bg-white/10 transition"
-            >
+            <a href="/create-post" style={secondaryBtn}>
               Create Post
             </a>
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-6">
-        {[
-          ["🌐 Communities", "Create and browse topic-based communities."],
-          ["🔥 Voting", "Upvote and downvote posts easily."],
-          ["💬 Comments", "Join discussions with clean comment UI."],
-        ].map((item) => (
-          <div
-            key={item[0]}
-            className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl hover:-translate-y-2 transition"
-          >
-            <h2 className="text-2xl font-bold mb-3">{item[0]}</h2>
-            <p className="text-slate-400">{item[1]}</p>
-          </div>
-        ))}
+      <section
+        style={{
+          maxWidth: "1100px",
+          margin: "0 auto",
+          padding: "20px 24px 80px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "24px",
+        }}
+      >
+        <FeatureCard
+          icon="🌐"
+          title="Communities"
+          desc="Create and browse topic-based communities."
+        />
+        <FeatureCard
+          icon="🔥"
+          title="Voting"
+          desc="Upvote and downvote posts easily."
+        />
+        <FeatureCard
+          icon="💬"
+          title="Comments"
+          desc="Join discussions with clean comment UI."
+        />
       </section>
     </main>
   );
 }
+
+function FeatureCard({ icon, title, desc }) {
+  return (
+    <div
+      style={{
+        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(255,255,255,0.06)",
+        backdropFilter: "blur(16px)",
+        borderRadius: "28px",
+        padding: "30px",
+        boxShadow: "0 20px 60px rgba(236,72,153,0.08)",
+      }}
+    >
+      <div style={{ fontSize: "34px", marginBottom: "14px" }}>{icon}</div>
+      <h2 style={{ fontSize: "26px", marginBottom: "12px" }}>{title}</h2>
+      <p style={{ color: "#94a3b8", lineHeight: "1.6" }}>{desc}</p>
+    </div>
+  );
+}
+
+const primaryBtn = {
+  display: "inline-block",
+  padding: "16px 28px",
+  borderRadius: "18px",
+  background: "linear-gradient(90deg,#f97316,#db2777)",
+  color: "white",
+  textDecoration: "none",
+  fontWeight: "800",
+};
+
+const secondaryBtn = {
+  display: "inline-block",
+  padding: "16px 28px",
+  borderRadius: "18px",
+  border: "1px solid rgba(255,255,255,0.14)",
+  background: "rgba(255,255,255,0.06)",
+  color: "white",
+  textDecoration: "none",
+  fontWeight: "800",
+};
