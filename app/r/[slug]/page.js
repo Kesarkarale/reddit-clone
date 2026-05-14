@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "../../../components/Navbar";
 
 export default function CommunityPage({ params }) {
   const slug = params.slug;
 
   const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("latest");
+  const [joined, setJoined] = useState(false);
 
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const savedPosts =
+      JSON.parse(localStorage.getItem("redditxPosts")) || [];
 
     const filtered = savedPosts.filter(
       (post) =>
@@ -43,6 +47,26 @@ export default function CommunityPage({ params }) {
 
   const allPosts = posts.length > 0 ? posts : defaultPosts;
 
+  const filteredPosts = useMemo(() => {
+    let data = [...allPosts];
+
+    data = data.filter(
+      (post) =>
+        post.title.toLowerCase().includes(search.toLowerCase()) ||
+        post.content.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (sort === "popular") {
+      data.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+    }
+
+    if (sort === "comments") {
+      data.sort((a, b) => (b.comments || 0) - (a.comments || 0));
+    }
+
+    return data;
+  }, [search, sort, allPosts]);
+
   return (
     <main style={page}>
       <Navbar />
@@ -52,6 +76,10 @@ export default function CommunityPage({ params }) {
           0% { transform: translate(0,0) scale(1); }
           50% { transform: translate(20px,-15px) scale(1.08); }
           100% { transform: translate(0,0) scale(1); }
+        }
+
+        .search-input::placeholder {
+          color: #64748b;
         }
       `}</style>
 
@@ -66,10 +94,13 @@ export default function CommunityPage({ params }) {
             <div style={avatar}>r/</div>
 
             <div>
+              <p style={category}>🔥 Trending Community</p>
+
               <h1 style={title}>r/{slug}</h1>
+
               <p style={subtitle}>
-                Welcome to the r/{slug} community. Share posts, vote, comment,
-                and discuss with members.
+                Welcome to the r/{slug} community. Share posts, vote,
+                comment and discuss with members.
               </p>
 
               <div style={stats}>
@@ -79,25 +110,56 @@ export default function CommunityPage({ params }) {
               </div>
             </div>
 
-            <a href="/create-post" style={joinBtn}>
-              + Create Post
-            </a>
+            <div style={heroBtns}>
+              <button
+                style={joinBtn}
+                onClick={() => setJoined(!joined)}
+              >
+                {joined ? "Joined ✓" : "Join Community"}
+              </button>
+
+              <a href="/create-post" style={createBtn}>
+                + Create Post
+              </a>
+            </div>
           </div>
         </div>
 
         <div style={layout}>
           <div style={feed}>
-            <div style={sortBar}>
-              <button style={activeSort}>Latest</button>
-              <button style={sortBtn}>Popular</button>
-              <button style={sortBtn}>Top</button>
+            <div style={toolbar}>
+              <input
+                className="search-input"
+                style={searchInput}
+                placeholder="Search posts..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+
+              <select
+                style={select}
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="latest">Latest</option>
+                <option value="popular">Popular</option>
+                <option value="comments">Most Commented</option>
+              </select>
             </div>
 
-            {allPosts.map((post) => (
-              <a key={post.id} href={`/post/${post.id}`} style={postCard}>
+            {filteredPosts.map((post) => (
+              <a
+                key={post.id}
+                href={`/post/${post.id}`}
+                style={postCard}
+              >
                 <div style={voteBox}>
                   <button style={voteBtn}>▲</button>
-                  <strong style={voteCount}>{post.votes || 1}</strong>
+
+                  <strong style={voteCount}>
+                    {post.votes || 1}
+                  </strong>
+
                   <button style={voteBtn}>▼</button>
                 </div>
 
@@ -108,35 +170,76 @@ export default function CommunityPage({ params }) {
 
                   <h2 style={postTitle}>{post.title}</h2>
 
+                  {post.imageUrl && (
+                    <img
+                      src={post.imageUrl}
+                      alt="post"
+                      style={postImage}
+                    />
+                  )}
+
                   <p style={postText}>{post.content}</p>
 
                   <div style={actions}>
-                    <span>💬 {post.comments || 0} Comments</span>
-                    <span>🔗 Share</span>
+                    <span>
+                      💬 {post.comments || 0} Comments
+                    </span>
+
+                    <span>🔥 Trending</span>
+
                     <span>🔖 Save</span>
                   </div>
                 </div>
               </a>
             ))}
+
+            {filteredPosts.length === 0 && (
+              <div style={emptyBox}>
+                <h2>No posts found</h2>
+                <p>Try another search keyword.</p>
+              </div>
+            )}
           </div>
 
           <aside style={aside}>
             <div style={sideCard}>
               <h3 style={sideTitle}>About Community</h3>
+
               <p style={sideText}>
-                This is a professional Reddit-style community page with posts,
-                voting UI, stats, and clean discussion layout.
+                This is a professional Reddit-style community page
+                with posts, voting UI, stats and clean discussion
+                layout.
               </p>
             </div>
 
             <div style={sideCard}>
               <h3 style={sideTitle}>Community Rules</h3>
+
               <ul style={rules}>
                 <li>Be respectful</li>
                 <li>No spam promotion</li>
                 <li>Use clear post titles</li>
                 <li>Stay on topic</li>
               </ul>
+            </div>
+
+            <div style={sideCard}>
+              <h3 style={sideTitle}>🔥 Trending Topics</h3>
+
+              <div style={trendItem}>
+                <h4>AI Tools</h4>
+                <p style={trendText}>2.4k posts</p>
+              </div>
+
+              <div style={trendItem}>
+                <h4>Frontend Design</h4>
+                <p style={trendText}>1.8k posts</p>
+              </div>
+
+              <div style={trendItem}>
+                <h4>React & Next.js</h4>
+                <p style={trendText}>4.1k posts</p>
+              </div>
             </div>
           </aside>
         </div>
@@ -195,7 +298,7 @@ const heroCard = {
 };
 
 const cover = {
-  height: "180px",
+  height: "190px",
   background: "linear-gradient(90deg,#f97316,#db2777,#8b5cf6)",
 };
 
@@ -221,6 +324,11 @@ const avatar = {
   marginTop: "-55px",
 };
 
+const category = {
+  color: "#fb923c",
+  fontWeight: "800",
+};
+
 const title = {
   fontSize: "46px",
   fontWeight: "900",
@@ -241,12 +349,28 @@ const stats = {
   fontSize: "14px",
 };
 
+const heroBtns = {
+  display: "grid",
+  gap: "12px",
+};
+
 const joinBtn = {
   padding: "14px 22px",
   borderRadius: "16px",
+  border: "none",
   background: "linear-gradient(90deg,#f97316,#db2777)",
   color: "white",
+  fontWeight: "900",
+  cursor: "pointer",
+};
+
+const createBtn = {
+  padding: "14px 22px",
+  borderRadius: "16px",
+  background: "rgba(255,255,255,.08)",
+  color: "white",
   textDecoration: "none",
+  textAlign: "center",
   fontWeight: "900",
 };
 
@@ -261,31 +385,33 @@ const feed = {
   gap: "18px",
 };
 
-const sortBar = {
+const toolbar = {
   display: "flex",
-  gap: "10px",
+  gap: "14px",
+  flexWrap: "wrap",
   padding: "16px",
   borderRadius: "22px",
   background: "rgba(255,255,255,0.06)",
   border: "1px solid rgba(255,255,255,0.12)",
 };
 
-const activeSort = {
-  border: "none",
-  padding: "10px 16px",
+const searchInput = {
+  flex: 1,
+  minWidth: "220px",
+  padding: "14px 16px",
   borderRadius: "14px",
-  background: "#f97316",
+  background: "rgba(255,255,255,.08)",
+  border: "1px solid rgba(255,255,255,.12)",
   color: "white",
-  fontWeight: "900",
+  outline: "none",
 };
 
-const sortBtn = {
-  border: "1px solid rgba(255,255,255,0.12)",
-  padding: "10px 16px",
+const select = {
+  padding: "14px 16px",
   borderRadius: "14px",
-  background: "rgba(255,255,255,0.06)",
+  background: "#111827",
   color: "white",
-  fontWeight: "800",
+  border: "1px solid rgba(255,255,255,.12)",
 };
 
 const postCard = {
@@ -330,6 +456,14 @@ const postTitle = {
   fontWeight: "900",
 };
 
+const postImage = {
+  width: "100%",
+  borderRadius: "20px",
+  marginTop: "18px",
+  maxHeight: "360px",
+  objectFit: "cover",
+};
+
 const postText = {
   color: "#cbd5e1",
   marginTop: "12px",
@@ -339,9 +473,18 @@ const postText = {
 const actions = {
   display: "flex",
   gap: "18px",
+  flexWrap: "wrap",
   marginTop: "18px",
   color: "#94a3b8",
   fontSize: "14px",
+};
+
+const emptyBox = {
+  padding: "30px",
+  borderRadius: "26px",
+  background: "rgba(255,255,255,.06)",
+  textAlign: "center",
+  color: "#94a3b8",
 };
 
 const aside = {
@@ -371,4 +514,16 @@ const rules = {
   color: "#cbd5e1",
   lineHeight: "2",
   paddingLeft: "20px",
+};
+
+const trendItem = {
+  padding: "14px",
+  borderRadius: "18px",
+  background: "rgba(255,255,255,.06)",
+  marginTop: "12px",
+};
+
+const trendText = {
+  color: "#94a3b8",
+  marginTop: "6px",
 };
