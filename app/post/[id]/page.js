@@ -7,18 +7,12 @@ export default function PostPage({ params }) {
   const postId = params.id;
 
   const [post, setPost] = useState(null);
+  const [votes, setVotes] = useState(0);
+  const [saved, setSaved] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([
-    {
-      id: 1,
-      user: "alex",
-      text: "This discussion is really useful!",
-    },
-    {
-      id: 2,
-      user: "design_master",
-      text: "The UI looks clean and professional.",
-    },
+    { id: 1, user: "alex", text: "This discussion is really useful!" },
+    { id: 2, user: "design_master", text: "The UI looks clean and professional." },
   ]);
 
   useEffect(() => {
@@ -27,8 +21,9 @@ export default function PostPage({ params }) {
 
     if (foundPost) {
       setPost(foundPost);
+      setVotes(foundPost.votes || 1);
     } else {
-      setPost({
+      const demoPost = {
         id: postId,
         title: "Future of AI in Web Development",
         community: "technology",
@@ -36,22 +31,27 @@ export default function PostPage({ params }) {
         votes: 248,
         content:
           "AI tools are transforming frontend and backend development by improving productivity and reducing repetitive tasks.",
-      });
+      };
+
+      setPost(demoPost);
+      setVotes(248);
     }
   }, [postId]);
 
   function handleComment(e) {
     e.preventDefault();
-
     if (!comment.trim()) return;
+
+    const user = JSON.parse(localStorage.getItem("redditxUser")) || {};
 
     const newComment = {
       id: Date.now(),
-      user: "you",
+      user: user.username || "anonymous",
       text: comment,
     };
 
     setComments([newComment, ...comments]);
+    setPost({ ...post, comments: (post.comments || 0) + 1 });
     setComment("");
   }
 
@@ -93,9 +93,15 @@ export default function PostPage({ params }) {
           <div>
             <article style={postCard}>
               <div style={voteBox}>
-                <button style={voteBtn}>▲</button>
-                <strong style={voteCount}>{post.votes || 1}</strong>
-                <button style={voteBtn}>▼</button>
+                <button style={voteBtn} onClick={() => setVotes(votes + 1)}>
+                  ▲
+                </button>
+
+                <strong style={voteCount}>{votes}</strong>
+
+                <button style={voteBtn} onClick={() => setVotes(votes - 1)}>
+                  ▼
+                </button>
               </div>
 
               <div>
@@ -106,12 +112,28 @@ export default function PostPage({ params }) {
 
                 <h1 style={title}>{post.title}</h1>
 
+                {post.imageUrl && (
+                  <img src={post.imageUrl} alt="post" style={postImage} />
+                )}
+
                 <p style={content}>{post.content}</p>
 
                 <div style={actions}>
                   <span>💬 {comments.length} Comments</span>
-                  <span>🔗 Share</span>
-                  <span>🔖 Save</span>
+
+                  <button
+                    style={actionBtn}
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert("Post link copied!");
+                    }}
+                  >
+                    🔗 Share
+                  </button>
+
+                  <button style={actionBtn} onClick={() => setSaved(!saved)}>
+                    {saved ? "✅ Saved" : "🔖 Save"}
+                  </button>
                 </div>
               </div>
             </article>
@@ -156,7 +178,7 @@ export default function PostPage({ params }) {
           <aside style={aside}>
             <div style={sideCard}>
               <h3 style={sideTitle}>Post Stats</h3>
-              <p style={sideLine}>🔥 {post.votes || 1} votes</p>
+              <p style={sideLine}>🔥 {votes} votes</p>
               <p style={sideLine}>💬 {comments.length} comments</p>
               <p style={sideLine}>👁️ 1.8k views</p>
             </div>
@@ -168,12 +190,23 @@ export default function PostPage({ params }) {
                 discussions like this.
               </p>
 
-              <a
-                href={`/r/${post.community || "technology"}`}
-                style={visitBtn}
-              >
+              <a href={`/r/${post.community || "technology"}`} style={visitBtn}>
                 Visit Community
               </a>
+            </div>
+
+            <div style={sideCard}>
+              <h3 style={sideTitle}>🔥 Trending Posts</h3>
+
+              <div style={trendItem}>
+                <h4 style={trendHeading}>Future of AI</h4>
+                <p style={trendText}>2.4k votes</p>
+              </div>
+
+              <div style={trendItem}>
+                <h4 style={trendHeading}>UI Design Trends</h4>
+                <p style={trendText}>1.8k votes</p>
+              </div>
             </div>
           </aside>
         </div>
@@ -276,6 +309,14 @@ const title = {
   fontWeight: "900",
 };
 
+const postImage = {
+  width: "100%",
+  borderRadius: "24px",
+  marginTop: "24px",
+  maxHeight: "420px",
+  objectFit: "cover",
+};
+
 const content = {
   marginTop: "22px",
   color: "#cbd5e1",
@@ -290,6 +331,14 @@ const actions = {
   marginTop: "24px",
   color: "#94a3b8",
   fontSize: "14px",
+};
+
+const actionBtn = {
+  border: "none",
+  background: "transparent",
+  color: "#cbd5e1",
+  cursor: "pointer",
+  fontWeight: "700",
 };
 
 const commentBox = {
@@ -416,4 +465,19 @@ const visitBtn = {
   textAlign: "center",
   textDecoration: "none",
   fontWeight: "900",
+};
+
+const trendItem = {
+  padding: "16px",
+  borderRadius: "18px",
+  background: "rgba(255,255,255,.06)",
+  marginTop: "12px",
+};
+
+const trendHeading = {
+  marginBottom: "6px",
+};
+
+const trendText = {
+  color: "#94a3b8",
 };
