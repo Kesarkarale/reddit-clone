@@ -13,8 +13,21 @@ export default function Navbar() {
 
   function handleLogout() {
     localStorage.removeItem("redditxUser");
+    localStorage.removeItem("isLoggedIn");
     window.location.href = "/login";
   }
+
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Communities", href: "/communities" },
+    { label: "Create", href: "/create-post" },
+    { label: "Search", href: "/search" },
+    { label: "Saved", href: "/saved" },
+    { label: "Notifications", href: "/notifications" },
+    { label: "Profile", href: "/profile" },
+    { label: "Settings", href: "/settings" },
+    { label: "Admin", href: "/admin" },
+  ];
 
   return (
     <nav style={nav}>
@@ -22,71 +35,30 @@ export default function Navbar() {
         RedditX
       </a>
 
-      <button
-        style={menuBtn}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        ☰
+      <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? "✕" : "☰"}
       </button>
 
-      <div
-        style={{
-          ...links,
-          ...(menuOpen ? mobileMenuOpen : {}),
-        }}
-      >
-        <a href="/" style={link}>
-          Home
-        </a>
+      <div style={menuOpen ? mobileLinks : desktopLinks}>
+        {navLinks.map((item) => (
+          <a key={item.href} href={item.href} style={link}>
+            {item.label}
+          </a>
+        ))}
 
-        <a href="/communities" style={link}>
-          Communities
-        </a>
+        <div style={divider}></div>
 
-        <a href="/create-post" style={link}>
-          Create Post
-        </a>
-
-        <a href="/about" style={link}>
-          About
-        </a>
-
-        <a href="/profile" style={link}>
-          Profile
-        </a>
-
-  <a href="/saved" style={link}>
-  Saved
-</a>
-
-  <a href="/notifications" style={link}>
-  Notifications
-</a>
-
-  <a href="/settings" style={link}>
-  Settings
-</a>
-
-  <a href="/admin" style={link}>
-  Admin
-</a>
-
-  <a href="/search" style={link}>
-  Search
-</a>
         {user ? (
           <>
-            <div style={userBox}>
+            <a href="/profile" style={userBox}>
               <div style={avatar}>
-                {user.username
-                  ? user.username.charAt(0).toUpperCase()
-                  : "U"}
+                {user.username ? user.username.charAt(0).toUpperCase() : "U"}
               </div>
-
-              <span style={username}>
-                {user.username || "User"}
-              </span>
-            </div>
+              <div>
+                <p style={username}>{user.username || "User"}</p>
+                <span style={online}>Online</span>
+              </div>
+            </a>
 
             <button onClick={handleLogout} style={logoutBtn}>
               Logout
@@ -97,7 +69,6 @@ export default function Navbar() {
             <a href="/login" style={outlineBtn}>
               Login
             </a>
-
             <a href="/register" style={primaryBtn}>
               Register
             </a>
@@ -115,8 +86,8 @@ const nav = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "18px 24px",
-  background: "rgba(7,11,24,0.86)",
+  padding: "16px 24px",
+  background: "rgba(7,11,24,0.88)",
   backdropFilter: "blur(18px)",
   borderBottom: "1px solid rgba(255,255,255,0.08)",
 };
@@ -130,30 +101,41 @@ const logo = {
   textDecoration: "none",
 };
 
-const links = {
+const desktopLinks = {
   display: "flex",
-  gap: "16px",
+  gap: "12px",
   alignItems: "center",
   flexWrap: "wrap",
+  justifyContent: "flex-end",
 };
 
-const mobileMenuOpen = {
+const mobileLinks = {
   position: "absolute",
-  top: 80,
-  right: 20,
-  background: "rgba(15,23,42,.96)",
-  border: "1px solid rgba(255,255,255,.12)",
-  borderRadius: "22px",
-  padding: "18px",
+  top: 74,
+  right: 18,
+  left: 18,
+  padding: 18,
+  borderRadius: 24,
+  background: "rgba(15,23,42,.97)",
+  border: "1px solid rgba(255,255,255,.14)",
+  boxShadow: "0 24px 80px rgba(0,0,0,.45)",
   display: "grid",
-  minWidth: "230px",
+  gap: 12,
 };
 
 const link = {
   color: "#cbd5e1",
   textDecoration: "none",
-  fontWeight: "700",
-  transition: ".3s",
+  fontWeight: "800",
+  padding: "10px 12px",
+  borderRadius: 14,
+  background: "rgba(255,255,255,.04)",
+};
+
+const divider = {
+  width: 1,
+  height: 28,
+  background: "rgba(255,255,255,.12)",
 };
 
 const outlineBtn = {
@@ -162,7 +144,7 @@ const outlineBtn = {
   border: "1px solid rgba(255,255,255,0.15)",
   color: "white",
   textDecoration: "none",
-  fontWeight: "800",
+  fontWeight: "900",
 };
 
 const primaryBtn = {
@@ -175,7 +157,6 @@ const primaryBtn = {
 };
 
 const menuBtn = {
-  display: "none",
   border: "none",
   background: "rgba(255,255,255,.08)",
   color: "white",
@@ -193,22 +174,30 @@ const userBox = {
   padding: "8px 12px",
   borderRadius: "16px",
   background: "rgba(255,255,255,.06)",
+  textDecoration: "none",
 };
 
 const avatar = {
-  width: "36px",
-  height: "36px",
+  width: "38px",
+  height: "38px",
   borderRadius: "12px",
   background: "linear-gradient(90deg,#f97316,#db2777)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   fontWeight: "900",
+  color: "white",
 };
 
 const username = {
   color: "white",
-  fontWeight: "800",
+  fontWeight: "900",
+  margin: 0,
+};
+
+const online = {
+  color: "#4ade80",
+  fontSize: 12,
 };
 
 const logoutBtn = {
