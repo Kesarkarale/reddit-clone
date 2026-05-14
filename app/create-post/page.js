@@ -1,44 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [community, setCommunity] = useState("");
+  const [category, setCategory] = useState("Technology");
+  const [imageUrl, setImageUrl] = useState("");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const user = localStorage.getItem("redditxUser");
+
+    if (!user) {
+      window.location.href = "/login";
+    }
+  }, []);
 
   function handlePost(e) {
     e.preventDefault();
 
     if (!title || !community || !content) {
-      setMessage("Please fill all fields.");
+      setMessage("Please fill title, community and content.");
       return;
     }
 
-    const posts =
-      JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const posts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const user = JSON.parse(localStorage.getItem("redditxUser")) || {};
+
+    const slug = community.toLowerCase().trim().replace(/\s+/g, "-");
 
     const newPost = {
       id: Date.now(),
       title,
-      community,
+      community: slug,
+      category,
+      imageUrl,
       content,
+      author: user.username || "anonymous",
+      votes: 1,
+      comments: 0,
+      createdAt: new Date().toISOString(),
     };
 
     posts.unshift(newPost);
+    localStorage.setItem("redditxPosts", JSON.stringify(posts));
 
-    localStorage.setItem(
-      "redditxPosts",
-      JSON.stringify(posts)
-    );
+    setMessage("Post published successfully! Redirecting...");
 
-    setMessage("Post published successfully!");
-
-    setTitle("");
-    setCommunity("");
-    setContent("");
+    setTimeout(() => {
+      window.location.href = `/r/${slug}`;
+    }, 1200);
   }
 
   return (
@@ -96,6 +110,20 @@ export default function CreatePost() {
               <span>Posts Today</span>
             </div>
           </div>
+
+          <div style={preview}>
+            <p style={previewTag}>Live Preview</p>
+            <h2 style={previewTitle}>{title || "Your post title"}</h2>
+            <p style={previewMeta}>
+              r/{community || "community"} • {category} • by u/you
+            </p>
+
+            {imageUrl && <img src={imageUrl} alt="preview" style={previewImg} />}
+
+            <p style={previewText}>
+              {content || "Post content preview will appear here."}
+            </p>
+          </div>
         </div>
 
         <div style={card}>
@@ -103,20 +131,13 @@ export default function CreatePost() {
 
           <h2 style={titleStyle}>Create Post</h2>
 
-          <p style={subtitle}>
-            Start a new discussion in RedditX
-          </p>
+          <p style={subtitle}>Start a new discussion in RedditX</p>
 
-          {message && (
-            <div style={toast}>
-              {message}
-            </div>
-          )}
+          {message && <div style={toast}>{message}</div>}
 
           <form onSubmit={handlePost} style={form}>
             <div>
               <label style={label}>Post Title</label>
-
               <input
                 className="post-input"
                 style={input}
@@ -129,7 +150,6 @@ export default function CreatePost() {
 
             <div>
               <label style={label}>Community</label>
-
               <input
                 className="post-input"
                 style={input}
@@ -141,8 +161,35 @@ export default function CreatePost() {
             </div>
 
             <div>
-              <label style={label}>Post Content</label>
+              <label style={label}>Category</label>
+              <select
+                style={input}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option>Technology</option>
+                <option>Gaming</option>
+                <option>Movies</option>
+                <option>Design</option>
+                <option>Education</option>
+                <option>General</option>
+              </select>
+            </div>
 
+            <div>
+              <label style={label}>Image URL Optional</label>
+              <input
+                className="post-input"
+                style={input}
+                type="text"
+                placeholder="Paste image URL..."
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label style={label}>Post Content</label>
               <textarea
                 className="post-input"
                 style={textarea}
@@ -256,6 +303,44 @@ const miniCard = {
   border: "1px solid rgba(255,255,255,0.12)",
   display: "grid",
   gap: "6px",
+};
+
+const preview = {
+  marginTop: "28px",
+  padding: "24px",
+  borderRadius: "26px",
+  background: "rgba(255,255,255,0.06)",
+  border: "1px solid rgba(255,255,255,0.12)",
+};
+
+const previewTag = {
+  color: "#fb923c",
+  fontWeight: "900",
+  marginBottom: "10px",
+};
+
+const previewTitle = {
+  fontSize: "28px",
+  marginBottom: "8px",
+};
+
+const previewMeta = {
+  color: "#94a3b8",
+  fontSize: "14px",
+};
+
+const previewText = {
+  color: "#cbd5e1",
+  marginTop: "14px",
+  lineHeight: "1.7",
+};
+
+const previewImg = {
+  width: "100%",
+  maxHeight: "220px",
+  objectFit: "cover",
+  borderRadius: "20px",
+  marginTop: "16px",
 };
 
 const card = {
