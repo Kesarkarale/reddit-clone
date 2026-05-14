@@ -124,6 +124,7 @@ export default function Home() {
 
       <Footer />
       <FloatingActions />
+      <ThemeToggle />
     </main>
   );
 }
