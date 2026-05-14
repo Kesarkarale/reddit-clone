@@ -13,45 +13,60 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
+  
+function handleRegister(e) {
+  e.preventDefault();
 
-  function handleRegister(e) {
-    e.preventDefault();
-
-    if (!username || !email || !password) {
-      setType("error");
-      setMessage("Please fill all fields.");
-      return;
-    }
-
-    if (!email.includes("@")) {
-      setType("error");
-      setMessage("Please enter a valid email address.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setType("error");
-      setMessage("Password must be at least 6 characters.");
-      return;
-    }
-
-    const user = {
-      username,
-      email,
-      password,
-      joinedAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem("redditxUser", JSON.stringify(user));
-    localStorage.setItem("isLoggedIn", "true");
-
-    setType("success");
-    setMessage("Account created successfully! Redirecting...");
-
-    setTimeout(() => {
-      router.push("/communities");
-    }, 1000);
+  if (!username || !email || !password) {
+    setType("error");
+    setMessage("Please fill all fields.");
+    return;
   }
+
+  if (!email.includes("@")) {
+    setType("error");
+    setMessage("Please enter a valid email address.");
+    return;
+  }
+
+  if (password.length < 6) {
+    setType("error");
+    setMessage("Password must be at least 6 characters.");
+    return;
+  }
+
+  const existingUsers =
+    JSON.parse(localStorage.getItem("redditxUsers")) || [];
+
+  const alreadyExists = existingUsers.find(
+    (user) => user.email.toLowerCase() === email.toLowerCase()
+  );
+
+  if (alreadyExists) {
+    setType("error");
+    setMessage("This email is already registered. Please login.");
+    return;
+  }
+
+  const newUser = {
+    username,
+    email,
+    password,
+    joinedAt: new Date().toISOString(),
+  };
+
+  existingUsers.push(newUser);
+
+  localStorage.setItem("redditxUsers", JSON.stringify(existingUsers));
+  localStorage.setItem("redditxUser", JSON.stringify(newUser));
+
+  setType("success");
+  setMessage("Registration successful! Please login.");
+
+  setTimeout(() => {
+    router.push("/login");
+  }, 1200);
+}
 
   return (
     <main style={page}>
