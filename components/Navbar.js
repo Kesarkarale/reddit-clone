@@ -62,6 +62,10 @@ export default function Navbar() {
   <a href="/notifications" style={link}>
   Notifications
 </a>
+
+  <a href="/settings" style={link}>
+  Settings
+</a>
         {user ? (
           <>
             <div style={userBox}>
