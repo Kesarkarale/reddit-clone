@@ -8,6 +8,7 @@ export default function CreatePost() {
   const [community, setCommunity] = useState("");
   const [category, setCategory] = useState("Technology");
   const [imageUrl, setImageUrl] = useState("");
+  const [uploadedImage, setUploadedImage] = useState("");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
 
@@ -18,6 +19,21 @@ export default function CreatePost() {
       window.location.href = "/login";
     }
   }, []);
+
+  function handleImageUpload(e) {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setUploadedImage(reader.result);
+      setImageUrl("");
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   function handlePost(e) {
     e.preventDefault();
@@ -37,7 +53,7 @@ export default function CreatePost() {
       title,
       community: slug,
       category,
-      imageUrl,
+      imageUrl: uploadedImage || imageUrl,
       content,
       author: user.username || "anonymous",
       votes: 1,
@@ -113,12 +129,20 @@ export default function CreatePost() {
 
           <div style={preview}>
             <p style={previewTag}>Live Preview</p>
+
             <h2 style={previewTitle}>{title || "Your post title"}</h2>
+
             <p style={previewMeta}>
               r/{community || "community"} • {category} • by u/you
             </p>
 
-            {imageUrl && <img src={imageUrl} alt="preview" style={previewImg} />}
+            {(imageUrl || uploadedImage) && (
+              <img
+                src={uploadedImage || imageUrl}
+                alt="preview"
+                style={previewImg}
+              />
+            )}
 
             <p style={previewText}>
               {content || "Post content preview will appear here."}
@@ -138,6 +162,7 @@ export default function CreatePost() {
           <form onSubmit={handlePost} style={form}>
             <div>
               <label style={label}>Post Title</label>
+
               <input
                 className="post-input"
                 style={input}
@@ -150,6 +175,7 @@ export default function CreatePost() {
 
             <div>
               <label style={label}>Community</label>
+
               <input
                 className="post-input"
                 style={input}
@@ -162,6 +188,7 @@ export default function CreatePost() {
 
             <div>
               <label style={label}>Category</label>
+
               <select
                 style={input}
                 value={category}
@@ -178,18 +205,37 @@ export default function CreatePost() {
 
             <div>
               <label style={label}>Image URL Optional</label>
+
               <input
                 className="post-input"
                 style={input}
                 type="text"
                 placeholder="Paste image URL..."
                 value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                onChange={(e) => {
+                  setImageUrl(e.target.value);
+                  setUploadedImage("");
+                }}
               />
             </div>
 
             <div>
+              <label style={label}>Upload Image</label>
+
+              <label style={uploadBox}>
+                📸 Choose Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                />
+              </label>
+            </div>
+
+            <div>
               <label style={label}>Post Content</label>
+
               <textarea
                 className="post-input"
                 style={textarea}
@@ -414,6 +460,20 @@ const input = {
   color: "white",
   outline: "none",
   fontSize: "15px",
+};
+
+const uploadBox = {
+  width: "100%",
+  padding: "18px",
+  borderRadius: "18px",
+  border: "2px dashed rgba(255,255,255,.18)",
+  background: "rgba(255,255,255,.05)",
+  color: "#cbd5e1",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  fontWeight: "800",
 };
 
 const textarea = {
