@@ -1,6 +1,26 @@
 export const metadata = {
-  title: "RedditX",
-  description: "Modern Reddit Clone",
+  title: "RedditX • Modern Reddit Clone",
+  description:
+    "RedditX is a modern Reddit-style social platform built with Next.js.",
+  keywords: [
+    "Reddit Clone",
+    "Next.js",
+    "RedditX",
+    "Social Media",
+    "Communities",
+    "Discussion Platform",
+  ],
+  authors: [{ name: "Kesar Karale" }],
+  creator: "Kesar Karale",
+  openGraph: {
+    title: "RedditX",
+    description:
+      "Create communities, share posts, vote and join discussions.",
+    url: "https://redditx.vercel.app",
+    siteName: "RedditX",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 import "./globals.css";
@@ -8,7 +28,46 @@ import "./globals.css";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style={body}>
+        <div style={bgGlowOne}></div>
+        <div style={bgGlowTwo}></div>
+
+        {children}
+      </body>
     </html>
   );
 }
+
+const body = {
+  margin: 0,
+  padding: 0,
+  background: "#070b18",
+  color: "white",
+  fontFamily: "Arial, sans-serif",
+  position: "relative",
+  overflowX: "hidden",
+};
+
+const bgGlowOne = {
+  position: "fixed",
+  width: "420px",
+  height: "420px",
+  top: "-140px",
+  left: "-120px",
+  background: "#f97316",
+  filter: "blur(140px)",
+  opacity: 0.14,
+  zIndex: -1,
+};
+
+const bgGlowTwo = {
+  position: "fixed",
+  width: "420px",
+  height: "420px",
+  bottom: "-140px",
+  right: "-120px",
+  background: "#8b5cf6",
+  filter: "blur(140px)",
+  opacity: 0.16,
+  zIndex: -1,
+};
