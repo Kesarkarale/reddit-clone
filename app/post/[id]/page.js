@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
+import Toast from "../../../components/Toast";
 
 export default function PostPage({ params }) {
   const postId = params.id;
@@ -14,7 +15,9 @@ export default function PostPage({ params }) {
     { id: 1, user: "alex", text: "This discussion is really useful!" },
     { id: 2, user: "design_master", text: "The UI looks clean and professional." },
   ]);
-
+  const [toast, setToast] = useState("");
+  const [toastType, setToastType] = useState("success");
+  
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
     const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
@@ -67,7 +70,8 @@ export default function PostPage({ params }) {
   return (
     <main style={page}>
       <Navbar />
-
+<Toast message={toast} type={toastType} />
+    
       <style>{`
         @keyframes glowMove {
           0% { transform: translate(0,0) scale(1); }
@@ -121,17 +125,20 @@ export default function PostPage({ params }) {
                 <div style={actions}>
                   <span>💬 {comments.length} Comments</span>
 
-                  <button
-                    style={actionBtn}
-                    onClick={() => {
-                      navigator.clipboard.writeText(window.location.href);
-                      alert("Post link copied!");
-                    }}
-                  >
-                    🔗 Share
-                  </button>
-
                  <button
+                  style={actionBtn}
+                   onClick={() => {
+                   navigator.clipboard.writeText(window.location.href);
+                   setToastType("success");
+                  setToast("Post link copied!");
+
+                  setTimeout(() => setToast(""), 2000);
+                 }}
+                  >
+               🔗 Share
+               </button>
+
+<button
   style={actionBtn}
   onClick={() => {
     const savedList =
@@ -143,18 +150,22 @@ export default function PostPage({ params }) {
 
     if (!alreadySaved) {
       savedList.unshift(post);
+      localStorage.setItem("redditxSavedPosts", JSON.stringify(savedList));
 
-      localStorage.setItem(
-        "redditxSavedPosts",
-        JSON.stringify(savedList)
-      );
+      setSaved(true);
+      setToastType("success");
+      setToast("Post saved successfully!");
+    } else {
+      setToastType("error");
+      setToast("Post already saved.");
     }
 
-    setSaved(true);
+    setTimeout(() => setToast(""), 2000);
   }}
 >
   {saved ? "✅ Saved" : "🔖 Save"}
 </button>
+  
   
                 </div>
               </div>
@@ -170,6 +181,10 @@ export default function PostPage({ params }) {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               ></textarea>
+              setToastType("success");
+              setToast("Comment added successfully!");
+
+              setTimeout(() => setToast(""), 2000);
 
               <button type="submit" style={commentBtn}>
                 Post Comment
