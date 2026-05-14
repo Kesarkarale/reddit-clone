@@ -10,7 +10,9 @@ export default function NotFound() {
         <h2 style={sub}>Page Not Found</h2>
         <p style={text}>The page you are looking for does not exist.</p>
 
-        <a href="/" style={btn}>Back to Home</a>
+        <a href="/" style={btn}>
+          Back to Home
+        </a>
       </section>
     </main>
   );
@@ -53,3 +55,4 @@ const btn = {
   textDecoration: "none",
   fontWeight: 900,
 };
+
