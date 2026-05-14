@@ -36,7 +36,7 @@ export default function Login() {
 
       setTimeout(() => {
         router.push("/communities");
-      }, 1200);
+      }, 1000);
     } else {
       setType("error");
       setMessage("Invalid email or password.");
@@ -49,25 +49,18 @@ export default function Login() {
 
       <style>{`
         @keyframes floatCard {
-          0% { transform: translateY(0px); }
+          0%,100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
         }
-
         @keyframes glowMove {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(30px, -20px) scale(1.08); }
-          100% { transform: translate(0, 0) scale(1); }
+          0%,100% { transform: translate(0,0) scale(1); }
+          50% { transform: translate(30px,-20px) scale(1.08); }
         }
-
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(15px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
-        .login-input::placeholder {
-          color: #64748b;
-        }
+        .login-input::placeholder { color: #64748b; }
       `}</style>
 
       <div style={glowOne}></div>
@@ -84,25 +77,14 @@ export default function Login() {
           </h1>
 
           <p style={heroText}>
-            Login to create communities, publish posts, upvote content and join
+            Login to create communities, publish posts, vote on content and join
             conversations.
           </p>
 
           <div style={miniStats}>
-            <div style={miniCard}>
-              <strong>120+</strong>
-              <span>Communities</span>
-            </div>
-
-            <div style={miniCard}>
-              <strong>3.2k</strong>
-              <span>Posts Today</span>
-            </div>
-
-            <div style={miniCard}>
-              <strong>18k</strong>
-              <span>Active Users</span>
-            </div>
+            <MiniCard value="120+" label="Communities" />
+            <MiniCard value="3.2k" label="Posts Today" />
+            <MiniCard value="18k" label="Active Users" />
           </div>
         </div>
 
@@ -142,7 +124,6 @@ export default function Login() {
 
             <div>
               <label style={label}>Password</label>
-
               <div style={passwordBox}>
                 <input
                   className="login-input"
@@ -177,6 +158,15 @@ export default function Login() {
         </div>
       </section>
     </main>
+  );
+}
+
+function MiniCard({ value, label }) {
+  return (
+    <div style={miniCard}>
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
   );
 }
 
@@ -235,9 +225,7 @@ const wrapper = {
   alignItems: "center",
 };
 
-const leftPanel = {
-  animation: "fadeIn .8s ease both",
-};
+const leftPanel = { animation: "fadeIn .8s ease both" };
 
 const badge = {
   display: "inline-block",
@@ -339,10 +327,7 @@ const toast = {
   fontWeight: "700",
 };
 
-const form = {
-  display: "grid",
-  gap: "18px",
-};
+const form = { display: "grid", gap: "18px" };
 
 const label = {
   display: "block",
