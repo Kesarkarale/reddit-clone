@@ -9,6 +9,8 @@ export default function Navbar() {
         <a href="/create-post" style={link}>Create Post</a>
         <a href="/login" style={outlineBtn}>Login</a>
         <a href="/register" style={primaryBtn}>Register</a>
+        <a href="/about" style={link}>About</a>
+<a href="/profile" style={link}>Profile</a>
       </div>
     </nav>
   );
