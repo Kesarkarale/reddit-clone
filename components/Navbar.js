@@ -18,42 +18,57 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Communities", href: "/communities" },
-    { label: "Create", href: "/create-post" },
-    { label: "Search", href: "/search" },
-    { label: "Saved", href: "/saved" },
-    { label: "Notifications", href: "/notifications" },
-    { label: "Profile", href: "/profile" },
-    { label: "Settings", href: "/settings" },
-    { label: "Admin", href: "/admin" },
+    { label: "🏠 Home", href: "/" },
+    { label: "🌐 Communities", href: "/communities" },
+    { label: "✍️ Create Post", href: "/create-post" },
+    { label: "🔍 Search", href: "/search" },
+    { label: "🔖 Saved Posts", href: "/saved" },
+    { label: "🔔 Notifications", href: "/notifications" },
+    { label: "👤 Profile", href: "/profile" },
+    { label: "⚙️ Settings", href: "/settings" },
+    { label: "📊 Admin Dashboard", href: "/admin" },
+    { label: "ℹ️ About", href: "/about" },
   ];
 
   return (
     <nav style={nav}>
-      <a href="/" style={logo}>
-        RedditX
-      </a>
+      <div style={leftSide}>
+        <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? "✕" : "☰"}
+        </button>
 
-      <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? "✕" : "☰"}
-      </button>
+        <a href="/" style={logo}>
+          RedditX
+        </a>
+      </div>
 
-      <div style={menuOpen ? mobileLinks : desktopLinks}>
-        {navLinks.map((item) => (
-          <a key={item.href} href={item.href} style={link}>
-            {item.label}
-          </a>
-        ))}
+      {menuOpen && (
+        <div style={sidebar}>
+          <div style={sideHeader}>
+            <h2 style={sideLogo}>RedditX</h2>
+            <button style={closeBtn} onClick={() => setMenuOpen(false)}>
+              ✕
+            </button>
+          </div>
 
-        <div style={divider}></div>
+          <div style={sideLinks}>
+            {navLinks.map((item) => (
+              <a key={item.href} href={item.href} style={sideLink}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
+      <div style={rightSide}>
         {user ? (
           <>
             <a href="/profile" style={userBox}>
               <div style={avatar}>
                 {user.username ? user.username.charAt(0).toUpperCase() : "U"}
               </div>
+
               <div>
                 <p style={username}>{user.username || "User"}</p>
                 <span style={online}>Online</span>
@@ -69,6 +84,7 @@ export default function Navbar() {
             <a href="/login" style={outlineBtn}>
               Login
             </a>
+
             <a href="/register" style={primaryBtn}>
               Register
             </a>
@@ -86,14 +102,20 @@ const nav = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "16px 24px",
+  padding: "16px 28px",
   background: "rgba(7,11,24,0.88)",
   backdropFilter: "blur(18px)",
   borderBottom: "1px solid rgba(255,255,255,0.08)",
 };
 
+const leftSide = {
+  display: "flex",
+  alignItems: "center",
+  gap: 16,
+};
+
 const logo = {
-  fontSize: "32px",
+  fontSize: "34px",
   fontWeight: "900",
   background: "linear-gradient(90deg,#fb923c,#ec4899,#8b5cf6)",
   WebkitBackgroundClip: "text",
@@ -101,46 +123,81 @@ const logo = {
   textDecoration: "none",
 };
 
-const desktopLinks = {
-  display: "flex",
-  gap: "12px",
-  alignItems: "center",
-  flexWrap: "wrap",
-  justifyContent: "flex-end",
+const menuBtn = {
+  border: "1px solid rgba(255,255,255,.18)",
+  background: "rgba(255,255,255,.07)",
+  color: "white",
+  width: "52px",
+  height: "52px",
+  borderRadius: "18px",
+  fontSize: "24px",
+  cursor: "pointer",
 };
 
-const mobileLinks = {
-  position: "absolute",
-  top: 74,
-  right: 18,
-  left: 18,
-  padding: 18,
-  borderRadius: 24,
-  background: "rgba(15,23,42,.97)",
+const sidebar = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "310px",
+  height: "100vh",
+  padding: "22px",
+  background: "rgba(15,23,42,.98)",
+  borderRight: "1px solid rgba(255,255,255,.12)",
+  boxShadow: "30px 0 90px rgba(0,0,0,.45)",
+  zIndex: 2000,
+  display: "flex",
+  flexDirection: "column",
+};
+
+const sideHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 24,
+};
+
+const sideLogo = {
+  margin: 0,
+  fontSize: 30,
+  background: "linear-gradient(90deg,#fb923c,#ec4899)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+};
+
+const closeBtn = {
+  width: 42,
+  height: 42,
+  borderRadius: 14,
   border: "1px solid rgba(255,255,255,.14)",
-  boxShadow: "0 24px 80px rgba(0,0,0,.45)",
+  background: "rgba(255,255,255,.07)",
+  color: "white",
+  cursor: "pointer",
+};
+
+const sideLinks = {
   display: "grid",
   gap: 12,
 };
 
-const link = {
-  color: "#cbd5e1",
+const sideLink = {
+  padding: "14px 16px",
+  borderRadius: 16,
+  background: "rgba(255,255,255,.06)",
+  border: "1px solid rgba(255,255,255,.08)",
+  color: "#e2e8f0",
   textDecoration: "none",
-  fontWeight: "800",
-  padding: "10px 12px",
-  borderRadius: 14,
-  background: "rgba(255,255,255,.04)",
+  fontWeight: 900,
 };
 
-const divider = {
-  width: 1,
-  height: 28,
-  background: "rgba(255,255,255,.12)",
+const rightSide = {
+  display: "flex",
+  alignItems: "center",
+  gap: 14,
 };
 
 const outlineBtn = {
-  padding: "10px 18px",
-  borderRadius: "14px",
+  padding: "11px 18px",
+  borderRadius: "16px",
   border: "1px solid rgba(255,255,255,0.15)",
   color: "white",
   textDecoration: "none",
@@ -148,23 +205,12 @@ const outlineBtn = {
 };
 
 const primaryBtn = {
-  padding: "10px 18px",
-  borderRadius: "14px",
+  padding: "11px 20px",
+  borderRadius: "16px",
   background: "linear-gradient(90deg,#f97316,#db2777)",
   color: "white",
   textDecoration: "none",
   fontWeight: "900",
-};
-
-const menuBtn = {
-  border: "none",
-  background: "rgba(255,255,255,.08)",
-  color: "white",
-  width: "46px",
-  height: "46px",
-  borderRadius: "14px",
-  fontSize: "22px",
-  cursor: "pointer",
 };
 
 const userBox = {
@@ -201,8 +247,8 @@ const online = {
 };
 
 const logoutBtn = {
-  padding: "10px 18px",
-  borderRadius: "14px",
+  padding: "11px 18px",
+  borderRadius: "16px",
   border: "none",
   background: "linear-gradient(90deg,#dc2626,#ef4444)",
   color: "white",
