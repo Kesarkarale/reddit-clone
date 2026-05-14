@@ -70,6 +70,10 @@ export default function Navbar() {
   <a href="/admin" style={link}>
   Admin
 </a>
+
+  <a href="/search" style={link}>
+  Search
+</a>
         {user ? (
           <>
             <div style={userBox}>
