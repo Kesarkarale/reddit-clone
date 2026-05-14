@@ -11,13 +11,9 @@ export default function PostPage({ params }) {
   const [votes, setVotes] = useState(0);
   const [saved, setSaved] = useState(false);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const [toast, setToast] = useState("");
   const [toastType, setToastType] = useState("success");
-
-  const [comments, setComments] = useState([
-    { id: 1, user: "alex", text: "This discussion is really useful!" },
-    { id: 2, user: "design_master", text: "The UI looks clean and professional." },
-  ]);
 
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
@@ -40,15 +36,36 @@ export default function PostPage({ params }) {
       setPost(demoPost);
       setVotes(248);
     }
+
+    const savedComments =
+      JSON.parse(localStorage.getItem(`redditxComments_${postId}`)) || [];
+
+    if (savedComments.length > 0) {
+      setComments(savedComments);
+    } else {
+      setComments([
+        { id: 1, user: "alex", text: "This discussion is really useful!" },
+        {
+          id: 2,
+          user: "design_master",
+          text: "The UI looks clean and professional.",
+        },
+      ]);
+    }
   }, [postId]);
 
   function showToast(message, type = "success") {
     setToastType(type);
     setToast(message);
+    setTimeout(() => setToast(""), 2000);
+  }
 
-    setTimeout(() => {
-      setToast("");
-    }, 2000);
+  function saveComments(updatedComments) {
+    setComments(updatedComments);
+    localStorage.setItem(
+      `redditxComments_${postId}`,
+      JSON.stringify(updatedComments)
+    );
   }
 
   function handleComment(e) {
@@ -65,17 +82,32 @@ export default function PostPage({ params }) {
       id: Date.now(),
       user: user.username || "anonymous",
       text: comment,
+      createdAt: new Date().toISOString(),
     };
 
-    setComments([newComment, ...comments]);
+    const updatedComments = [newComment, ...comments];
+
+    saveComments(updatedComments);
 
     setPost({
       ...post,
-      comments: (post.comments || 0) + 1,
+      comments: updatedComments.length,
     });
 
     setComment("");
     showToast("Comment added successfully!", "success");
+  }
+
+  function deleteComment(id) {
+    const updatedComments = comments.filter((item) => item.id !== id);
+    saveComments(updatedComments);
+
+    setPost({
+      ...post,
+      comments: updatedComments.length,
+    });
+
+    showToast("Comment deleted.", "success");
   }
 
   function handleShare() {
@@ -215,7 +247,11 @@ export default function PostPage({ params }) {
                 <div key={item.id} style={commentCard}>
                   <div style={commentHeader}>
                     <strong style={commentUser}>u/{item.user}</strong>
-                    <span style={commentTime}>just now</span>
+                    <span style={commentTime}>
+                      {item.createdAt
+                        ? new Date(item.createdAt).toLocaleString()
+                        : "just now"}
+                    </span>
                   </div>
 
                   <p style={commentText}>{item.text}</p>
@@ -223,6 +259,12 @@ export default function PostPage({ params }) {
                   <div style={commentActions}>
                     <button style={smallBtn}>▲ Upvote</button>
                     <button style={smallBtn}>Reply</button>
+                    <button
+                      style={{ ...smallBtn, color: "#f87171" }}
+                      onClick={() => deleteComment(item.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
