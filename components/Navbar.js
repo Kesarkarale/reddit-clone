@@ -201,4 +201,3 @@ const logoutBtn = {
   fontWeight: "900",
   cursor: "pointer",
 };
-};
