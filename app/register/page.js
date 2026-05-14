@@ -23,21 +23,34 @@ export default function Register() {
       return;
     }
 
+    if (!email.includes("@")) {
+      setType("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
     if (password.length < 6) {
       setType("error");
       setMessage("Password must be at least 6 characters.");
       return;
     }
 
-    const user = { username, email, password };
+    const user = {
+      username,
+      email,
+      password,
+      joinedAt: new Date().toISOString(),
+    };
+
     localStorage.setItem("redditxUser", JSON.stringify(user));
+    localStorage.setItem("isLoggedIn", "true");
 
     setType("success");
     setMessage("Account created successfully! Redirecting...");
 
     setTimeout(() => {
-      router.push("/login");
-    }, 1200);
+      router.push("/communities");
+    }, 1000);
   }
 
   return (
@@ -46,25 +59,18 @@ export default function Register() {
 
       <style>{`
         @keyframes floatCard {
-          0% { transform: translateY(0px); }
+          0%,100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
         }
-
         @keyframes glowMove {
-          0% { transform: translate(0, 0) scale(1); }
+          0%,100% { transform: translate(0, 0) scale(1); }
           50% { transform: translate(-25px, 20px) scale(1.08); }
-          100% { transform: translate(0, 0) scale(1); }
         }
-
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(15px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
-        .register-input::placeholder {
-          color: #64748b;
-        }
+        .register-input::placeholder { color: #64748b; }
       `}</style>
 
       <div style={glowOne}></div>
@@ -86,20 +92,9 @@ export default function Register() {
           </p>
 
           <div style={miniStats}>
-            <div style={miniCard}>
-              <strong>Free</strong>
-              <span>Create Account</span>
-            </div>
-
-            <div style={miniCard}>
-              <strong>Fast</strong>
-              <span>Demo Signup</span>
-            </div>
-
-            <div style={miniCard}>
-              <strong>Secure</strong>
-              <span>Local Demo</span>
-            </div>
+            <MiniCard value="Free" label="Create Account" />
+            <MiniCard value="Fast" label="Demo Signup" />
+            <MiniCard value="Secure" label="Local Demo" />
           </div>
         </div>
 
@@ -151,7 +146,6 @@ export default function Register() {
 
             <div>
               <label style={label}>Password</label>
-
               <div style={passwordBox}>
                 <input
                   className="register-input"
@@ -186,6 +180,15 @@ export default function Register() {
         </div>
       </section>
     </main>
+  );
+}
+
+function MiniCard({ value, label }) {
+  return (
+    <div style={miniCard}>
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
   );
 }
 
@@ -244,9 +247,7 @@ const wrapper = {
   alignItems: "center",
 };
 
-const leftPanel = {
-  animation: "fadeIn .8s ease both",
-};
+const leftPanel = { animation: "fadeIn .8s ease both" };
 
 const badge = {
   display: "inline-block",
@@ -348,10 +349,7 @@ const toast = {
   fontWeight: "700",
 };
 
-const form = {
-  display: "grid",
-  gap: "18px",
-};
+const form = { display: "grid", gap: "18px" };
 
 const label = {
   display: "block",
