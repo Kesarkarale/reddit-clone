@@ -1,80 +1,419 @@
-const comments = [
-  {
-    id: 1,
-    user: "alex",
-    text: "Amazing discussion!",
-  },
-  {
-    id: 2,
-    user: "john",
-    text: "I really like this UI design.",
-  },
-];
+"use client";
 
-export default async function PostPage({ params }) {
-  const { id } = await params;
+import { useEffect, useState } from "react";
+import Navbar from "../../../components/Navbar";
+
+export default function PostPage({ params }) {
+  const postId = params.id;
+
+  const [post, setPost] = useState(null);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      user: "alex",
+      text: "This discussion is really useful!",
+    },
+    {
+      id: 2,
+      user: "design_master",
+      text: "The UI looks clean and professional.",
+    },
+  ]);
+
+  useEffect(() => {
+    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
+
+    if (foundPost) {
+      setPost(foundPost);
+    } else {
+      setPost({
+        id: postId,
+        title: "Future of AI in Web Development",
+        community: "technology",
+        author: "kesar_dev",
+        votes: 248,
+        content:
+          "AI tools are transforming frontend and backend development by improving productivity and reducing repetitive tasks.",
+      });
+    }
+  }, [postId]);
+
+  function handleComment(e) {
+    e.preventDefault();
+
+    if (!comment.trim()) return;
+
+    const newComment = {
+      id: Date.now(),
+      user: "you",
+      text: comment,
+    };
+
+    setComments([newComment, ...comments]);
+    setComment("");
+  }
+
+  if (!post) {
+    return (
+      <main style={page}>
+        <Navbar />
+        <p style={{ textAlign: "center", marginTop: 80 }}>Loading...</p>
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-[#070b18] text-white px-6 py-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-          <p className="text-sm text-slate-400">
-            Posted in r/technology by u/kesar_dev
-          </p>
+    <main style={page}>
+      <Navbar />
 
-          <h1 className="text-5xl font-black mt-4">
-            Future of AI in Web Development
-          </h1>
+      <style>{`
+        @keyframes glowMove {
+          0% { transform: translate(0,0) scale(1); }
+          50% { transform: translate(20px,-15px) scale(1.08); }
+          100% { transform: translate(0,0) scale(1); }
+        }
 
-          <p className="text-slate-300 mt-6 leading-relaxed">
-            AI tools are transforming frontend and backend development by
-            improving productivity and reducing repetitive tasks.
-          </p>
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-          <div className="flex gap-5 mt-8">
-            <button className="rounded-xl bg-white/10 px-5 py-3 hover:bg-orange-500 transition">
-              ▲ Upvote
-            </button>
+        .comment-input::placeholder {
+          color: #64748b;
+        }
+      `}</style>
 
-            <button className="rounded-xl bg-white/10 px-5 py-3 hover:bg-purple-500 transition">
-              ▼ Downvote
-            </button>
-          </div>
-        </div>
+      <div style={glowOne}></div>
+      <div style={glowTwo}></div>
 
-        <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-          <h2 className="text-3xl font-black mb-6">
-            Comments
-          </h2>
-
-          <div className="space-y-4">
-            {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="rounded-2xl bg-white/5 border border-white/10 p-5"
-              >
-                <p className="font-bold text-orange-300">
-                  u/{comment.user}
-                </p>
-
-                <p className="text-slate-300 mt-2">
-                  {comment.text}
-                </p>
+      <section style={container}>
+        <div style={layout}>
+          <div>
+            <article style={postCard}>
+              <div style={voteBox}>
+                <button style={voteBtn}>▲</button>
+                <strong style={voteCount}>{post.votes || 1}</strong>
+                <button style={voteBtn}>▼</button>
               </div>
-            ))}
+
+              <div>
+                <p style={meta}>
+                  Posted in r/{post.community || "technology"} by u/
+                  {post.author || "you"} · just now
+                </p>
+
+                <h1 style={title}>{post.title}</h1>
+
+                <p style={content}>{post.content}</p>
+
+                <div style={actions}>
+                  <span>💬 {comments.length} Comments</span>
+                  <span>🔗 Share</span>
+                  <span>🔖 Save</span>
+                </div>
+              </div>
+            </article>
+
+            <form onSubmit={handleComment} style={commentBox}>
+              <h2 style={sectionTitle}>Add Comment</h2>
+
+              <textarea
+                className="comment-input"
+                style={textarea}
+                placeholder="What are your thoughts?"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+
+              <button type="submit" style={commentBtn}>
+                Post Comment
+              </button>
+            </form>
+
+            <div style={commentsWrap}>
+              <h2 style={sectionTitle}>Comments</h2>
+
+              {comments.map((item) => (
+                <div key={item.id} style={commentCard}>
+                  <div style={commentHeader}>
+                    <strong style={commentUser}>u/{item.user}</strong>
+                    <span style={commentTime}>just now</span>
+                  </div>
+
+                  <p style={commentText}>{item.text}</p>
+
+                  <div style={commentActions}>
+                    <button style={smallBtn}>▲ Upvote</button>
+                    <button style={smallBtn}>Reply</button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <textarea
-            rows="4"
-            placeholder="Write a comment..."
-            className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none resize-none mt-6"
-          ></textarea>
+          <aside style={aside}>
+            <div style={sideCard}>
+              <h3 style={sideTitle}>Post Stats</h3>
+              <p style={sideLine}>🔥 {post.votes || 1} votes</p>
+              <p style={sideLine}>💬 {comments.length} comments</p>
+              <p style={sideLine}>👁️ 1.8k views</p>
+            </div>
 
-          <button className="mt-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-600 px-6 py-3 font-bold hover:scale-105 transition">
-            Add Comment
-          </button>
+            <div style={sideCard}>
+              <h3 style={sideTitle}>Community</h3>
+              <p style={sideText}>
+                Visit r/{post.community || "technology"} for more posts and
+                discussions like this.
+              </p>
+
+              <a
+                href={`/r/${post.community || "technology"}`}
+                style={visitBtn}
+              >
+                Visit Community
+              </a>
+            </div>
+          </aside>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
+
+const page = {
+  minHeight: "100vh",
+  background: "#070b18",
+  color: "white",
+  fontFamily: "Arial, sans-serif",
+  position: "relative",
+  overflow: "hidden",
+};
+
+const glowOne = {
+  position: "absolute",
+  width: "420px",
+  height: "420px",
+  top: "-140px",
+  left: "-120px",
+  background: "#f97316",
+  filter: "blur(140px)",
+  opacity: 0.18,
+  animation: "glowMove 7s ease-in-out infinite",
+};
+
+const glowTwo = {
+  position: "absolute",
+  width: "430px",
+  height: "430px",
+  bottom: "-160px",
+  right: "-120px",
+  background: "#8b5cf6",
+  filter: "blur(150px)",
+  opacity: 0.2,
+  animation: "glowMove 8s ease-in-out infinite",
+};
+
+const container = {
+  position: "relative",
+  zIndex: 5,
+  maxWidth: "1200px",
+  margin: "0 auto",
+  padding: "40px 24px",
+};
+
+const layout = {
+  display: "grid",
+  gridTemplateColumns: "1fr 320px",
+  gap: "24px",
+};
+
+const postCard = {
+  display: "grid",
+  gridTemplateColumns: "70px 1fr",
+  gap: "20px",
+  padding: "30px",
+  borderRadius: "32px",
+  background: "rgba(255,255,255,0.075)",
+  border: "1px solid rgba(255,255,255,0.14)",
+  backdropFilter: "blur(20px)",
+  boxShadow: "0 30px 90px rgba(236,72,153,0.14)",
+  animation: "fadeIn .7s ease both",
+};
+
+const voteBox = {
+  display: "grid",
+  justifyItems: "center",
+  alignSelf: "start",
+  gap: "8px",
+};
+
+const voteBtn = {
+  width: "42px",
+  height: "42px",
+  borderRadius: "14px",
+  border: "1px solid rgba(255,255,255,0.14)",
+  background: "rgba(255,255,255,0.08)",
+  color: "white",
+  cursor: "pointer",
+};
+
+const voteCount = {
+  color: "#fb923c",
+  fontSize: "18px",
+};
+
+const meta = {
+  color: "#94a3b8",
+  fontSize: "14px",
+};
+
+const title = {
+  fontSize: "clamp(34px,5vw,56px)",
+  lineHeight: "1.1",
+  marginTop: "14px",
+  fontWeight: "900",
+};
+
+const content = {
+  marginTop: "22px",
+  color: "#cbd5e1",
+  lineHeight: "1.8",
+  fontSize: "18px",
+};
+
+const actions = {
+  display: "flex",
+  gap: "18px",
+  flexWrap: "wrap",
+  marginTop: "24px",
+  color: "#94a3b8",
+  fontSize: "14px",
+};
+
+const commentBox = {
+  marginTop: "24px",
+  padding: "28px",
+  borderRadius: "30px",
+  background: "rgba(255,255,255,0.07)",
+  border: "1px solid rgba(255,255,255,0.14)",
+};
+
+const sectionTitle = {
+  fontSize: "28px",
+  fontWeight: "900",
+  marginBottom: "18px",
+};
+
+const textarea = {
+  width: "100%",
+  minHeight: "130px",
+  padding: "16px",
+  borderRadius: "18px",
+  border: "1px solid rgba(255,255,255,0.14)",
+  background: "rgba(255,255,255,0.08)",
+  color: "white",
+  outline: "none",
+  resize: "none",
+  fontSize: "15px",
+};
+
+const commentBtn = {
+  marginTop: "14px",
+  padding: "14px 22px",
+  borderRadius: "16px",
+  border: "none",
+  background: "linear-gradient(90deg,#f97316,#db2777)",
+  color: "white",
+  fontWeight: "900",
+  cursor: "pointer",
+};
+
+const commentsWrap = {
+  marginTop: "28px",
+};
+
+const commentCard = {
+  padding: "22px",
+  borderRadius: "24px",
+  background: "rgba(255,255,255,0.065)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  marginBottom: "14px",
+};
+
+const commentHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "12px",
+  marginBottom: "10px",
+};
+
+const commentUser = {
+  color: "#fb923c",
+};
+
+const commentTime = {
+  color: "#64748b",
+  fontSize: "14px",
+};
+
+const commentText = {
+  color: "#cbd5e1",
+  lineHeight: "1.7",
+};
+
+const commentActions = {
+  display: "flex",
+  gap: "12px",
+  marginTop: "14px",
+};
+
+const smallBtn = {
+  border: "none",
+  background: "transparent",
+  color: "#94a3b8",
+  cursor: "pointer",
+  fontWeight: "700",
+};
+
+const aside = {
+  display: "grid",
+  gap: "18px",
+  alignSelf: "start",
+};
+
+const sideCard = {
+  padding: "24px",
+  borderRadius: "28px",
+  background: "rgba(255,255,255,0.07)",
+  border: "1px solid rgba(255,255,255,0.14)",
+};
+
+const sideTitle = {
+  fontSize: "22px",
+  fontWeight: "900",
+  marginBottom: "14px",
+};
+
+const sideLine = {
+  color: "#cbd5e1",
+  marginBottom: "10px",
+};
+
+const sideText = {
+  color: "#94a3b8",
+  lineHeight: "1.7",
+};
+
+const visitBtn = {
+  display: "block",
+  marginTop: "18px",
+  padding: "14px",
+  borderRadius: "16px",
+  background: "linear-gradient(90deg,#f97316,#db2777)",
+  color: "white",
+  textAlign: "center",
+  textDecoration: "none",
+  fontWeight: "900",
+};
