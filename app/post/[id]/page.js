@@ -11,13 +11,14 @@ export default function PostPage({ params }) {
   const [votes, setVotes] = useState(0);
   const [saved, setSaved] = useState(false);
   const [comment, setComment] = useState("");
+  const [toast, setToast] = useState("");
+  const [toastType, setToastType] = useState("success");
+
   const [comments, setComments] = useState([
     { id: 1, user: "alex", text: "This discussion is really useful!" },
     { id: 2, user: "design_master", text: "The UI looks clean and professional." },
   ]);
-  const [toast, setToast] = useState("");
-  const [toastType, setToastType] = useState("success");
-  
+
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
     const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
@@ -41,9 +42,22 @@ export default function PostPage({ params }) {
     }
   }, [postId]);
 
+  function showToast(message, type = "success") {
+    setToastType(type);
+    setToast(message);
+
+    setTimeout(() => {
+      setToast("");
+    }, 2000);
+  }
+
   function handleComment(e) {
     e.preventDefault();
-    if (!comment.trim()) return;
+
+    if (!comment.trim()) {
+      showToast("Please write a comment first.", "error");
+      return;
+    }
 
     const user = JSON.parse(localStorage.getItem("redditxUser")) || {};
 
@@ -54,8 +68,38 @@ export default function PostPage({ params }) {
     };
 
     setComments([newComment, ...comments]);
-    setPost({ ...post, comments: (post.comments || 0) + 1 });
+
+    setPost({
+      ...post,
+      comments: (post.comments || 0) + 1,
+    });
+
     setComment("");
+    showToast("Comment added successfully!", "success");
+  }
+
+  function handleShare() {
+    navigator.clipboard.writeText(window.location.href);
+    showToast("Post link copied!", "success");
+  }
+
+  function handleSave() {
+    const savedList =
+      JSON.parse(localStorage.getItem("redditxSavedPosts")) || [];
+
+    const alreadySaved = savedList.find(
+      (item) => String(item.id) === String(post.id)
+    );
+
+    if (!alreadySaved) {
+      savedList.unshift(post);
+      localStorage.setItem("redditxSavedPosts", JSON.stringify(savedList));
+      setSaved(true);
+      showToast("Post saved successfully!", "success");
+    } else {
+      setSaved(true);
+      showToast("Post already saved.", "error");
+    }
   }
 
   if (!post) {
@@ -70,8 +114,8 @@ export default function PostPage({ params }) {
   return (
     <main style={page}>
       <Navbar />
-<Toast message={toast} type={toastType} />
-    
+      <Toast message={toast} type={toastType} />
+
       <style>{`
         @keyframes glowMove {
           0% { transform: translate(0,0) scale(1); }
@@ -97,13 +141,25 @@ export default function PostPage({ params }) {
           <div>
             <article style={postCard}>
               <div style={voteBox}>
-                <button style={voteBtn} onClick={() => setVotes(votes + 1)}>
+                <button
+                  style={voteBtn}
+                  onClick={() => {
+                    setVotes(votes + 1);
+                    showToast("Upvoted!", "success");
+                  }}
+                >
                   ▲
                 </button>
 
                 <strong style={voteCount}>{votes}</strong>
 
-                <button style={voteBtn} onClick={() => setVotes(votes - 1)}>
+                <button
+                  style={voteBtn}
+                  onClick={() => {
+                    setVotes(votes - 1);
+                    showToast("Downvoted!", "success");
+                  }}
+                >
                   ▼
                 </button>
               </div>
@@ -125,48 +181,13 @@ export default function PostPage({ params }) {
                 <div style={actions}>
                   <span>💬 {comments.length} Comments</span>
 
-                 <button
-                  style={actionBtn}
-                   onClick={() => {
-                   navigator.clipboard.writeText(window.location.href);
-                   setToastType("success");
-                  setToast("Post link copied!");
+                  <button style={actionBtn} onClick={handleShare}>
+                    🔗 Share
+                  </button>
 
-                  setTimeout(() => setToast(""), 2000);
-                 }}
-                  >
-               🔗 Share
-               </button>
-
-<button
-  style={actionBtn}
-  onClick={() => {
-    const savedList =
-      JSON.parse(localStorage.getItem("redditxSavedPosts")) || [];
-
-    const alreadySaved = savedList.find(
-      (item) => String(item.id) === String(post.id)
-    );
-
-    if (!alreadySaved) {
-      savedList.unshift(post);
-      localStorage.setItem("redditxSavedPosts", JSON.stringify(savedList));
-
-      setSaved(true);
-      setToastType("success");
-      setToast("Post saved successfully!");
-    } else {
-      setToastType("error");
-      setToast("Post already saved.");
-    }
-
-    setTimeout(() => setToast(""), 2000);
-  }}
->
-  {saved ? "✅ Saved" : "🔖 Save"}
-</button>
-  
-  
+                  <button style={actionBtn} onClick={handleSave}>
+                    {saved ? "✅ Saved" : "🔖 Save"}
+                  </button>
                 </div>
               </div>
             </article>
@@ -181,10 +202,6 @@ export default function PostPage({ params }) {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               ></textarea>
-              setToastType("success");
-              setToast("Comment added successfully!");
-
-              setTimeout(() => setToast(""), 2000);
 
               <button type="submit" style={commentBtn}>
                 Post Comment
