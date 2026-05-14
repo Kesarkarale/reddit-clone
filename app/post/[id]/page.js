@@ -131,9 +131,31 @@ export default function PostPage({ params }) {
                     🔗 Share
                   </button>
 
-                  <button style={actionBtn} onClick={() => setSaved(!saved)}>
-                    {saved ? "✅ Saved" : "🔖 Save"}
-                  </button>
+                 <button
+  style={actionBtn}
+  onClick={() => {
+    const savedList =
+      JSON.parse(localStorage.getItem("redditxSavedPosts")) || [];
+
+    const alreadySaved = savedList.find(
+      (item) => String(item.id) === String(post.id)
+    );
+
+    if (!alreadySaved) {
+      savedList.unshift(post);
+
+      localStorage.setItem(
+        "redditxSavedPosts",
+        JSON.stringify(savedList)
+      );
+    }
+
+    setSaved(true);
+  }}
+>
+  {saved ? "✅ Saved" : "🔖 Save"}
+</button>
+  
                 </div>
               </div>
             </article>
