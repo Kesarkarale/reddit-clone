@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import FloatingActions from "../components/FloatingActions";
 
 export default function Home() {
   return (
