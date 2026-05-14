@@ -55,6 +55,9 @@ export default function Navbar() {
           Profile
         </a>
 
+  <a href="/saved" style={link}>
+  Saved
+</a>
         {user ? (
           <>
             <div style={userBox}>
