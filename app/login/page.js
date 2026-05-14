@@ -12,37 +12,39 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
 
-  function handleLogin(e) {
-    e.preventDefault();
+ function handleLogin(e) {
+  e.preventDefault();
 
-    const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
-
-    if (!email || !password) {
-      setType("error");
-      setMessage("Please enter email and password.");
-      return;
-    }
-
-    if (!savedUser) {
-      setType("error");
-      setMessage("No account found. Please register first.");
-      return;
-    }
-
-    if (email === savedUser.email && password === savedUser.password) {
-      localStorage.setItem("isLoggedIn", "true");
-      setType("success");
-      setMessage("Login successful! Redirecting...");
-
-      setTimeout(() => {
-        router.push("/communities");
-      }, 1000);
-    } else {
-      setType("error");
-      setMessage("Invalid email or password.");
-    }
+  if (!email || !password) {
+    setType("error");
+    setMessage("Please enter email and password.");
+    return;
   }
 
+  const users = JSON.parse(localStorage.getItem("redditxUsers")) || [];
+
+  const matchedUser = users.find(
+    (user) =>
+      user.email.toLowerCase() === email.toLowerCase() &&
+      user.password === password
+  );
+
+  if (!matchedUser) {
+    setType("error");
+    setMessage("Invalid email or password.");
+    return;
+  }
+
+  localStorage.setItem("redditxUser", JSON.stringify(matchedUser));
+  localStorage.setItem("isLoggedIn", "true");
+
+  setType("success");
+  setMessage("Login successful! Redirecting...");
+
+  setTimeout(() => {
+    router.push("/communities");
+  }, 1000);
+}
   return (
     <main style={page}>
       <Navbar />
