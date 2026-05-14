@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import FloatingActions from "../components/FloatingActions";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
@@ -58,11 +59,13 @@ export default function Home() {
           title="Communities"
           desc="Create and browse topic-based communities like tech, gaming and design."
         />
+
         <FeatureCard
           icon="🔥"
           title="Voting System"
           desc="Upvote and downvote posts to highlight popular discussions."
         />
+
         <FeatureCard
           icon="💬"
           title="Comments"
@@ -81,6 +84,7 @@ export default function Home() {
           ].map((post, index) => (
             <a href={`/post/${index + 1}`} style={listItem} key={post}>
               <span style={rank}>#{index + 1}</span>
+
               <div>
                 <h3 style={listTitle}>{post}</h3>
                 <p style={listText}>248 votes • 32 comments</p>
@@ -95,6 +99,7 @@ export default function Home() {
           {["technology", "gaming", "webdesign"].map((community) => (
             <a href={`/r/${community}`} style={communityItem} key={community}>
               <div style={smallIcon}>r/</div>
+
               <div>
                 <h3 style={listTitle}>r/{community}</h3>
                 <p style={listText}>Active discussions every day</p>
@@ -106,14 +111,18 @@ export default function Home() {
 
       <section style={cta}>
         <h2 style={ctaTitle}>Ready to join RedditX?</h2>
+
         <p style={ctaText}>
           Register now and start creating communities, posts and discussions.
         </p>
+
         <a href="/register" style={primaryBtn}>
           Create Account
         </a>
       </section>
-            <FloatingActions />
+
+      <Footer />
+      <FloatingActions />
     </main>
   );
 }
@@ -321,7 +330,8 @@ const cta = {
   margin: "0 auto 80px",
   padding: "44px 24px",
   borderRadius: "34px",
-  background: "linear-gradient(135deg,rgba(249,115,22,.18),rgba(219,39,119,.16))",
+  background:
+    "linear-gradient(135deg,rgba(249,115,22,.18),rgba(219,39,119,.16))",
   border: "1px solid rgba(255,255,255,0.14)",
   textAlign: "center",
 };
