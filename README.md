@@ -124,7 +124,7 @@ components/
 
 
 
-****#⚡ How To Run Project****
+# **⚡ How To Run Project**
 
 **1️⃣ Install Dependencies**
 
