@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 
 export default function AdminDashboard() {
+  const [allowed, setAllowed] = useState(false);
   const [posts, setPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [communities, setCommunities] = useState([]);
@@ -11,6 +12,14 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("redditxUser"));
+
+    if (!loggedInUser) {
+      window.location.href = "/login";
+      return;
+    }
+
+    setAllowed(true);
     loadData();
   }, []);
 
@@ -31,6 +40,17 @@ export default function AdminDashboard() {
   function clearNotifications() {
     localStorage.removeItem("redditxNotifications");
     setNotifications([]);
+  }
+
+  if (!allowed) {
+    return (
+      <main style={page}>
+        <Navbar />
+        <p style={{ textAlign: "center", marginTop: 80 }}>
+          Checking admin access...
+        </p>
+      </main>
+    );
   }
 
   return (
