@@ -119,9 +119,12 @@ components/
  └── Toast.js
 
 ```
+
+---
+
 **#⚡ How To Run Project**
 
-1️⃣ Install Dependencies
+**1️⃣ Install Dependencies**
 
 npm install
 
@@ -138,14 +141,23 @@ http://localhost:3000
 # **📸 Main Pages**
 
 Home Page
+
 Communities Page
+
 Community Detail Page
+
 Create Post Page
+
 Post Detail Page
+
 Login/Register
+
 Saved Posts
+
 Notifications
+
 Admin Dashboard
+
 Profile Page
 
 ---
@@ -153,15 +165,26 @@ Profile Page
 # **🔮 Future Improvements**
 
 Backend Integration
+
 Database Support
+
 Real Authentication
+
 Real-time Chat
+
 Dark/Light Mode Toggle
+
 Follow Users
+
+
 Infinite Scrolling
+
 API Integration
+
 Cloud Image Upload
+
 Real Notification System
+
 
 ---
 
