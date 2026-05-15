@@ -71,6 +71,25 @@ export default function PostPage({ params }) {
     setTimeout(() => setToast(""), 2000);
   }
 
+  function addNotification(text, icon = "🔔") {
+  const notifications =
+    JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+
+  const newNotification = {
+    id: Date.now(),
+    text,
+    icon,
+    time: new Date().toLocaleString(),
+  };
+
+  notifications.unshift(newNotification);
+
+  localStorage.setItem(
+    "redditxNotifications",
+    JSON.stringify(notifications)
+  );
+}
+  
   function updateVotes(newVote) {
     setVotes(newVote);
     localStorage.setItem(`redditxVotes_${postId}`, String(newVote));
@@ -125,6 +144,7 @@ export default function PostPage({ params }) {
 
     setComment("");
     showToast("Comment added successfully!", "success");
+    addNotification(`New comment on "${post.title}"`, "💬");
   }
 
   function deleteComment(id) {
@@ -157,6 +177,7 @@ export default function PostPage({ params }) {
       localStorage.setItem("redditxSavedPosts", JSON.stringify(savedList));
       setSaved(true);
       showToast("Post saved successfully!", "success");
+      addNotification(`Saved "${post.title}"`, "🔖");
     } else {
       setSaved(true);
       showToast("Post already saved.", "error");
@@ -207,6 +228,7 @@ export default function PostPage({ params }) {
                   onClick={() => {
                     updateVotes(votes + 1);
                     showToast("Upvoted!", "success");
+                    addNotification(`You upvoted "${post.title}"`, "🔥");
                   }}
                 >
                   ▲
@@ -218,6 +240,7 @@ export default function PostPage({ params }) {
                   style={voteBtn}
                   onClick={() => {
                     updateVotes(votes - 1);
+                    addNotification(`You downvoted "${post.title}"`, "⬇️");
                     showToast("Downvoted!", "success");
                   }}
                 >
