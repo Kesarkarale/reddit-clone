@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import FloatingActions from "../../components/FloatingActions";
+import SkeletonCard from "../../components/SkeletonCard";
 
 const defaultPosts = [
   {
@@ -30,18 +33,21 @@ const defaultCommunities = [
     title: "Technology",
     desc: "Discuss latest tech, AI, gadgets and software.",
     members: "12.4k",
+    logo: "",
   },
   {
     name: "gaming",
     title: "Gaming",
     desc: "Share gaming news, clips and reviews.",
     members: "8.7k",
+    logo: "",
   },
   {
     name: "webdesign",
     title: "Web Design",
     desc: "UI inspiration, animations and design systems.",
     members: "5.2k",
+    logo: "",
   },
 ];
 
@@ -51,25 +57,33 @@ export default function SearchPage() {
   const [posts, setPosts] = useState(defaultPosts);
   const [communities, setCommunities] = useState(defaultCommunities);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [focused, setFocused] = useState(false);
 
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
-    const savedCommunities =
-      JSON.parse(localStorage.getItem("redditxCommunities")) || [];
+    setTimeout(() => {
+      const savedPosts =
+        JSON.parse(localStorage.getItem("redditxPosts")) || [];
 
-    const savedRecent =
-      JSON.parse(localStorage.getItem("redditxRecentSearches")) || [];
+      const savedCommunities =
+        JSON.parse(localStorage.getItem("redditxCommunities")) || [];
 
-    const formattedCommunities = savedCommunities.map((item) => ({
-      name: item.slug,
-      title: item.name,
-      desc: item.description,
-      members: item.members || "1",
-    }));
+      const savedRecent =
+        JSON.parse(localStorage.getItem("redditxRecentSearches")) || [];
 
-    setPosts([...savedPosts, ...defaultPosts]);
-    setCommunities([...formattedCommunities, ...defaultCommunities]);
-    setRecentSearches(savedRecent);
+      const formattedCommunities = savedCommunities.map((item) => ({
+        name: item.slug,
+        title: item.name,
+        desc: item.description,
+        members: item.members || "1",
+        logo: item.logo || "",
+      }));
+
+      setPosts([...savedPosts, ...defaultPosts]);
+      setCommunities([...formattedCommunities, ...defaultCommunities]);
+      setRecentSearches(savedRecent);
+      setLoading(false);
+    }, 1200);
   }, []);
 
   function handleSearchChange(value) {
@@ -139,9 +153,14 @@ export default function SearchPage() {
         <div style={searchPanel}>
           <input
             className="search-input"
-            style={search}
+            style={{
+              ...search,
+              ...(focused ? searchFocus : {}),
+            }}
             placeholder="Search RedditX..."
             value={query}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
 
@@ -219,7 +238,12 @@ export default function SearchPage() {
               <section style={section}>
                 <h2 style={sectionTitle}>📝 Posts</h2>
 
-                {postResults.length === 0 ? (
+                {loading ? (
+                  <div style={skeletonGrid}>
+                    <SkeletonCard />
+                    <SkeletonCard />
+                  </div>
+                ) : postResults.length === 0 ? (
                   <p style={emptyText}>No posts found.</p>
                 ) : (
                   <div style={list}>
@@ -259,7 +283,17 @@ export default function SearchPage() {
                         href={`/r/${community.name}`}
                         style={communityCard}
                       >
-                        <div style={icon}>r/</div>
+                        <div style={icon}>
+                          {community.logo ? (
+                            <img
+                              src={community.logo}
+                              alt="logo"
+                              style={communityLogo}
+                            />
+                          ) : (
+                            "r/"
+                          )}
+                        </div>
 
                         <h2 style={cardTitle}>r/{community.title}</h2>
 
@@ -277,6 +311,9 @@ export default function SearchPage() {
           </>
         )}
       </section>
+
+      <Footer />
+      <FloatingActions />
     </main>
   );
 }
@@ -359,6 +396,11 @@ const search = {
   color: "white",
   outline: "none",
   fontSize: 16,
+};
+
+const searchFocus = {
+  border: "1px solid #f97316",
+  boxShadow: "0 0 0 4px rgba(249,115,22,.12)",
 };
 
 const filters = {
@@ -472,6 +514,11 @@ const emptyText = {
   color: "#94a3b8",
 };
 
+const skeletonGrid = {
+  display: "grid",
+  gap: 18,
+};
+
 const list = {
   display: "grid",
   gap: 18,
@@ -538,6 +585,13 @@ const icon = {
   justifyContent: "center",
   fontWeight: 900,
   marginBottom: 16,
+  overflow: "hidden",
+};
+
+const communityLogo = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
 };
 
 const members = {
