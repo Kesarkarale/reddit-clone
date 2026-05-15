@@ -1,15 +1,16 @@
 export default function Loading() {
   return (
     <main style={page}>
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+      <div style={glowOne}></div>
+      <div style={glowTwo}></div>
 
-      <div style={loader}></div>
-      <h1 style={title}>Loading RedditX...</h1>
+      <div style={loaderWrap}>
+        <div style={logo}>RedditX</div>
+
+        <div style={spinner}></div>
+
+        <p style={text}>Loading amazing discussions...</p>
+      </div>
     </main>
   );
 }
@@ -17,25 +18,63 @@ export default function Loading() {
 const page = {
   minHeight: "100vh",
   background: "#070b18",
-  color: "white",
   display: "flex",
-  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  position: "relative",
+  overflow: "hidden",
   fontFamily: "Arial, sans-serif",
 };
 
-const loader = {
-  width: 80,
-  height: 80,
+const loaderWrap = {
+  position: "relative",
+  zIndex: 5,
+  textAlign: "center",
+};
+
+const logo = {
+  fontSize: "56px",
+  fontWeight: "900",
+  background: "linear-gradient(90deg,#f97316,#ec4899,#8b5cf6)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+  marginBottom: "28px",
+};
+
+const spinner = {
+  width: "70px",
+  height: "70px",
+  margin: "0 auto",
   borderRadius: "50%",
-  border: "8px solid rgba(255,255,255,.12)",
-  borderTop: "8px solid #f97316",
+  border: "6px solid rgba(255,255,255,.12)",
+  borderTop: "6px solid #f97316",
   animation: "spin 1s linear infinite",
 };
 
-const title = {
-  marginTop: 22,
-  fontSize: 24,
-  fontWeight: 900,
+const text = {
+  color: "#94a3b8",
+  marginTop: "24px",
+  fontSize: "18px",
+};
+
+const glowOne = {
+  position: "absolute",
+  width: "420px",
+  height: "420px",
+  background: "#f97316",
+  filter: "blur(140px)",
+  opacity: 0.18,
+  top: "-120px",
+  left: "-120px",
+};
+
+const glowTwo = {
+  position: "absolute",
+  width: "420px",
+  height: "420px",
+  background: "#8b5cf6",
+  filter: "blur(140px)",
+  opacity: 0.18,
+  bottom: "-120px",
+  right: "-120px",
 };
