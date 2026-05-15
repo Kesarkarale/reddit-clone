@@ -122,17 +122,17 @@ components/
 
 ---
 
-**#⚡ How To Run Project**
+****#⚡ How To Run Project****
 
 **1️⃣ Install Dependencies**
 
 npm install
 
-2️⃣ Start Development Server
+**2️⃣ Start Development Server**
 
 npm run dev
 
-3️⃣ Open Browser
+**3️⃣ Open Browser**
 
 http://localhost:3000
 
