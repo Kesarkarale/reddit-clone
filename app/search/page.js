@@ -50,11 +50,15 @@ export default function SearchPage() {
   const [filter, setFilter] = useState("all");
   const [posts, setPosts] = useState(defaultPosts);
   const [communities, setCommunities] = useState(defaultCommunities);
+  const [recentSearches, setRecentSearches] = useState([]);
 
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
     const savedCommunities =
       JSON.parse(localStorage.getItem("redditxCommunities")) || [];
+
+    const savedRecent =
+      JSON.parse(localStorage.getItem("redditxRecentSearches")) || [];
 
     const formattedCommunities = savedCommunities.map((item) => ({
       name: item.slug,
@@ -65,7 +69,27 @@ export default function SearchPage() {
 
     setPosts([...savedPosts, ...defaultPosts]);
     setCommunities([...formattedCommunities, ...defaultCommunities]);
+    setRecentSearches(savedRecent);
   }, []);
+
+  function handleSearchChange(value) {
+    setQuery(value);
+
+    if (value.trim()) {
+      const updated = [
+        value,
+        ...recentSearches.filter((item) => item !== value),
+      ].slice(0, 6);
+
+      setRecentSearches(updated);
+      localStorage.setItem("redditxRecentSearches", JSON.stringify(updated));
+    }
+  }
+
+  function clearRecentSearches() {
+    localStorage.removeItem("redditxRecentSearches");
+    setRecentSearches([]);
+  }
 
   const postResults = posts.filter((post) =>
     `${post.title} ${post.community} ${post.content} ${post.author || ""}`
@@ -118,7 +142,7 @@ export default function SearchPage() {
             style={search}
             placeholder="Search RedditX..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
 
           <div style={filters}>
@@ -142,6 +166,34 @@ export default function SearchPage() {
             >
               Communities
             </button>
+          </div>
+        </div>
+
+        <div style={recentWrap}>
+          <div style={recentHeader}>
+            <h3 style={recentTitle}>Recent Searches</h3>
+
+            {recentSearches.length > 0 && (
+              <button style={clearRecent} onClick={clearRecentSearches}>
+                Clear
+              </button>
+            )}
+          </div>
+
+          <div style={recentGrid}>
+            {recentSearches.length === 0 ? (
+              <p style={{ color: "#64748b" }}>No recent searches yet.</p>
+            ) : (
+              recentSearches.map((item, index) => (
+                <button
+                  key={index}
+                  style={recentChip}
+                  onClick={() => setQuery(item)}
+                >
+                  🔍 {item}
+                </button>
+              ))
+            )}
           </div>
         </div>
 
@@ -331,6 +383,45 @@ const activeChip = {
   background: "linear-gradient(90deg,#f97316,#db2777)",
   color: "white",
   border: "none",
+};
+
+const recentWrap = {
+  marginBottom: 26,
+};
+
+const recentHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 14,
+};
+
+const recentTitle = {
+  fontSize: 20,
+};
+
+const clearRecent = {
+  border: "none",
+  background: "transparent",
+  color: "#fb7185",
+  cursor: "pointer",
+  fontWeight: "900",
+};
+
+const recentGrid = {
+  display: "flex",
+  gap: 12,
+  flexWrap: "wrap",
+};
+
+const recentChip = {
+  padding: "10px 16px",
+  borderRadius: 999,
+  border: "1px solid rgba(255,255,255,.12)",
+  background: "rgba(255,255,255,.06)",
+  color: "#cbd5e1",
+  cursor: "pointer",
+  fontWeight: "800",
 };
 
 const statsGrid = {
