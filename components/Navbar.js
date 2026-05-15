@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
-    setUser(savedUser);
-  }, []);
+  const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
+  const notifications =
+    JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+
+  setUser(savedUser);
+  setNotificationCount(notifications.length);
+}, []);
 
   function handleLogout() {
     localStorage.removeItem("redditxUser");
@@ -17,20 +22,42 @@ export default function Navbar() {
     window.location.href = "/login";
   }
 
-  const navLinks = [
-    { label: "🏠 Home", href: "/" },
-    { label: "🌐 Communities", href: "/communities" },
-    { label: "✍️ Create Post", href: "/create-post" },
-    { label: "🔍 Search", href: "/search" },
-    { label: "🔖 Saved Posts", href: "/saved" },
-    { label: "🔔 Notifications", href: "/notifications" },
-    { label: "👤 Profile", href: "/profile" },
-    { label: "⚙️ Settings", href: "/settings" },
-    { label: "📊 Admin Dashboard", href: "/admin" },
-    { label: "ℹ️ About", href: "/about" },
-  ];
+const navLinks = [
+  { label: "🏠 Home", href: "/" },
+  { label: "🌐 Communities", href: "/communities" },
+  { label: "✍️ Create Post", href: "/create-post" },
+  { label: "🔍 Search", href: "/search" },
+  { label: "🔖 Saved Posts", href: "/saved" },
+  {
+    label:
+      notificationCount > 0
+        ? `🔔 Notifications (${notificationCount})`
+        : "🔔 Notifications",
+    href: "/notifications",
+  },
+  { label: "👤 Profile", href: "/profile" },
+  { label: "⚙️ Settings", href: "/settings" },
 
+  ...(user?.role === "admin"
+    ? [{ label: "📊 Admin Dashboard", href: "/admin" }]
+    : []),
+
+  { label: "ℹ️ About", href: "/about" },
+];
   return (
+    <style>{`
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`}</style>
     <nav style={nav}>
       <div style={leftSide}>
         <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
@@ -50,7 +77,7 @@ export default function Navbar() {
               ✕
             </button>
           </div>
-
+ 
           <div style={sideLinks}>
             {navLinks.map((item) => (
               <a key={item.href} href={item.href} style={sideLink}>
@@ -60,7 +87,15 @@ export default function Navbar() {
           </div>
         </div>
       )}
+<a href="/notifications" style={notifyBtn}>
+  🔔
 
+  {notificationCount > 0 && (
+    <span style={notifyBadge}>
+      {notificationCount}
+    </span>
+  )}
+</a>
       <div style={rightSide}>
         {user ? (
           <>
@@ -147,6 +182,7 @@ const sidebar = {
   zIndex: 2000,
   display: "flex",
   flexDirection: "column",
+  animation: "slideIn .35s ease",
 };
 
 const sideHeader = {
@@ -177,6 +213,7 @@ const closeBtn = {
 const sideLinks = {
   display: "grid",
   gap: 12,
+  transition: ".3s",
 };
 
 const sideLink = {
@@ -254,4 +291,34 @@ const logoutBtn = {
   color: "white",
   fontWeight: "900",
   cursor: "pointer",
+};
+const notifyBtn = {
+  position: "relative",
+  width: 52,
+  height: 52,
+  borderRadius: 18,
+  background: "rgba(255,255,255,.07)",
+  border: "1px solid rgba(255,255,255,.14)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textDecoration: "none",
+  fontSize: 22,
+};
+
+const notifyBadge = {
+  position: "absolute",
+  top: -6,
+  right: -4,
+  minWidth: 22,
+  height: 22,
+  borderRadius: 999,
+  background: "#ef4444",
+  color: "white",
+  fontSize: 12,
+  fontWeight: "900",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "0 6px",
 };
