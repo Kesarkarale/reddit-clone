@@ -11,11 +11,27 @@ export default function CreateCommunity() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [message, setMessage] = useState("");
+  const [banner, setBanner] = useState("");
+  const [logo, setLogo] = useState("");
+
+  function handleImageUpload(e, setter) {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setter(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   function handleCreate(e) {
     e.preventDefault();
 
-    if (!name || !description || !category) {
+    if (!name.trim() || !description.trim() || !category.trim()) {
       setMessage("Please fill all fields.");
       return;
     }
@@ -25,13 +41,23 @@ export default function CreateCommunity() {
 
     const slug = name.toLowerCase().trim().replace(/\s+/g, "-");
 
+    const alreadyExists = communities.find((item) => item.slug === slug);
+
+    if (alreadyExists) {
+      setMessage("Community already exists.");
+      return;
+    }
+
     const newCommunity = {
       id: Date.now(),
-      name,
+      name: name.trim(),
       slug,
-      description,
+      description: description.trim(),
       category,
       members: "1",
+      banner,
+      logo,
+      createdAt: new Date().toISOString(),
     };
 
     communities.unshift(newCommunity);
@@ -79,8 +105,8 @@ export default function CreateCommunity() {
           </h1>
 
           <p style={heroText}>
-            Create a topic-based community where people can post, vote,
-            comment and discuss ideas together.
+            Create a topic-based community where people can post, vote, comment
+            and discuss ideas together.
           </p>
 
           <div style={miniGrid}>
@@ -109,9 +135,32 @@ export default function CreateCommunity() {
 
           {message && <div style={toast}>{message}</div>}
 
+          <div style={previewCard}>
+            {banner ? (
+              <img src={banner} alt="banner" style={bannerPreview} />
+            ) : (
+              <div style={emptyBanner}>Community Banner Preview</div>
+            )}
+
+            <div style={previewContent}>
+              <div style={previewAvatar}>
+                {logo ? <img src={logo} alt="logo" style={previewImg} /> : "🌐"}
+              </div>
+
+              <div>
+                <h3 style={previewTitle}>r/{name || "community-name"}</h3>
+
+                <p style={previewText}>
+                  {description || "Community description preview..."}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <form onSubmit={handleCreate} style={form}>
             <div>
               <label style={label}>Community Name</label>
+
               <input
                 className="community-input"
                 style={input}
@@ -124,6 +173,7 @@ export default function CreateCommunity() {
 
             <div>
               <label style={label}>Category</label>
+
               <select
                 style={input}
                 value={category}
@@ -139,7 +189,30 @@ export default function CreateCommunity() {
             </div>
 
             <div>
+              <label style={label}>Community Logo</label>
+
+              <input
+                type="file"
+                accept="image/*"
+                style={fileInput}
+                onChange={(e) => handleImageUpload(e, setLogo)}
+              />
+            </div>
+
+            <div>
+              <label style={label}>Community Banner</label>
+
+              <input
+                type="file"
+                accept="image/*"
+                style={fileInput}
+                onChange={(e) => handleImageUpload(e, setBanner)}
+              />
+            </div>
+
+            <div>
               <label style={label}>Description</label>
+
               <textarea
                 className="community-input"
                 style={textarea}
@@ -257,7 +330,7 @@ const miniCard = {
 
 const card = {
   width: "100%",
-  maxWidth: "520px",
+  maxWidth: "540px",
   margin: "0 auto",
   padding: "38px",
   borderRadius: "34px",
@@ -304,6 +377,66 @@ const toast = {
   fontWeight: "700",
 };
 
+const previewCard = {
+  overflow: "hidden",
+  borderRadius: "24px",
+  background: "rgba(255,255,255,.06)",
+  border: "1px solid rgba(255,255,255,.12)",
+  marginBottom: "24px",
+};
+
+const emptyBanner = {
+  height: "150px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#94a3b8",
+  background: "linear-gradient(90deg,rgba(139,92,246,.22),rgba(219,39,119,.18))",
+};
+
+const bannerPreview = {
+  width: "100%",
+  height: "160px",
+  objectFit: "cover",
+};
+
+const previewContent = {
+  display: "flex",
+  gap: "16px",
+  padding: "18px",
+  alignItems: "center",
+};
+
+const previewAvatar = {
+  width: "72px",
+  height: "72px",
+  borderRadius: "22px",
+  background: "linear-gradient(90deg,#8b5cf6,#db2777)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+  fontSize: "28px",
+  fontWeight: "900",
+  flexShrink: 0,
+};
+
+const previewImg = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
+
+const previewTitle = {
+  fontSize: "24px",
+  marginBottom: "6px",
+};
+
+const previewText = {
+  color: "#94a3b8",
+  lineHeight: "1.6",
+};
+
 const form = {
   display: "grid",
   gap: "18px",
@@ -326,6 +459,15 @@ const input = {
   color: "white",
   outline: "none",
   fontSize: "15px",
+};
+
+const fileInput = {
+  width: "100%",
+  padding: "14px",
+  borderRadius: "16px",
+  border: "1px solid rgba(255,255,255,.14)",
+  background: "rgba(255,255,255,.08)",
+  color: "white",
 };
 
 const textarea = {
