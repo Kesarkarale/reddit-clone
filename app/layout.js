@@ -1,29 +1,51 @@
+import "./globals.css";
+
 export const metadata = {
-  title: "RedditX • Modern Reddit Clone",
+  title: {
+    default: "RedditX • Modern Reddit Clone",
+    template: "%s | RedditX",
+  },
   description:
-    "RedditX is a modern Reddit-style social platform built with Next.js.",
+    "RedditX is a modern Reddit-style social media platform built with Next.js where users can create communities, publish posts, vote, comment and save discussions.",
   keywords: [
     "Reddit Clone",
-    "Next.js",
+    "Next.js Project",
+    "React Project",
     "RedditX",
-    "Social Media",
+    "Social Media Platform",
     "Communities",
     "Discussion Platform",
+    "College Project",
   ],
   authors: [{ name: "Kesar Karale" }],
   creator: "Kesar Karale",
+  publisher: "Kesar Karale",
+  applicationName: "RedditX",
+  themeColor: "#070b18",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
+  },
   openGraph: {
-    title: "RedditX",
+    title: "RedditX • Modern Reddit Clone",
     description:
-      "Create communities, share posts, vote and join discussions.",
+      "Create communities, share posts, vote, comment and join discussions.",
     url: "https://redditx.vercel.app",
     siteName: "RedditX",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "RedditX Preview",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
 };
-
-import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
@@ -31,7 +53,6 @@ export default function RootLayout({ children }) {
       <body style={body}>
         <div style={bgGlowOne}></div>
         <div style={bgGlowTwo}></div>
-
         {children}
       </body>
     </html>
