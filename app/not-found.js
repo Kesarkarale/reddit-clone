@@ -5,14 +5,28 @@ export default function NotFound() {
     <main style={page}>
       <Navbar />
 
-      <section style={box}>
-        <h1 style={title}>404</h1>
-        <h2 style={sub}>Page Not Found</h2>
-        <p style={text}>The page you are looking for does not exist.</p>
+      <section style={container}>
+        <div style={card}>
+          <div style={emoji}>🚫</div>
 
-        <a href="/" style={btn}>
-          Back to Home
-        </a>
+          <h1 style={title}>404</h1>
+
+          <h2 style={subtitle}>Page Not Found</h2>
+
+          <p style={text}>
+            The page you are looking for does not exist or may have been moved.
+          </p>
+
+          <div style={actions}>
+            <a href="/" style={primaryBtn}>
+              Back Home
+            </a>
+
+            <a href="/communities" style={secondaryBtn}>
+              Explore Communities
+            </a>
+          </div>
+        </div>
       </section>
     </main>
   );
@@ -20,39 +34,79 @@ export default function NotFound() {
 
 const page = {
   minHeight: "100vh",
-  background: "#070b18",
+  background:
+    "radial-gradient(circle at top left, rgba(249,115,22,.18), transparent 35%), radial-gradient(circle at bottom right, rgba(139,92,246,.18), transparent 35%), #070b18",
   color: "white",
   fontFamily: "Arial, sans-serif",
 };
 
-const box = {
-  minHeight: "80vh",
+const container = {
+  minHeight: "85vh",
   display: "flex",
-  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  padding: "24px",
+};
+
+const card = {
+  width: "100%",
+  maxWidth: "700px",
+  padding: "50px",
+  borderRadius: "34px",
+  background: "rgba(255,255,255,.07)",
+  border: "1px solid rgba(255,255,255,.14)",
   textAlign: "center",
-  padding: 24,
+  backdropFilter: "blur(20px)",
+};
+
+const emoji = {
+  fontSize: "70px",
+  marginBottom: "10px",
 };
 
 const title = {
-  fontSize: 110,
-  fontWeight: 900,
-  background: "linear-gradient(90deg,#f97316,#db2777)",
+  fontSize: "120px",
+  fontWeight: "900",
+  margin: 0,
+  background: "linear-gradient(90deg,#f97316,#db2777,#8b5cf6)",
   WebkitBackgroundClip: "text",
   color: "transparent",
 };
 
-const sub = { fontSize: 36 };
-const text = { color: "#94a3b8", marginTop: 12 };
+const subtitle = {
+  fontSize: "42px",
+  marginTop: "10px",
+};
 
-const btn = {
-  marginTop: 28,
-  padding: "14px 24px",
-  borderRadius: 16,
+const text = {
+  color: "#94a3b8",
+  fontSize: "18px",
+  lineHeight: "1.8",
+  marginTop: "16px",
+};
+
+const actions = {
+  display: "flex",
+  gap: "16px",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  marginTop: "30px",
+};
+
+const primaryBtn = {
+  padding: "15px 26px",
+  borderRadius: "18px",
   background: "linear-gradient(90deg,#f97316,#db2777)",
   color: "white",
   textDecoration: "none",
-  fontWeight: 900,
+  fontWeight: "900",
 };
 
+const secondaryBtn = {
+  padding: "15px 26px",
+  borderRadius: "18px",
+  border: "1px solid rgba(255,255,255,.14)",
+  color: "white",
+  textDecoration: "none",
+  fontWeight: "900",
+};
