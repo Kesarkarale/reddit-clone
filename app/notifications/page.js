@@ -1,32 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 
-const notifications = [
-  {
-    id: 1,
-    title: "New Comment",
-    text: "alex commented on your post.",
-    time: "2 min ago",
-    icon: "💬",
-  },
-  {
-    id: 2,
-    title: "New Upvote",
-    text: "Your post received 24 new upvotes.",
-    time: "10 min ago",
-    icon: "🔥",
-  },
-  {
-    id: 3,
-    title: "Community Invite",
-    text: "You were invited to r/design.",
-    time: "1 hour ago",
-    icon: "🌐",
-  },
-];
-
 export default function Notifications() {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const saved =
+      JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+    setNotifications(saved);
+  }, []);
+
+  function clearAll() {
+    localStorage.removeItem("redditxNotifications");
+    setNotifications([]);
+  }
+
   return (
     <main style={page}>
       <Navbar />
@@ -35,39 +25,35 @@ export default function Notifications() {
         <div style={header}>
           <div>
             <h1 style={title}>Notifications</h1>
-            <p style={sub}>
-              Stay updated with activity on RedditX.
-            </p>
+            <p style={sub}>Stay updated with activity on RedditX.</p>
           </div>
 
-          <button style={clearBtn}>
+          <button style={clearBtn} onClick={clearAll}>
             Clear All
           </button>
         </div>
 
-        <div style={list}>
-          {notifications.map((item) => (
-            <div key={item.id} style={card}>
-              <div style={icon}>
-                {item.icon}
+        {notifications.length === 0 ? (
+          <div style={empty}>
+            <h2>No notifications yet</h2>
+            <p>Upvote, save, or comment on posts to see activity here.</p>
+          </div>
+        ) : (
+          <div style={list}>
+            {notifications.map((item) => (
+              <div key={item.id} style={card}>
+                <div style={icon}>{item.icon || "🔔"}</div>
+
+                <div style={{ flex: 1 }}>
+                  <h2 style={cardTitle}>Activity Update</h2>
+                  <p style={cardText}>{item.text}</p>
+                </div>
+
+                <span style={time}>{item.time}</span>
               </div>
-
-              <div style={{ flex: 1 }}>
-                <h2 style={cardTitle}>
-                  {item.title}
-                </h2>
-
-                <p style={cardText}>
-                  {item.text}
-                </p>
-              </div>
-
-              <span style={time}>
-                {item.time}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
@@ -154,4 +140,13 @@ const cardText = {
 const time = {
   color: "#64748b",
   fontSize: 14,
+};
+
+const empty = {
+  padding: 40,
+  borderRadius: 28,
+  background: "rgba(255,255,255,.07)",
+  border: "1px solid rgba(255,255,255,.14)",
+  textAlign: "center",
+  color: "#94a3b8",
 };
