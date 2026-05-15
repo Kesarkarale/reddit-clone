@@ -18,10 +18,16 @@ export default function PostPage({ params }) {
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
     const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
+    const savedVote = localStorage.getItem(`redditxVotes_${postId}`);
 
     if (foundPost) {
       setPost(foundPost);
-      setVotes(foundPost.votes || 1);
+
+      if (savedVote) {
+        setVotes(Number(savedVote));
+      } else {
+        setVotes(foundPost.votes || 1);
+      }
     } else {
       const demoPost = {
         id: postId,
@@ -34,7 +40,12 @@ export default function PostPage({ params }) {
       };
 
       setPost(demoPost);
-      setVotes(248);
+
+      if (savedVote) {
+        setVotes(Number(savedVote));
+      } else {
+        setVotes(248);
+      }
     }
 
     const savedComments =
@@ -58,6 +69,25 @@ export default function PostPage({ params }) {
     setToastType(type);
     setToast(message);
     setTimeout(() => setToast(""), 2000);
+  }
+
+  function updateVotes(newVote) {
+    setVotes(newVote);
+    localStorage.setItem(`redditxVotes_${postId}`, String(newVote));
+
+    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+
+    const updatedPosts = savedPosts.map((item) =>
+      String(item.id) === String(postId)
+        ? { ...item, votes: newVote }
+        : item
+    );
+
+    localStorage.setItem("redditxPosts", JSON.stringify(updatedPosts));
+
+    if (post) {
+      setPost({ ...post, votes: newVote });
+    }
   }
 
   function saveComments(updatedComments) {
@@ -86,7 +116,6 @@ export default function PostPage({ params }) {
     };
 
     const updatedComments = [newComment, ...comments];
-
     saveComments(updatedComments);
 
     setPost({
@@ -176,7 +205,7 @@ export default function PostPage({ params }) {
                 <button
                   style={voteBtn}
                   onClick={() => {
-                    setVotes(votes + 1);
+                    updateVotes(votes + 1);
                     showToast("Upvoted!", "success");
                   }}
                 >
@@ -188,7 +217,7 @@ export default function PostPage({ params }) {
                 <button
                   style={voteBtn}
                   onClick={() => {
-                    setVotes(votes - 1);
+                    updateVotes(votes - 1);
                     showToast("Downvoted!", "success");
                   }}
                 >
