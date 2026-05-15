@@ -8,13 +8,13 @@ export default function Navbar() {
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-  const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
-  const notifications =
-    JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+    const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
+    const notifications =
+      JSON.parse(localStorage.getItem("redditxNotifications")) || [];
 
-  setUser(savedUser);
-  setNotificationCount(notifications.length);
-}, []);
+    setUser(savedUser);
+    setNotificationCount(notifications.length);
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("redditxUser");
@@ -22,111 +22,120 @@ export default function Navbar() {
     window.location.href = "/login";
   }
 
-const navLinks = [
-  { label: "🏠 Home", href: "/" },
-  { label: "🌐 Communities", href: "/communities" },
-  { label: "✍️ Create Post", href: "/create-post" },
-  { label: "🔍 Search", href: "/search" },
-  { label: "🔖 Saved Posts", href: "/saved" },
-  {
-    label:
-      notificationCount > 0
-        ? `🔔 Notifications (${notificationCount})`
-        : "🔔 Notifications",
-    href: "/notifications",
-  },
-  { label: "👤 Profile", href: "/profile" },
-  { label: "⚙️ Settings", href: "/settings" },
+  const navLinks = [
+    { label: "🏠 Home", href: "/" },
+    { label: "🌐 Communities", href: "/communities" },
+    { label: "✍️ Create Post", href: "/create-post" },
+    { label: "🔍 Search", href: "/search" },
+    { label: "🔖 Saved Posts", href: "/saved" },
+    {
+      label:
+        notificationCount > 0
+          ? `🔔 Notifications (${notificationCount})`
+          : "🔔 Notifications",
+      href: "/notifications",
+    },
+    { label: "👤 Profile", href: "/profile" },
+    { label: "⚙️ Settings", href: "/settings" },
 
-  ...(user?.role === "admin"
-    ? [{ label: "📊 Admin Dashboard", href: "/admin" }]
-    : []),
+    ...(user?.role === "admin"
+      ? [{ label: "📊 Admin Dashboard", href: "/admin" }]
+      : []),
 
-  { label: "ℹ️ About", href: "/about" },
-];
+    { label: "ℹ️ About", href: "/about" },
+  ];
+
   return (
-    <style>{`
-  @keyframes slideIn {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
+    <>
+      <style>{`
+        @keyframes slideIn {
+          from {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
 
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-`}</style>
-    <nav style={nav}>
-      <div style={leftSide}>
-        <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? "✕" : "☰"}
-        </button>
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
 
-        <a href="/" style={logo}>
-          RedditX
-        </a>
-      </div>
+      <nav style={nav}>
+        <div style={leftSide}>
+          <button style={menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? "✕" : "☰"}
+          </button>
 
-      {menuOpen && (
-        <div style={sidebar}>
-          <div style={sideHeader}>
-            <h2 style={sideLogo}>RedditX</h2>
-            <button style={closeBtn} onClick={() => setMenuOpen(false)}>
-              ✕
-            </button>
+          <a href="/" style={logo}>
+            RedditX
+          </a>
+        </div>
+
+        {menuOpen && (
+          <div style={sidebar}>
+            <div style={sideHeader}>
+              <h2 style={sideLogo}>RedditX</h2>
+
+              <button style={closeBtn} onClick={() => setMenuOpen(false)}>
+                ✕
+              </button>
+            </div>
+
+            <div style={sideLinks}>
+              {navLinks.map((item) => (
+                <a key={item.href} href={item.href} style={sideLink}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
           </div>
- 
-          <div style={sideLinks}>
-            {navLinks.map((item) => (
-              <a key={item.href} href={item.href} style={sideLink}>
-                {item.label}
-              </a>
-            ))}
+        )}
+
+        <div style={topActions}>
+          <a href="/notifications" style={notifyBtn}>
+            🔔
+
+            {notificationCount > 0 && (
+              <span style={notifyBadge}>{notificationCount}</span>
+            )}
+          </a>
+
+          <div style={rightSide}>
+            {user ? (
+              <>
+                <a href="/profile" style={userBox}>
+                  <div style={avatar}>
+                    {user.username
+                      ? user.username.charAt(0).toUpperCase()
+                      : "U"}
+                  </div>
+
+                  <div>
+                    <p style={username}>{user.username || "User"}</p>
+                    <span style={online}>Online</span>
+                  </div>
+                </a>
+
+                <button onClick={handleLogout} style={logoutBtn}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <a href="/login" style={outlineBtn}>
+                  Login
+                </a>
+
+                <a href="/register" style={primaryBtn}>
+                  Register
+                </a>
+              </>
+            )}
           </div>
         </div>
-      )}
-<a href="/notifications" style={notifyBtn}>
-  🔔
-
-  {notificationCount > 0 && (
-    <span style={notifyBadge}>
-      {notificationCount}
-    </span>
-  )}
-</a>
-      <div style={rightSide}>
-        {user ? (
-          <>
-            <a href="/profile" style={userBox}>
-              <div style={avatar}>
-                {user.username ? user.username.charAt(0).toUpperCase() : "U"}
-              </div>
-
-              <div>
-                <p style={username}>{user.username || "User"}</p>
-                <span style={online}>Online</span>
-              </div>
-            </a>
-
-            <button onClick={handleLogout} style={logoutBtn}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <a href="/login" style={outlineBtn}>
-              Login
-            </a>
-
-            <a href="/register" style={primaryBtn}>
-              Register
-            </a>
-          </>
-        )}
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 
@@ -213,7 +222,6 @@ const closeBtn = {
 const sideLinks = {
   display: "grid",
   gap: 12,
-  transition: ".3s",
 };
 
 const sideLink = {
@@ -224,6 +232,13 @@ const sideLink = {
   color: "#e2e8f0",
   textDecoration: "none",
   fontWeight: 900,
+  transition: ".3s",
+};
+
+const topActions = {
+  display: "flex",
+  alignItems: "center",
+  gap: 14,
 };
 
 const rightSide = {
@@ -292,6 +307,7 @@ const logoutBtn = {
   fontWeight: "900",
   cursor: "pointer",
 };
+
 const notifyBtn = {
   position: "relative",
   width: 52,
