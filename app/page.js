@@ -5,16 +5,27 @@ import Navbar from "../components/Navbar";
 import FloatingActions from "../components/FloatingActions";
 import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
+import SkeletonCard from "../components/SkeletonCard";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [communities, setCommunities] = useState([]);
   const [sort, setSort] = useState("new");
+ const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setPosts(JSON.parse(localStorage.getItem("redditxPosts")) || []);
-    setCommunities(JSON.parse(localStorage.getItem("redditxCommunities")) || []);
-  }, []);
+useEffect(() => {
+  setTimeout(() => {
+    setPosts(
+      JSON.parse(localStorage.getItem("redditxPosts")) || []
+    );
+
+    setCommunities(
+      JSON.parse(localStorage.getItem("redditxCommunities")) || []
+    );
+
+    setLoading(false);
+  }, 1200);
+}, []);
 
   const sortedPosts = [...posts].sort((a, b) => {
     if (sort === "top") return (b.votes || 0) - (a.votes || 0);
@@ -106,16 +117,22 @@ export default function Home() {
             </select>
           </div>
 
-          {sortedPosts.length === 0 ? (
-            <div style={emptyFeed}>
-              <h3>No posts yet</h3>
-              <p>Create your first post to see it here.</p>
+        {loading ? (
+  <div style={skeletonGrid}>
+    <SkeletonCard />
+    <SkeletonCard />
+    <SkeletonCard />
+  </div>
+) : sortedPosts.length === 0 ? (
+  <div style={emptyFeed}>
+    <h3>No posts yet</h3>
+    <p>Create your first post to see it here.</p>
 
-              <a href="/create-post" style={primaryBtn}>
-                Create Post
-              </a>
-            </div>
-          ) : (
+    <a href="/create-post" style={primaryBtn}>
+      Create Post
+    </a>
+  </div>
+) : (
             sortedPosts.slice(0, 6).map((post, index) => (
               <a href={`/post/${post.id}`} style={listItem} key={post.id}>
                 <span style={rank}>#{index + 1}</span>
@@ -466,4 +483,8 @@ const secondaryBtn = {
   color: "white",
   textDecoration: "none",
   fontWeight: "900",
+};
+const skeletonGrid = {
+  display: "grid",
+  gap: "16px",
 };
