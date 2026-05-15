@@ -1,9 +1,26 @@
+ "use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import FloatingActions from "../components/FloatingActions";
 import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 
 export default function Home() {
+  const [posts, setPosts] = useState([]);
+  const [communities, setCommunities] = useState([]);
+  const [sort, setSort] = useState("new");
+
+  useEffect(() => {
+    setPosts(JSON.parse(localStorage.getItem("redditxPosts")) || []);
+    setCommunities(JSON.parse(localStorage.getItem("redditxCommunities")) || []);
+  }, []);
+
+  const sortedPosts = [...posts].sort((a, b) => {
+    if (sort === "top") return (b.votes || 0) - (a.votes || 0);
+    return b.id - a.id;
+  });
+
   return (
     <main style={page}>
       <Navbar />
@@ -48,8 +65,8 @@ export default function Home() {
       </section>
 
       <section style={statsGrid}>
-        <StatCard title="Communities" value="120+" />
-        <StatCard title="Posts Today" value="3.2k" />
+        <StatCard title="Communities" value={communities.length + 3} />
+        <StatCard title="Total Posts" value={posts.length} />
         <StatCard title="Active Users" value="18k" />
         <StatCard title="Comments" value="9.8k" />
       </section>
@@ -76,37 +93,84 @@ export default function Home() {
 
       <section style={twoColumn}>
         <div style={panel}>
-          <h2 style={sectionTitle}>🔥 Trending Posts</h2>
+          <div style={sectionHeader}>
+            <h2 style={sectionTitle}>🔥 Trending Posts</h2>
 
-          {[
-            "Future of AI in Web Development",
-            "Best UI Design Trends for 2026",
-            "How to build scalable communities",
-          ].map((post, index) => (
-            <a href={`/post/${index + 1}`} style={listItem} key={post}>
-              <span style={rank}>#{index + 1}</span>
+            <select
+              style={sortSelect}
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <option value="new">Newest</option>
+              <option value="top">Top Voted</option>
+            </select>
+          </div>
 
-              <div>
-                <h3 style={listTitle}>{post}</h3>
-                <p style={listText}>248 votes • 32 comments</p>
-              </div>
-            </a>
-          ))}
+          {sortedPosts.length === 0 ? (
+            <div style={emptyFeed}>
+              <h3>No posts yet</h3>
+              <p>Create your first post to see it here.</p>
+
+              <a href="/create-post" style={primaryBtn}>
+                Create Post
+              </a>
+            </div>
+          ) : (
+            sortedPosts.slice(0, 6).map((post, index) => (
+              <a href={`/post/${post.id}`} style={listItem} key={post.id}>
+                <span style={rank}>#{index + 1}</span>
+
+                <div style={{ flex: 1 }}>
+                  <h3 style={listTitle}>{post.title}</h3>
+
+                  <p style={listText}>
+                    r/{post.community || "general"} • 🔥 {post.votes || 1}{" "}
+                    votes
+                  </p>
+                </div>
+              </a>
+            ))
+          )}
         </div>
 
         <div style={panel}>
           <h2 style={sectionTitle}>🌟 Top Communities</h2>
 
-          {["technology", "gaming", "webdesign"].map((community) => (
-            <a href={`/r/${community}`} style={communityItem} key={community}>
-              <div style={smallIcon}>r/</div>
+          {communities.length === 0
+            ? ["technology", "gaming", "webdesign"].map((community) => (
+                <a
+                  href={`/r/${community}`}
+                  style={communityItem}
+                  key={community}
+                >
+                  <div style={smallIcon}>r/</div>
 
-              <div>
-                <h3 style={listTitle}>r/{community}</h3>
-                <p style={listText}>Active discussions every day</p>
-              </div>
-            </a>
-          ))}
+                  <div>
+                    <h3 style={listTitle}>r/{community}</h3>
+                    <p style={listText}>Active discussions every day</p>
+                  </div>
+                </a>
+              ))
+            : communities.slice(0, 6).map((community) => (
+                <a
+                  href={`/r/${community.slug}`}
+                  style={communityItem}
+                  key={community.id}
+                >
+                  <div style={smallIcon}>
+                    {community.logo ? (
+                      <img src={community.logo} alt="logo" style={communityLogo} />
+                    ) : (
+                      "r/"
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 style={listTitle}>r/{community.name}</h3>
+                    <p style={listText}>{community.members || 1} members</p>
+                  </div>
+                </a>
+              ))}
         </div>
       </section>
 
@@ -271,9 +335,35 @@ const panel = {
   border: "1px solid rgba(255,255,255,0.14)",
 };
 
+const sectionHeader = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: "14px",
+  marginBottom: "20px",
+  flexWrap: "wrap",
+};
+
 const sectionTitle = {
   fontSize: "30px",
   marginBottom: "20px",
+};
+
+const sortSelect = {
+  padding: "12px 14px",
+  borderRadius: "14px",
+  border: "1px solid rgba(255,255,255,.14)",
+  background: "rgba(255,255,255,.06)",
+  color: "white",
+  outline: "none",
+};
+
+const emptyFeed = {
+  padding: "24px",
+  borderRadius: "22px",
+  background: "rgba(255,255,255,.06)",
+  textAlign: "center",
+  color: "#94a3b8",
 };
 
 const listItem = {
@@ -325,6 +415,13 @@ const smallIcon = {
   alignItems: "center",
   justifyContent: "center",
   fontWeight: "900",
+  overflow: "hidden",
+};
+
+const communityLogo = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
 };
 
 const cta = {
