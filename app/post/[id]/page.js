@@ -15,6 +15,10 @@ export default function PostPage({ params }) {
   const [toast, setToast] = useState("");
   const [toastType, setToastType] = useState("success");
 
+  const [editMode, setEditMode] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
     const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
@@ -22,12 +26,10 @@ export default function PostPage({ params }) {
 
     if (foundPost) {
       setPost(foundPost);
+      setEditTitle(foundPost.title);
+      setEditContent(foundPost.content);
 
-      if (savedVote) {
-        setVotes(Number(savedVote));
-      } else {
-        setVotes(foundPost.votes || 1);
-      }
+      setVotes(savedVote ? Number(savedVote) : foundPost.votes || 1);
     } else {
       const demoPost = {
         id: postId,
@@ -40,12 +42,9 @@ export default function PostPage({ params }) {
       };
 
       setPost(demoPost);
-
-      if (savedVote) {
-        setVotes(Number(savedVote));
-      } else {
-        setVotes(248);
-      }
+      setEditTitle(demoPost.title);
+      setEditContent(demoPost.content);
+      setVotes(savedVote ? Number(savedVote) : 248);
     }
 
     const savedComments =
@@ -72,24 +71,20 @@ export default function PostPage({ params }) {
   }
 
   function addNotification(text, icon = "🔔") {
-  const notifications =
-    JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+    const notifications =
+      JSON.parse(localStorage.getItem("redditxNotifications")) || [];
 
-  const newNotification = {
-    id: Date.now(),
-    text,
-    icon,
-    time: new Date().toLocaleString(),
-  };
+    const newNotification = {
+      id: Date.now(),
+      text,
+      icon,
+      time: new Date().toLocaleString(),
+    };
 
-  notifications.unshift(newNotification);
+    notifications.unshift(newNotification);
+    localStorage.setItem("redditxNotifications", JSON.stringify(notifications));
+  }
 
-  localStorage.setItem(
-    "redditxNotifications",
-    JSON.stringify(notifications)
-  );
-}
-  
   function updateVotes(newVote) {
     setVotes(newVote);
     localStorage.setItem(`redditxVotes_${postId}`, String(newVote));
@@ -97,9 +92,7 @@ export default function PostPage({ params }) {
     const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
 
     const updatedPosts = savedPosts.map((item) =>
-      String(item.id) === String(postId)
-        ? { ...item, votes: newVote }
-        : item
+      String(item.id) === String(postId) ? { ...item, votes: newVote } : item
     );
 
     localStorage.setItem("redditxPosts", JSON.stringify(updatedPosts));
@@ -184,6 +177,52 @@ export default function PostPage({ params }) {
     }
   }
 
+  function handleDeletePost() {
+    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+
+    const updatedPosts = savedPosts.filter(
+      (item) => String(item.id) !== String(post.id)
+    );
+
+    localStorage.setItem("redditxPosts", JSON.stringify(updatedPosts));
+
+    showToast("Post deleted successfully!", "success");
+
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1200);
+  }
+
+  function handleEditPost() {
+    if (!editTitle.trim() || !editContent.trim()) {
+      showToast("Please fill all fields.", "error");
+      return;
+    }
+
+    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+
+    const updatedPosts = savedPosts.map((item) =>
+      String(item.id) === String(post.id)
+        ? {
+            ...item,
+            title: editTitle.trim(),
+            content: editContent.trim(),
+          }
+        : item
+    );
+
+    localStorage.setItem("redditxPosts", JSON.stringify(updatedPosts));
+
+    setPost({
+      ...post,
+      title: editTitle.trim(),
+      content: editContent.trim(),
+    });
+
+    setEditMode(false);
+    showToast("Post updated successfully!", "success");
+  }
+
   if (!post) {
     return (
       <main style={page}>
@@ -240,8 +279,8 @@ export default function PostPage({ params }) {
                   style={voteBtn}
                   onClick={() => {
                     updateVotes(votes - 1);
-                    addNotification(`You downvoted "${post.title}"`, "⬇️");
                     showToast("Downvoted!", "success");
+                    addNotification(`You downvoted "${post.title}"`, "⬇️");
                   }}
                 >
                   ▼
@@ -272,7 +311,45 @@ export default function PostPage({ params }) {
                   <button style={actionBtn} onClick={handleSave}>
                     {saved ? "✅ Saved" : "🔖 Save"}
                   </button>
+
+                  <button
+                    style={actionBtn}
+                    onClick={() => setEditMode(!editMode)}
+                  >
+                    ✏️ Edit
+                  </button>
+
+                  <button
+                    style={{ ...actionBtn, color: "#f87171" }}
+                    onClick={handleDeletePost}
+                  >
+                    🗑️ Delete
+                  </button>
                 </div>
+
+                {editMode && (
+                  <div style={editBox}>
+                    <h2 style={sectionTitle}>Edit Post</h2>
+
+                    <input
+                      style={editInput}
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      placeholder="Post title"
+                    />
+
+                    <textarea
+                      style={editTextarea}
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      placeholder="Post content"
+                    ></textarea>
+
+                    <button style={saveEditBtn} onClick={handleEditPost}>
+                      Save Changes
+                    </button>
+                  </div>
+                )}
               </div>
             </article>
 
@@ -299,6 +376,7 @@ export default function PostPage({ params }) {
                 <div key={item.id} style={commentCard}>
                   <div style={commentHeader}>
                     <strong style={commentUser}>u/{item.user}</strong>
+
                     <span style={commentTime}>
                       {item.createdAt
                         ? new Date(item.createdAt).toLocaleString()
@@ -311,6 +389,7 @@ export default function PostPage({ params }) {
                   <div style={commentActions}>
                     <button style={smallBtn}>▲ Upvote</button>
                     <button style={smallBtn}>Reply</button>
+
                     <button
                       style={{ ...smallBtn, color: "#f87171" }}
                       onClick={() => deleteComment(item.id)}
@@ -487,6 +566,50 @@ const actionBtn = {
   color: "#cbd5e1",
   cursor: "pointer",
   fontWeight: "700",
+};
+
+const editBox = {
+  marginTop: "26px",
+  padding: "24px",
+  borderRadius: "26px",
+  background: "rgba(255,255,255,.06)",
+  border: "1px solid rgba(255,255,255,.12)",
+};
+
+const editInput = {
+  width: "100%",
+  padding: "14px",
+  borderRadius: "16px",
+  border: "1px solid rgba(255,255,255,.14)",
+  background: "rgba(255,255,255,.08)",
+  color: "white",
+  marginBottom: "14px",
+  outline: "none",
+  fontSize: "15px",
+};
+
+const editTextarea = {
+  width: "100%",
+  minHeight: "140px",
+  padding: "16px",
+  borderRadius: "18px",
+  border: "1px solid rgba(255,255,255,.14)",
+  background: "rgba(255,255,255,.08)",
+  color: "white",
+  outline: "none",
+  resize: "none",
+  fontSize: "15px",
+};
+
+const saveEditBtn = {
+  marginTop: "14px",
+  padding: "14px 22px",
+  borderRadius: "16px",
+  border: "none",
+  background: "linear-gradient(90deg,#f97316,#db2777)",
+  color: "white",
+  fontWeight: "900",
+  cursor: "pointer",
 };
 
 const commentBox = {
