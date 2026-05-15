@@ -3,45 +3,23 @@ export default function AppLoader() {
     <div style={overlay}>
       <style>{`
         @keyframes spinGlow {
-          0% {
-            transform: rotate(0deg);
-          }
-
-          100% {
-            transform: rotate(360deg);
-          }
+          to { transform: rotate(360deg); }
         }
 
         @keyframes pulse {
-          0% {
-            opacity: .6;
-            transform: scale(.96);
-          }
-
-          50% {
-            opacity: 1;
-            transform: scale(1);
-          }
-
-          100% {
-            opacity: .6;
-            transform: scale(.96);
-          }
+          0%,100% { transform: scale(.96); opacity:.85; }
+          50% { transform: scale(1); opacity:1; }
         }
       `}</style>
 
-      <div style={loaderWrap}>
-        <div style={ring}></div>
-
-        <div style={logoBox}>
-          RX
+      <div style={box}>
+        <div style={logoWrap}>
+          <div style={ring}></div>
+          <div style={logoBox}>RX</div>
         </div>
 
         <h1 style={title}>RedditX</h1>
-
-        <p style={text}>
-          Loading modern discussions...
-        </p>
+        <p style={text}>Loading modern discussions...</p>
       </div>
     </div>
   );
@@ -57,37 +35,50 @@ const overlay = {
   zIndex: 99999,
 };
 
-const loaderWrap = {
-  position: "relative",
+const box = {
   textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+const logoWrap = {
+  width: 150,
+  height: 150,
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 const ring = {
   position: "absolute",
-  inset: "-20px",
+  inset: 0,
   borderRadius: "50%",
-  border: "4px solid rgba(255,255,255,.08)",
-  borderTop: "4px solid #f97316",
-  animation: "spinGlow 1.2s linear infinite",
+  border: "5px solid rgba(255,255,255,.08)",
+  borderTop: "5px solid #f97316",
+  animation: "spinGlow 1s linear infinite",
 };
 
 const logoBox = {
-  width: 110,
-  height: 110,
-  borderRadius: 32,
+  width: 92,
+  height: 92,
+  borderRadius: 28,
   background: "linear-gradient(135deg,#f97316,#db2777,#8b5cf6)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 38,
+  fontSize: 34,
   fontWeight: "900",
   color: "white",
-  animation: "pulse 2s ease-in-out infinite",
+  animation: "pulse 1.8s ease-in-out infinite",
+  zIndex: 2,
 };
 
 const title = {
-  marginTop: 34,
-  fontSize: 42,
+  marginTop: 26,
+  fontSize: 44,
   fontWeight: "900",
   background: "linear-gradient(90deg,#f97316,#ec4899,#8b5cf6)",
   WebkitBackgroundClip: "text",
@@ -96,5 +87,5 @@ const title = {
 
 const text = {
   color: "#94a3b8",
-  marginTop: 10,
+  marginTop: 8,
 };
