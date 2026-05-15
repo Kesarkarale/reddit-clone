@@ -192,7 +192,7 @@ Real Notification System
 
 # **👨‍💻 Developer**
 
-Developed by Kesar Karale
+Developed by
+Kesar Karale
 
-
-
+---
