@@ -166,26 +166,16 @@ Profile Page
 
 # **🔮 Future Improvements**
 
-Backend Integration
-
-Database Support
-
-Real Authentication
-
-Real-time Chat
-
-Dark/Light Mode Toggle
-
-Follow Users
-
-
-Infinite Scrolling
-
-API Integration
-
-Cloud Image Upload
-
-Real Notification System
+- Backend Integration
+- Database Support
+- Real Authentication
+- Real-time Chat
+- Dark/Light Mode Toggle
+- Follow Users
+- Infinite Scrolling
+- API Integration
+- Cloud Image Upload
+- Real Notification System
 
 
 ---
