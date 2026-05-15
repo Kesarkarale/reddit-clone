@@ -8,6 +8,7 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [tab, setTab] = useState("posts");
+  const [avatarImage, setAvatarImage] = useState("");
 
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
@@ -17,9 +18,31 @@ export default function Profile() {
     setUser(savedUser);
     setPosts(savedPosts);
     setSavedPosts(saved);
+    setAvatarImage(savedUser?.avatar || "");
   }, []);
 
+  function handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const updatedUser = {
+        ...user,
+        avatar: reader.result,
+      };
+
+      localStorage.setItem("redditxUser", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      setAvatarImage(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  }
+
   const karma = posts.reduce((total, post) => total + (post.votes || 1), 0);
+
   const joinedDate = user?.joinedAt
     ? new Date(user.joinedAt).toLocaleDateString()
     : "Demo User";
@@ -40,8 +63,26 @@ export default function Profile() {
           <div style={cover}></div>
 
           <div style={profileContent}>
-            <div style={avatar}>
-              {user?.username ? user.username.charAt(0).toUpperCase() : "U"}
+            <div>
+              <div style={avatar}>
+                {avatarImage ? (
+                  <img src={avatarImage} alt="avatar" style={avatarImg} />
+                ) : user?.username ? (
+                  user.username.charAt(0).toUpperCase()
+                ) : (
+                  "U"
+                )}
+              </div>
+
+              <label style={uploadBtn}>
+                Upload Avatar
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleAvatarUpload}
+                />
+              </label>
             </div>
 
             <div style={{ flex: 1 }}>
@@ -123,6 +164,7 @@ export default function Profile() {
                       <p style={meta}>r/{post.community || "general"}</p>
                       <h3 style={postTitle}>{post.title}</h3>
                       <p style={postText}>{post.content}</p>
+
                       <div style={postStats}>
                         <span>🔥 {post.votes || 1} votes</span>
                         <span>💬 {post.comments || 0} comments</span>
@@ -147,7 +189,9 @@ export default function Profile() {
                 ) : (
                   savedPosts.map((post) => (
                     <a key={post.id} href={`/post/${post.id}`} style={postItem}>
-                      <p style={meta}>Saved from r/{post.community || "general"}</p>
+                      <p style={meta}>
+                        Saved from r/{post.community || "general"}
+                      </p>
                       <h3 style={postTitle}>{post.title}</h3>
                       <p style={postText}>{post.content}</p>
                     </a>
@@ -250,6 +294,26 @@ const avatar = {
   fontSize: "46px",
   fontWeight: "900",
   boxShadow: "0 20px 60px rgba(236,72,153,.25)",
+  overflow: "hidden",
+};
+
+const avatarImg = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
+
+const uploadBtn = {
+  display: "inline-block",
+  marginTop: 12,
+  padding: "10px 14px",
+  borderRadius: 14,
+  background: "rgba(255,255,255,.08)",
+  border: "1px solid rgba(255,255,255,.14)",
+  color: "white",
+  fontWeight: "900",
+  cursor: "pointer",
+  fontSize: 13,
 };
 
 const title = {
