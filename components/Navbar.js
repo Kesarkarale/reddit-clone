@@ -105,11 +105,24 @@ export default function Navbar() {
             {user ? (
               <>
                 <a href="/profile" style={userBox}>
-                  <div style={avatar}>
-                    {user.username
-                      ? user.username.charAt(0).toUpperCase()
-                      : "U"}
-                  </div>
+                <div style={avatar}>
+  {user?.avatar ? (
+    <img
+      src={user.avatar}
+      alt="avatar"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        borderRadius: "12px",
+      }}
+    />
+  ) : user?.username ? (
+    user.username.charAt(0).toUpperCase()
+  ) : (
+    "U"
+  )}
+</div>
 
                   <div>
                     <p style={username}>{user.username || "User"}</p>
