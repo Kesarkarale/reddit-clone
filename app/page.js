@@ -6,34 +6,27 @@ import FloatingActions from "../components/FloatingActions";
 import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 import SkeletonCard from "../components/SkeletonCard";
+import AppLoader from "../components/AppLoader";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [communities, setCommunities] = useState([]);
   const [sort, setSort] = useState("new");
  const [loading, setLoading] = useState(true);
+ const [appLoading, setAppLoading] = useState(true);
 
-useEffect(() => {
-  setTimeout(() => {
-    setPosts(
-      JSON.parse(localStorage.getItem("redditxPosts")) || []
-    );
-
-    setCommunities(
-      JSON.parse(localStorage.getItem("redditxCommunities")) || []
-    );
-
-    setLoading(false);
-  }, 1200);
-}, []);
-
-  const sortedPosts = [...posts].sort((a, b) => {
-    if (sort === "top") return (b.votes || 0) - (a.votes || 0);
-    return b.id - a.id;
-  });
+  useEffect(() => {
+    setTimeout(() => {
+      setPosts(JSON.parse(localStorage.getItem("redditxPosts")) || []);
+      setCommunities(JSON.parse(localStorage.getItem("redditxCommunities")) || []);
+      setLoading(false);
+      setAppLoading(false);
+    }, 1200);
+  }, []);
 
   return (
     <main style={page}>
+      {appLoading && <AppLoader />}
       <Navbar />
 
       <style>{`
