@@ -191,7 +191,44 @@ export default function PostPage({ params }) {
       showToast("Post already saved.", "error");
     }
   }
+function handleReportPost() {
+  const reports =
+    safeGet("redditxReportedPosts", []);
 
+  const alreadyReported = reports.find(
+    (item) => String(item.id) === String(post.id)
+  );
+
+  if (alreadyReported) {
+    showToast(
+      "Post already reported.",
+      "error"
+    );
+    return;
+  }
+
+  const reportedPost = {
+    ...post,
+    reportedAt: new Date().toISOString(),
+  };
+
+  reports.unshift(reportedPost);
+
+  localStorage.setItem(
+    "redditxReportedPosts",
+    JSON.stringify(reports)
+  );
+
+  showToast(
+    "Post reported successfully!",
+    "success"
+  );
+
+  addNotification(
+    `You reported "${post.title}"`,
+    "🚨"
+  );
+}
   function handleDeletePost() {
     const savedPosts = safeGet("redditxPosts", []);
 
@@ -327,7 +364,15 @@ export default function PostPage({ params }) {
                   <button style={actionBtn} onClick={handleSave}>
                     {saved ? "✅ Saved" : "🔖 Save"}
                   </button>
-
+<button
+  style={{
+    ...actionBtn,
+    color: "#facc15",
+  }}
+  onClick={handleReportPost}
+>
+  🚨 Report
+</button>
                   <button
                     style={actionBtn}
                     onClick={() => setEditMode(!editMode)}
