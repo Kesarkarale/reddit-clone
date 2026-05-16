@@ -1,5 +1,3 @@
-<img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/2796b346-a0da-4f08-8cda-131f9959c76d" /># RedditX — Modern Reddit Clone
-
 ## 🚀 Overview
 
 RedditX is a modern Reddit-inspired social media platform built using Next.js. Users can create posts, join communities, vote, comment, save posts, receive notifications, and manage platform activity through an advanced admin dashboard.
