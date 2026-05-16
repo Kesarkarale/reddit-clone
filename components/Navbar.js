@@ -8,14 +8,28 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
 
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("redditxUser"));
-    const notifications =
-      JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+useEffect(() => {
+  function safeGet(key, fallback = null) {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || fallback;
+    } catch {
+      localStorage.removeItem(key);
+      return fallback;
+    }
+  }
 
-    setUser(savedUser);
-    setNotificationCount(notifications.length);
-  }, []);
+  const savedUser = safeGet("redditxUser", null);
+
+  const notifications = safeGet(
+    "redditxNotifications",
+    []
+  );
+
+  setUser(savedUser);
+  setNotificationCount(
+    notifications.length
+  );
+}, []);
 
   function handleLogout() {
     localStorage.removeItem("redditxUser");
