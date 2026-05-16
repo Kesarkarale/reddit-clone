@@ -54,6 +54,7 @@ const defaultCommunities = [
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("new");
   const [posts, setPosts] = useState(defaultPosts);
   const [communities, setCommunities] = useState(defaultCommunities);
   const [recentSearches, setRecentSearches] = useState([]);
@@ -105,11 +106,21 @@ export default function SearchPage() {
     setRecentSearches([]);
   }
 
-  const postResults = posts.filter((post) =>
-    `${post.title} ${post.community} ${post.content} ${post.author || ""}`
+ const postResults = posts
+  .filter((post) =>
+    `${post.title} ${post.community} ${post.content} ${
+      post.author || ""
+    }`
       .toLowerCase()
       .includes(query.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    if (sortBy === "top") {
+      return (b.votes || 0) - (a.votes || 0);
+    }
+
+    return b.id - a.id;
+  });
 
   const communityResults = communities.filter((community) =>
     `${community.title} ${community.name} ${community.desc}`
@@ -186,6 +197,21 @@ export default function SearchPage() {
               Communities
             </button>
           </div>
+                <div style={sortWrap}>
+  <button
+    style={sortBy === "new" ? activeChip : chip}
+    onClick={() => setSortBy("new")}
+  >
+    Newest
+  </button>
+
+  <button
+    style={sortBy === "top" ? activeChip : chip}
+    onClick={() => setSortBy("top")}
+  >
+    Top Voted
+  </button>
+</div>
         </div>
 
         <div style={recentWrap}>
@@ -604,5 +630,11 @@ const openText = {
   display: "inline-block",
   color: "#fb7185",
   fontWeight: 900,
+  marginTop: 16,
+};
+const sortWrap = {
+  display: "flex",
+  gap: 12,
+  flexWrap: "wrap",
   marginTop: 16,
 };
