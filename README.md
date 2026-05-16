@@ -231,7 +231,15 @@ http://localhost:3000
 ![Home Page](home3.png)
 
 * Login/Register
+  
+  ![Login/Register](register.png)
+  
+  ![Login/Register](login.png)
+  
 * Create Post
+  
+  ![Home Page](home2.png)
+  
 * Communities
 * Search System
 * Saved Posts
