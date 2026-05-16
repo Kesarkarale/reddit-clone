@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OnlineUsers from "./OnlineUsers";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -93,6 +94,7 @@ export default function Navbar() {
         )}
 
         <div style={topActions}>
+          <OnlineUsers />
           <a href="/notifications" style={notifyBtn}>
             🔔
 
