@@ -32,13 +32,38 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const sortedPosts = [...posts].sort((a, b) => {
+const scoredPosts = posts.map((post) => {
+  const voteScore = (post.votes || 0) * 2;
+
+  const commentScore =
+    (post.comments || 0) * 3;
+
+  const recencyScore =
+    Date.now() - post.id < 86400000
+      ? 120
+      : 20;
+
+  return {
+    ...post,
+    trendingScore:
+      voteScore +
+      commentScore +
+      recencyScore,
+  };
+});
+
+const sortedPosts = [...scoredPosts].sort(
+  (a, b) => {
     if (sort === "top") {
-      return (b.votes || 0) - (a.votes || 0);
+      return (
+        b.trendingScore -
+        a.trendingScore
+      );
     }
 
     return b.id - a.id;
-  });
+  }
+);
 
   return (
     <main style={page}>
@@ -208,13 +233,19 @@ export default function Home() {
                     <h3 style={listTitle}>
                       {post.title}
                     </h3>
+                    {post.trendingScore > 200 && (
+  <span style={hotBadge}>
+    HOT
+  </span>
+)}
 
                     <p style={listText}>
                       r/
                       {post.community ||
                         "general"}{" "}
                       • 🔥{" "}
-                      {post.votes || 1} votes
+                   🔥 {post.votes || 1} votes • ⭐{" "}
+                      {post.trendingScore}
                     </p>
                   </div>
                 </a>
@@ -647,4 +678,15 @@ const secondaryBtn = {
 const skeletonGrid = {
   display: "grid",
   gap: "16px",
+};
+const hotBadge = {
+  display: "inline-block",
+  marginTop: "10px",
+  padding: "6px 12px",
+  borderRadius: "999px",
+  background:
+    "linear-gradient(90deg,#f97316,#ef4444)",
+  color: "white",
+  fontSize: "12px",
+  fontWeight: "900",
 };
