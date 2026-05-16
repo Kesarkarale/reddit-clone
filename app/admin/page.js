@@ -10,6 +10,7 @@ export default function AdminDashboard() {
   const [communities, setCommunities] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [users, setUsers] = useState([]);
+  const [reportedPosts, setReportedPosts] = useState([]);
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("redditxUser"));
@@ -23,13 +24,31 @@ export default function AdminDashboard() {
     loadData();
   }, []);
 
-  function loadData() {
-    setPosts(JSON.parse(localStorage.getItem("redditxPosts")) || []);
-    setSavedPosts(JSON.parse(localStorage.getItem("redditxSavedPosts")) || []);
-    setCommunities(JSON.parse(localStorage.getItem("redditxCommunities")) || []);
-    setNotifications(JSON.parse(localStorage.getItem("redditxNotifications")) || []);
-    setUsers(JSON.parse(localStorage.getItem("redditxUsers")) || []);
-  }
+function loadData() {
+  setPosts(
+    JSON.parse(localStorage.getItem("redditxPosts")) || []
+  );
+
+  setSavedPosts(
+    JSON.parse(localStorage.getItem("redditxSavedPosts")) || []
+  );
+
+  setCommunities(
+    JSON.parse(localStorage.getItem("redditxCommunities")) || []
+  );
+
+  setNotifications(
+    JSON.parse(localStorage.getItem("redditxNotifications")) || []
+  );
+
+  setUsers(
+    JSON.parse(localStorage.getItem("redditxUsers")) || []
+  );
+
+  setReportedPosts(
+    JSON.parse(localStorage.getItem("redditxReportedPosts")) || []
+  );
+}
 
   function deletePost(id) {
     const updated = posts.filter((post) => String(post.id) !== String(id));
@@ -41,7 +60,18 @@ export default function AdminDashboard() {
     localStorage.removeItem("redditxNotifications");
     setNotifications([]);
   }
+function removeReport(id) {
+  const updated = reportedPosts.filter(
+    (item) => String(item.id) !== String(id)
+  );
 
+  localStorage.setItem(
+    "redditxReportedPosts",
+    JSON.stringify(updated)
+  );
+
+  setReportedPosts(updated);
+}
   if (!allowed) {
     return (
       <main style={page}>
@@ -75,6 +105,11 @@ export default function AdminDashboard() {
           <Stat title="Communities" value={communities.length + 3} icon="🌐" />
           <Stat title="Saved Posts" value={savedPosts.length} icon="🔖" />
           <Stat title="Notifications" value={notifications.length} icon="🔔" />
+         <Stat
+         title="Reports"
+         value={reportedPosts.length}
+         icon="🚨"
+         />
         </div>
 
         <div style={layout}>
@@ -127,6 +162,51 @@ export default function AdminDashboard() {
               ))
             )}
           </aside>
+            <div style={panel}>
+  <h2 style={sectionTitle}>
+    🚨 Reported Posts
+  </h2>
+
+  {reportedPosts.length === 0 ? (
+    <p style={empty}>
+      No reported posts.
+    </p>
+  ) : (
+    reportedPosts.map((post) => (
+      <div
+        key={post.id}
+        style={item}
+      >
+        <div>
+          <h3>{post.title}</h3>
+
+          <p style={itemText}>
+            r/{post.community} • by u/
+            {post.author || "anonymous"}
+          </p>
+        </div>
+
+        <div style={actions}>
+          <a
+            href={`/post/${post.id}`}
+            style={badge}
+          >
+            Review
+          </a>
+
+          <button
+            style={deleteBtn}
+            onClick={() =>
+              removeReport(post.id)
+            }
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    ))
+  )}
+</div>
         </div>
       </section>
     </main>
