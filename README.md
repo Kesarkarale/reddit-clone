@@ -168,7 +168,7 @@ components/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/redditx.git
+git clone https://github.com/Kesarkarale/redditx.git
 ```
 
 ## 2. Open Project
@@ -224,6 +224,12 @@ http://localhost:3000
 # 📸 Screens Included In Demo
 
 * Home Page
+![Home Page](home.png)
+
+![Home Page](home2.png)
+
+![Home Page](home3.png)
+
 * Login/Register
 * Create Post
 * Communities
