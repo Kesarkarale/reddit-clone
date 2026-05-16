@@ -221,70 +221,91 @@ http://localhost:3000
 
 # 📸 Screens Included In Demo
 
-* Home Page
+*** Home Page**
+  
 ![Home Page](home.png)
+
 
 ![Home Page](home2.png)
 
+
 ![Home Page](home3.png)
 
-* Login/Register
-  
+
+*  **Login/Register**
+
   ![Login/Register](register.png)
+  
   
   ![Login/Register](login.png)
   
-* Create Post
+  
+*  **Create Post**
   
   ![Create Post](post.png)
+  
 
    ![Create Post](post2.png)
+   
   
-* Communities
-
+*  **Communities**
+  
  ![Communities](communities.png)
+ 
 
  ![Communities](communities2.png)
+ 
 
-* Search System
+* **Search System**
 
 ![Search System](search.png)
+
 
 ![Search System](search2.png)
 
 
-* Saved Posts
+
+* **Saved Posts**
 
 ![Saved Posts](save.png)
 
-* Notifications
+
+
+* **Notifications**
 
   ![Notifications](notification.png)
+
   
-* Post Details
+* **Post Details**
   
   ![Post Details](post.png)
+  
 
   ![Post Details](post2.png)
   
-* Admin Dashboard
+  
+* **Admin Dashboard**
   
   ![Admin Dashboard](admin.png)
   
-  ![Admin Dashboard](admin2.png)
   
-* Setting System
+  ![Admin Dashboard](admin2.png)
+
+  
+* **Setting System**
 
   ![Setting System](setting.png)
 
-* Profile Page
+
+* **Profile Page**
 
   ![Profile Page](profile.png)
+  
 
   ![Profile Page](profile2.png)
 
 
-* 404 Page
+* **404 Page**
 
   ![404 Page](page.png)
 
