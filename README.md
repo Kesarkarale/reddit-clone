@@ -1,99 +1,135 @@
-# 🚀 RedditX — Modern Reddit Clone
+# RedditX — Modern Reddit Clone
 
-RedditX is a modern Reddit-inspired social media platform built using **Next.js** and **localStorage**.  
-Users can create posts, join communities, save posts, comment, vote, and receive notifications inside a beautiful dark-themed UI.
+## 🚀 Overview
+
+RedditX is a modern Reddit-inspired social media platform built using Next.js. Users can create posts, join communities, vote, comment, save posts, receive notifications, and manage platform activity through an advanced admin dashboard.
+
+The project focuses on:
+
+* Modern UI/UX
+* Dark & Light Theme Support
+* Animated SaaS-style Design
+* Real-time Feel
+* Responsive Layout
+* LocalStorage-based Data System
+* Admin Moderation Features
 
 ---
 
 # ✨ Features
 
-## 👤 Authentication
-- User Register
-- User Login
-- Logout System
-- Persistent Login using localStorage
-- Duplicate Email Protection
+## 👤 Authentication System
+
+* User Registration
+* User Login
+* Logout System
+* User Profile
+* Avatar Support
+* Admin Role Support
 
 ---
 
-## 📝 Posts
-- Create Post
-- Image Upload
-- Category Selection
-- Community-based Posts
-- Live Preview
-- Post Details Page
-- Persistent Posts using localStorage
+## 📝 Posts System
+
+* Create Posts
+* Edit Posts
+* Delete Posts
+* Save Posts
+* Share Posts
+* Vote System
+* Trending Algorithm
+* Hot Post Badge
 
 ---
 
-## 💬 Comments
-- Add Comments
-- Delete Comments
-- Persistent Comments
-- Real-time Comment Count
+## 💬 Comment System
 
----
-
-## 🔥 Voting System
-- Upvote Posts
-- Downvote Posts
-- Persistent Vote Count
-
----
-
-## 🔖 Saved Posts
-- Save Posts
-- Remove Saved Posts
-- Search Saved Posts
-- Clear All Saved Posts
-
----
-
-## 🔔 Notifications
-- Auto-generated Notifications
-- Upvote Notifications
-- Comment Notifications
-- Save Notifications
-- Clear Notifications
+* Add Comments
+* Delete Comments
+* Dynamic Comment Count
+* Notification Integration
 
 ---
 
 ## 🌐 Communities
-- Community Listing
-- Trending Communities
-- Dynamic Community Pages
+
+* Create Communities
+* Community Logos
+* Community Pages
+* Community Member Counts
+* Explore Communities
 
 ---
 
-## 👨‍💼 Admin Dashboard
-- Total Users
-- Total Posts
-- Saved Posts Count
-- Notifications Count
-- Delete Posts
-- Recent Activity Panel
+## 🔔 Notification System
+
+* Real-time Notification Toasts
+* Notification Count Badge
+* Saved Notifications
+* Vote Notifications
+* Comment Notifications
+* Report Notifications
 
 ---
 
-## 🎨 UI/UX
-- Modern Dark Theme
-- Glassmorphism Design
-- Responsive Layout
-- Animated Gradient Effects
-- Professional Navbar
-- Floating Glow Backgrounds
+## 🛡️ Moderation System
+
+* Report Posts
+* Admin Moderation Dashboard
+* Remove Reports
+* Activity Tracking
+* Recent Activity Feed
 
 ---
 
-# 🛠️ Technologies Used
+## 📊 Admin Dashboard
 
-- Next.js
-- React.js
-- JavaScript
-- HTML5
-- CSS3
-- localStorage API
+* Platform Statistics
+* User Count
+* Post Count
+* Community Count
+* Saved Posts Count
+* Notification Count
+* Reported Posts Panel
+* Recent Activity Panel
+
+---
+
+## 🔍 Search System
+
+* Search Posts
+* Search Communities
+* Recent Searches
+* Sorting System
+* Top Voted Filter
+* Newest Filter
+* Skeleton Loading UI
+
+---
+
+## 🎨 UI Features
+
+* Dark Theme
+* Light Theme
+* Animated Loader
+* Skeleton Loading Cards
+* Floating Effects
+* Glassmorphism UI
+* Gradient Styling
+* Fully Responsive Design
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology   | Usage              |
+| ------------ | ------------------ |
+| Next.js      | Frontend Framework |
+| React        | UI Components      |
+| JavaScript   | Logic              |
+| LocalStorage | Data Storage       |
+| CSS-in-JS    | Styling            |
+| Vercel       | Deployment         |
 
 ---
 
@@ -110,79 +146,123 @@ app/
  ├── profile/
  ├── register/
  ├── saved/
+ ├── search/
  ├── settings/
- └── r/[slug]/
+ └── not-found.js
 
 components/
+ ├── AppLoader.js
+ ├── FloatingActions.js
  ├── Navbar.js
- ├── Footer.js
+ ├── NotificationToast.js
+ ├── OnlineUsers.js
+ ├── SkeletonCard.js
+ ├── ThemeToggle.js
  └── Toast.js
-
 ```
 
 ---
 
+# ⚙️ Installation
 
+## 1. Clone Repository
 
-# **⚡ How To Run Project**
+```bash
+git clone https://github.com/yourusername/redditx.git
+```
 
-**1️⃣ Install Dependencies**
+## 2. Open Project
 
+```bash
+cd redditx
+```
+
+## 3. Install Dependencies
+
+```bash
 npm install
+```
 
-**2️⃣ Start Development Server**
+## 4. Start Development Server
 
+```bash
 npm run dev
+```
 
-**3️⃣ Open Browser**
+## 5. Open Browser
 
+```bash
 http://localhost:3000
+```
 
 ---
 
-# **📸 Main Pages**
+# 🌍 Deployment
 
-Home Page
+## Deploy on Vercel
 
-Communities Page
-
-Community Detail Page
-
-Create Post Page
-
-Post Detail Page
-
-Login/Register
-
-Saved Posts
-
-Notifications
-
-Admin Dashboard
-
-Profile Page
+1. Push project to GitHub
+2. Open Vercel
+3. Import GitHub Repository
+4. Click Deploy
 
 ---
 
-# **🔮 Future Improvements**
+# 🔥 Advanced Features Added
 
-- Backend Integration
-- Database Support
-- Real Authentication
-- Real-time Chat
-- Dark/Light Mode Toggle
-- Follow Users
-- Infinite Scrolling
-- API Integration
-- Cloud Image Upload
-- Real Notification System
-
+* AI-style Trending Algorithm
+* Online User Counter
+* Real-time Notification Toasts
+* Protected Admin Dashboard
+* Safe LocalStorage Handling
+* Custom 404 Page
+* Dynamic Feed Ranking
+* Theme Persistence
 
 ---
 
-# **👨‍💻 Developer**
+# 📸 Screens Included In Demo
 
-Developed by
+* Home Page
+* Login/Register
+* Create Post
+* Communities
+* Search System
+* Saved Posts
+* Notifications
+* Post Details
+* Admin Dashboard
+* Theme Toggle
+* 404 Page
+
+---
+
+# 📱 Responsive Support
+
+RedditX works on:
+
+* Desktop
+* Tablet
+* Mobile Devices
+
+---
+
+# ⭐ Future Improvements
+
+* Real Backend Integration
+* Database Support
+* Real Authentication
+* Chat System
+* Live Comments
+* Real-time Messaging
+* AI Recommendations
+* Media Upload System
+* Community Moderators
+
+---
+
+# 👨‍💻 Developed By
+
 Kesar Karale
 
 ---
