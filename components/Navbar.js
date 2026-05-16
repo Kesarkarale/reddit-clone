@@ -53,9 +53,10 @@ useEffect(() => {
     { label: "👤 Profile", href: "/profile" },
     { label: "⚙️ Settings", href: "/settings" },
 
-    ...(user?.role === "admin"
-      ? [{ label: "📊 Admin Dashboard", href: "/admin" }]
-      : []),
+    {
+    label: "📊 Admin Dashboard",
+    href: "/admin",
+  },
 
     { label: "ℹ️ About", href: "/about" },
   ];
