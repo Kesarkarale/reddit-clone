@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
 import Toast from "../../../components/Toast";
+import NotificationToast from "../../../components/NotificationToast";
 
 export default function PostPage({ params }) {
   const postId = params.id;
@@ -18,17 +19,27 @@ export default function PostPage({ params }) {
   const [editMode, setEditMode] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
+  const [notificationText, setNotificationText] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+
+  function safeGet(key, fallback = []) {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || fallback;
+    } catch {
+      localStorage.removeItem(key);
+      return fallback;
+    }
+  }
 
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const savedPosts = safeGet("redditxPosts", []);
     const foundPost = savedPosts.find((p) => String(p.id) === String(postId));
     const savedVote = localStorage.getItem(`redditxVotes_${postId}`);
 
     if (foundPost) {
       setPost(foundPost);
-      setEditTitle(foundPost.title);
-      setEditContent(foundPost.content);
-
+      setEditTitle(foundPost.title || "");
+      setEditContent(foundPost.content || "");
       setVotes(savedVote ? Number(savedVote) : foundPost.votes || 1);
     } else {
       const demoPost = {
@@ -47,8 +58,7 @@ export default function PostPage({ params }) {
       setVotes(savedVote ? Number(savedVote) : 248);
     }
 
-    const savedComments =
-      JSON.parse(localStorage.getItem(`redditxComments_${postId}`)) || [];
+    const savedComments = safeGet(`redditxComments_${postId}`, []);
 
     if (savedComments.length > 0) {
       setComments(savedComments);
@@ -71,8 +81,7 @@ export default function PostPage({ params }) {
   }
 
   function addNotification(text, icon = "🔔") {
-    const notifications =
-      JSON.parse(localStorage.getItem("redditxNotifications")) || [];
+    const notifications = safeGet("redditxNotifications", []);
 
     const newNotification = {
       id: Date.now(),
@@ -83,13 +92,20 @@ export default function PostPage({ params }) {
 
     notifications.unshift(newNotification);
     localStorage.setItem("redditxNotifications", JSON.stringify(notifications));
+
+    setNotificationText(text);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2500);
   }
 
   function updateVotes(newVote) {
     setVotes(newVote);
     localStorage.setItem(`redditxVotes_${postId}`, String(newVote));
 
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const savedPosts = safeGet("redditxPosts", []);
 
     const updatedPosts = savedPosts.map((item) =>
       String(item.id) === String(postId) ? { ...item, votes: newVote } : item
@@ -118,12 +134,12 @@ export default function PostPage({ params }) {
       return;
     }
 
-    const user = JSON.parse(localStorage.getItem("redditxUser")) || {};
+    const user = safeGet("redditxUser", {});
 
     const newComment = {
       id: Date.now(),
       user: user.username || "anonymous",
-      text: comment,
+      text: comment.trim(),
       createdAt: new Date().toISOString(),
     };
 
@@ -158,8 +174,7 @@ export default function PostPage({ params }) {
   }
 
   function handleSave() {
-    const savedList =
-      JSON.parse(localStorage.getItem("redditxSavedPosts")) || [];
+    const savedList = safeGet("redditxSavedPosts", []);
 
     const alreadySaved = savedList.find(
       (item) => String(item.id) === String(post.id)
@@ -178,7 +193,7 @@ export default function PostPage({ params }) {
   }
 
   function handleDeletePost() {
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const savedPosts = safeGet("redditxPosts", []);
 
     const updatedPosts = savedPosts.filter(
       (item) => String(item.id) !== String(post.id)
@@ -199,7 +214,7 @@ export default function PostPage({ params }) {
       return;
     }
 
-    const savedPosts = JSON.parse(localStorage.getItem("redditxPosts")) || [];
+    const savedPosts = safeGet("redditxPosts", []);
 
     const updatedPosts = savedPosts.map((item) =>
       String(item.id) === String(post.id)
@@ -236,6 +251,7 @@ export default function PostPage({ params }) {
     <main style={page}>
       <Navbar />
       <Toast message={toast} type={toastType} />
+      <NotificationToast text={notificationText} show={showNotification} />
 
       <style>{`
         @keyframes glowMove {
@@ -448,7 +464,7 @@ const page = {
   color: "white",
   fontFamily: "Arial, sans-serif",
   position: "relative",
-  overflow: "hidden",
+  overflowX: "hidden",
 };
 
 const glowOne = {
@@ -485,7 +501,7 @@ const container = {
 
 const layout = {
   display: "grid",
-  gridTemplateColumns: "1fr 320px",
+  gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
   gap: "24px",
 };
 
