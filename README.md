@@ -1,4 +1,4 @@
-# RedditX — Modern Reddit Clone
+<img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/2796b346-a0da-4f08-8cda-131f9959c76d" /># RedditX — Modern Reddit Clone
 
 ## 🚀 Overview
 
@@ -238,16 +238,58 @@ http://localhost:3000
   
 * Create Post
   
-  ![Home Page](home2.png)
+  ![Create Post](post.png)
+
+   ![Create Post](post2.png)
   
 * Communities
+
+ ![Communities](communities.png)
+
+ ![Communities](communities2.png)
+
 * Search System
+
+![Search System](search.png)
+
+![Search System](search2.png)
+
+
 * Saved Posts
+
+![Saved Posts](save.png)
+
 * Notifications
+
+  ![Notifications](notification.png)
+  
 * Post Details
+  
+  ![Post Details](post.png)
+
+  ![Post Details](post2.png)
+  
 * Admin Dashboard
-* Theme Toggle
+  
+  ![Admin Dashboard](admin.png)
+  
+  ![Admin Dashboard](admin2.png)
+  
+* Setting System
+
+  ![Setting System](setting.png)
+
+* Profile Page
+
+  ![Profile Page](profile.png)
+
+  ![Profile Page](profile2.png)
+
+
 * 404 Page
+
+  ![404 Page](page.png)
+
 
 ---
 
