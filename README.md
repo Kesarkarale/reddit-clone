@@ -221,7 +221,7 @@ http://localhost:3000
 
 # 📸 Screens Included In Demo
 
-*** Home Page**
+* **Home Page**
   
 ![Home Page](home.png)
 
