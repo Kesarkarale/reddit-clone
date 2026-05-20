@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -23,7 +23,7 @@ export default function ThemeToggle() {
 
     document.documentElement.style.setProperty(
       "--text-main",
-      isLight ? "#0f172a" : "white"
+      isLight ? "#0f172a" : "#ffffff"
     );
 
     document.documentElement.style.setProperty(
@@ -33,7 +33,12 @@ export default function ThemeToggle() {
 
     document.documentElement.style.setProperty(
       "--nav-bg",
-      isLight ? "rgba(255,255,255,0.9)" : "rgba(7,11,24,0.88)"
+      isLight ? "#ffffff" : "rgba(7,11,24,0.88)"
+    );
+
+    document.documentElement.style.setProperty(
+      "--border-color",
+      isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)"
     );
   }
 
@@ -72,7 +77,7 @@ const toggleBtn = {
   width: 86,
   height: 46,
   borderRadius: 999,
-  border: "1px solid rgba(255,255,255,.18)",
+  border: "1px solid var(--border-color)",
   background: "rgba(255,255,255,.08)",
   cursor: "pointer",
   padding: 4,
