@@ -423,9 +423,8 @@ function FeatureCard({
 
 const page = {
   minHeight: "100vh",
-  background:
-    "radial-gradient(circle at top left, rgba(255,69,0,0.25), transparent 35%), radial-gradient(circle at bottom right, rgba(124,58,237,0.25), transparent 35%), #070b18",
-  color: "white",
+  background: "var(--page-bg)",
+  color: "var(--text-main)",
   fontFamily: "Arial, sans-serif",
   overflowX: "hidden",
 };
@@ -553,7 +552,7 @@ const panel = {
   padding: "28px",
   borderRadius: "30px",
   background:
-    "rgba(255,255,255,0.07)",
+    "var(--card-bg)",
   border:
     "1px solid rgba(255,255,255,0.14)",
 };
