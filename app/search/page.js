@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+ import Footer from "../../components/Footer";
 import FloatingActions from "../../components/FloatingActions";
 import SkeletonCard from "../../components/SkeletonCard";
 
@@ -133,8 +132,7 @@ export default function SearchPage() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(16px); }
