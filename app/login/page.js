@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../../components/Navbar";
-
+ 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -47,8 +46,7 @@ export default function Login() {
 }
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes floatCard {
           0%,100% { transform: translateY(0px); }
