@@ -13,26 +13,69 @@ export default function ThemeToggle() {
   function toggleTheme() {
     const nextLight = !light;
     localStorage.setItem("redditxTheme", nextLight ? "light" : "dark");
+
+    document.documentElement.classList.toggle("light-theme", nextLight);
     document.body.style.background = nextLight ? "#f8fafc" : "#070b18";
     document.body.style.color = nextLight ? "#0f172a" : "white";
+
     setLight(nextLight);
   }
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      title="Toggle theme"
-      className="relative flex h-11 w-20 shrink-0 items-center rounded-full border border-white/15 bg-white/10 px-1.5 shadow-lg backdrop-blur-xl transition hover:scale-105"
+      title={light ? "Switch to dark mode" : "Switch to light mode"}
+      style={toggleBtn}
     >
       <span
-        className={`absolute top-1 h-9 w-9 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 shadow-md transition-all duration-300 ${
-          light ? "translate-x-8" : "translate-x-0"
-        }`}
+        style={{
+          ...toggleCircle,
+          transform: light ? "translateX(38px)" : "translateX(0px)",
+        }}
       />
-      <span className="relative z-10 flex w-full items-center justify-between px-1 text-base">
+
+      <span style={icons}>
         <span>🌙</span>
         <span>☀️</span>
       </span>
     </button>
   );
 }
+
+const toggleBtn = {
+  position: "relative",
+  width: 86,
+  height: 46,
+  borderRadius: 999,
+  border: "1px solid rgba(255,255,255,.18)",
+  background: "rgba(255,255,255,.08)",
+  cursor: "pointer",
+  padding: 4,
+  display: "flex",
+  alignItems: "center",
+  flexShrink: 0,
+};
+
+const toggleCircle = {
+  position: "absolute",
+  left: 5,
+  top: 5,
+  width: 34,
+  height: 34,
+  borderRadius: "50%",
+  background: "linear-gradient(135deg,#f97316,#db2777)",
+  transition: "transform .3s ease",
+  boxShadow: "0 8px 18px rgba(249,115,22,.35)",
+};
+
+const icons = {
+  position: "relative",
+  zIndex: 2,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  padding: "0 8px",
+  fontSize: 16,
+};
