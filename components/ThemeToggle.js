@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { useEffect, useState } from "react";
 
@@ -36,7 +36,8 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-24 left-6 z-[9999] flex h-14 w-28 items-center rounded-full border border-white/20 bg-[#0f172a] px-2 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:scale-110"    >
+      className="fixed bottom-24 right-6 z-[9999] flex h-14 w-28 items-center rounded-full border border-white/20 bg-[#0f172a] px-2 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:scale-110"
+    >
       <div
         className={`absolute top-1 h-11 w-11 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg transition-all duration-500 ${
           light ? "translate-x-14" : "translate-x-0"
