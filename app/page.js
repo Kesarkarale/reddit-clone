@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 import SkeletonCard from "../components/SkeletonCard";
 import AppLoader from "../components/AppLoader";
@@ -69,8 +67,6 @@ export default function Home() {
   return (
     <main style={page}>
       {appLoading && <AppLoader />}
-
-      <Navbar />
 
       <style>{`
         @keyframes float {
@@ -362,10 +358,6 @@ export default function Home() {
           Create Account
         </a>
       </section>
-
-      <Footer />
-
-  
     </main>
   );
 }
