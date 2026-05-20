@@ -420,7 +420,7 @@ const showBtn = {
   fontWeight: "900",
 };
 
-const loginBtn = {
+const registerBtn = {
   marginTop: "8px",
   padding: "16px",
   borderRadius: "18px",
