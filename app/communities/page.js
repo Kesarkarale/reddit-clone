@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
+ 
 
 const defaultCommunities = [
   {
@@ -60,8 +60,7 @@ export default function Communities() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(18px); }
