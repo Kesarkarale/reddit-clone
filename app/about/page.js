@@ -1,11 +1,9 @@
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+ import Footer from "../../components/Footer";
 
 export default function About() {
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <section style={container}>
         <h1 style={title}>About RedditX</h1>
         <p style={sub}>
