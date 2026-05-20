@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
+
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
@@ -90,7 +90,7 @@ export default function CreatePost() {
 
   return (
     <main style={page}>
-      <Navbar />
+      
 
       <style>{`
         @keyframes floatCard {
