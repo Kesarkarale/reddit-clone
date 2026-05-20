@@ -5,21 +5,78 @@ import { useEffect, useState } from "react";
 export default function ThemeToggle() {
   const [light, setLight] = useState(false);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("redditxTheme");
-    setLight(savedTheme === "light");
-  }, []);
+useEffect(() => {
+  const savedTheme =
+    localStorage.getItem("redditxTheme");
 
-  function toggleTheme() {
-    const nextLight = !light;
-    localStorage.setItem("redditxTheme", nextLight ? "light" : "dark");
+  const isLight =
+    savedTheme === "light";
 
-    document.documentElement.classList.toggle("light-theme", nextLight);
-    document.body.style.background = nextLight ? "#f8fafc" : "#070b18";
-    document.body.style.color = nextLight ? "#0f172a" : "white";
+  setLight(isLight);
 
-    setLight(nextLight);
+  if (isLight) {
+    document.body.style.background =
+      "#f8fafc";
+
+    document.body.style.color =
+      "#0f172a";
+  } else {
+    document.body.style.background =
+      "#070b18";
+
+    document.body.style.color =
+      "white";
   }
+}, []);
+
+function toggleTheme() {
+  const nextLight = !light;
+
+  localStorage.setItem(
+    "redditxTheme",
+    nextLight ? "light" : "dark"
+  );
+
+  if (nextLight) {
+    document.body.style.background = "#f8fafc";
+    document.body.style.color = "#0f172a";
+
+    document.documentElement.style.setProperty(
+      "--card-bg",
+      "#ffffff"
+    );
+
+    document.documentElement.style.setProperty(
+      "--text-color",
+      "#0f172a"
+    );
+
+    document.documentElement.style.setProperty(
+      "--nav-bg",
+      "rgba(255,255,255,.85)"
+    );
+  } else {
+    document.body.style.background = "#070b18";
+    document.body.style.color = "white";
+
+    document.documentElement.style.setProperty(
+      "--card-bg",
+      "rgba(255,255,255,.06)"
+    );
+
+    document.documentElement.style.setProperty(
+      "--text-color",
+      "#ffffff"
+    );
+
+    document.documentElement.style.setProperty(
+      "--nav-bg",
+      "rgba(7,11,24,.88)"
+    );
+  }
+
+  setLight(nextLight);
+}
 
   return (
     <button
