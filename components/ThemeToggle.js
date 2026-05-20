@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -7,47 +7,32 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("redditxTheme");
-
-    if (savedTheme === "light") {
-      setLight(true);
-      document.body.style.background = "#f8fafc";
-      document.body.style.color = "#0f172a";
-    } else {
-      setLight(false);
-      document.body.style.background = "#070b18";
-      document.body.style.color = "white";
-    }
+    setLight(savedTheme === "light");
   }, []);
 
   function toggleTheme() {
-    if (light) {
-      localStorage.setItem("redditxTheme", "dark");
-      document.body.style.background = "#070b18";
-      document.body.style.color = "white";
-      setLight(false);
-    } else {
-      localStorage.setItem("redditxTheme", "light");
-      document.body.style.background = "#f8fafc";
-      document.body.style.color = "#0f172a";
-      setLight(true);
-    }
+    const nextLight = !light;
+    localStorage.setItem("redditxTheme", nextLight ? "light" : "dark");
+    document.body.style.background = nextLight ? "#f8fafc" : "#070b18";
+    document.body.style.color = nextLight ? "#0f172a" : "white";
+    setLight(nextLight);
   }
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex h-14 w-28 items-center rounded-full border border-white/20 bg-[#0f172a]/90 px-2 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:scale-110"
+      title="Toggle theme"
+      className="relative flex h-11 w-20 shrink-0 items-center rounded-full border border-white/15 bg-white/10 px-1.5 shadow-lg backdrop-blur-xl transition hover:scale-105"
     >
-      <div
-        className={`absolute top-1 h-11 w-11 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg transition-all duration-500 ${
-          light ? "translate-x-14" : "translate-x-0"
+      <span
+        className={`absolute top-1 h-9 w-9 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 shadow-md transition-all duration-300 ${
+          light ? "translate-x-8" : "translate-x-0"
         }`}
       />
-
-      <div className="relative z-10 flex w-full items-center justify-between px-1 text-xl">
+      <span className="relative z-10 flex w-full items-center justify-between px-1 text-base">
         <span>🌙</span>
         <span>☀️</span>
-      </div>
+      </span>
     </button>
   );
 }
