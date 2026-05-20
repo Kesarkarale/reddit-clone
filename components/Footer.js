@@ -60,9 +60,9 @@ const footer = {
   overflow: "hidden",
   marginTop: 70,
   padding: "50px 24px 24px",
-  background: "rgba(7,11,24,.95)",
-  borderTop: "1px solid rgba(255,255,255,.1)",
-  color: "white",
+  background: "var(--nav-bg)",
+  borderTop: "1px solid var(--border-color)",
+  color: "var(--text-main)",
   fontFamily: "Arial, sans-serif",
 };
 
@@ -101,7 +101,7 @@ const logo = {
 };
 
 const text = {
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   lineHeight: 1.7,
   marginTop: 14,
 };
@@ -116,8 +116,8 @@ const social = {
   width: 44,
   height: 44,
   borderRadius: 15,
-  background: "rgba(255,255,255,.07)",
-  border: "1px solid rgba(255,255,255,.12)",
+  background: "var(--card-bg)",
+  border: "1px solid var(--border-color)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -133,13 +133,13 @@ const linksGrid = {
 
 const heading = {
   fontSize: 16,
-  color: "white",
+  color: "var(--text-main)",
   marginBottom: 14,
 };
 
 const link = {
   display: "block",
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   textDecoration: "none",
   marginBottom: 11,
   fontWeight: 700,
@@ -151,7 +151,7 @@ const bottom = {
   maxWidth: 1180,
   margin: "36px auto 0",
   paddingTop: 20,
-  borderTop: "1px solid rgba(255,255,255,.1)",
+  borderTop: "1px solid var(--border-color)",
   display: "flex",
   justifyContent: "space-between",
   gap: 14,
@@ -159,7 +159,7 @@ const bottom = {
 };
 
 const copy = {
-  color: "#64748b",
+  color: "var(--text-muted)",
   margin: 0,
   fontSize: 14,
 };
