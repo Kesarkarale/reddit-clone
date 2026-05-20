@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
- import Footer from "../../components/Footer";
-import FloatingActions from "../../components/FloatingActions";
+ import FloatingActions from "../../components/FloatingActions";
 import SkeletonCard from "../../components/SkeletonCard";
 
 const defaultPosts = [
@@ -336,8 +335,7 @@ export default function SearchPage() {
         )}
       </section>
 
-      <Footer />
-      <FloatingActions />
+       <FloatingActions />
     </main>
   );
 }
