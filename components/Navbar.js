@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import OnlineUsers from "./OnlineUsers";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
