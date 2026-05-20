@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../../components/Navbar";
-import Toast from "../../../components/Toast";
+ import Toast from "../../../components/Toast";
 import NotificationToast from "../../../components/NotificationToast";
 
 export default function PostPage({ params }) {
@@ -286,8 +285,7 @@ function handleReportPost() {
 
   return (
     <main style={page}>
-      <Navbar />
-      <Toast message={toast} type={toastType} />
+       <Toast message={toast} type={toastType} />
       <NotificationToast text={notificationText} show={showNotification} />
 
       <style>{`
