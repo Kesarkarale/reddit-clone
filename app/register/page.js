@@ -207,8 +207,8 @@ function MiniCard({ value, label }) {
 
 const page = {
   minHeight: "100vh",
-  background: "#070b18",
-  color: "white",
+  background: "var(--page-bg)",
+  color: "var(--text-main)",
   fontFamily: "Arial, sans-serif",
   position: "relative",
   overflow: "hidden",
@@ -216,13 +216,13 @@ const page = {
 
 const glowOne = {
   position: "absolute",
-  width: "430px",
-  height: "430px",
+  width: "420px",
+  height: "420px",
   top: "-140px",
-  right: "-120px",
-  background: "#8b5cf6",
+  left: "-120px",
+  background: "#f97316",
   filter: "blur(140px)",
-  opacity: 0.22,
+  opacity: 0.18,
   animation: "glowMove 7s ease-in-out infinite",
 };
 
@@ -231,10 +231,10 @@ const glowTwo = {
   width: "460px",
   height: "460px",
   bottom: "-160px",
-  left: "-130px",
-  background: "#f97316",
+  right: "-130px",
+  background: "#8b5cf6",
   filter: "blur(150px)",
-  opacity: 0.24,
+  opacity: 0.18,
   animation: "glowMove 8s ease-in-out infinite",
 };
 
@@ -242,9 +242,9 @@ const gridOverlay = {
   position: "absolute",
   inset: 0,
   backgroundImage:
-    "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+    "linear-gradient(rgba(148,163,184,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.12) 1px, transparent 1px)",
   backgroundSize: "50px 50px",
-  opacity: 0.2,
+  opacity: 0.18,
 };
 
 const wrapper = {
@@ -260,15 +260,17 @@ const wrapper = {
   alignItems: "center",
 };
 
-const leftPanel = { animation: "fadeIn .8s ease both" };
+const leftPanel = {
+  animation: "fadeIn .8s ease both",
+};
 
 const badge = {
   display: "inline-block",
   padding: "10px 16px",
   borderRadius: "999px",
-  background: "rgba(255,255,255,0.07)",
-  border: "1px solid rgba(255,255,255,0.12)",
-  color: "#c084fc",
+  background: "var(--card-bg)",
+  border: "1px solid var(--border-color)",
+  color: "#fb923c",
   fontWeight: "800",
   marginBottom: "22px",
 };
@@ -278,18 +280,19 @@ const heroTitle = {
   lineHeight: "1.05",
   fontWeight: "900",
   margin: 0,
+  color: "var(--text-main)",
 };
 
 const gradientText = {
   display: "block",
-  background: "linear-gradient(90deg,#8b5cf6,#ec4899,#fb923c)",
+  background: "linear-gradient(90deg,#fb923c,#ec4899,#8b5cf6)",
   WebkitBackgroundClip: "text",
   color: "transparent",
 };
 
 const heroText = {
   maxWidth: "560px",
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   fontSize: "19px",
   lineHeight: "1.7",
   marginTop: "22px",
@@ -306,10 +309,11 @@ const miniStats = {
 const miniCard = {
   padding: "18px",
   borderRadius: "20px",
-  background: "rgba(255,255,255,0.06)",
-  border: "1px solid rgba(255,255,255,0.12)",
+  background: "var(--card-bg)",
+  border: "1px solid var(--border-color)",
   display: "grid",
   gap: "6px",
+  color: "var(--text-main)",
 };
 
 const card = {
@@ -318,24 +322,25 @@ const card = {
   margin: "0 auto",
   padding: "38px",
   borderRadius: "34px",
-  background: "rgba(255,255,255,0.075)",
-  border: "1px solid rgba(255,255,255,0.14)",
+  background: "var(--card-bg)",
+  border: "1px solid var(--border-color)",
   backdropFilter: "blur(22px)",
-  boxShadow: "0 30px 90px rgba(139,92,246,0.2)",
+  boxShadow: "0 30px 90px rgba(236,72,153,0.14)",
   animation: "floatCard 5s ease-in-out infinite, fadeIn .9s ease both",
+  color: "var(--text-main)",
 };
 
 const iconBox = {
   width: "76px",
   height: "76px",
   borderRadius: "24px",
-  background: "linear-gradient(135deg,#8b5cf6,#db2777)",
+  background: "linear-gradient(135deg,#f97316,#db2777)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   fontSize: "34px",
   margin: "0 auto 20px",
-  boxShadow: "0 15px 35px rgba(139,92,246,0.3)",
+  boxShadow: "0 15px 35px rgba(219,39,119,0.3)",
 };
 
 const title = {
@@ -343,11 +348,12 @@ const title = {
   fontSize: "42px",
   fontWeight: "900",
   margin: 0,
+  color: "var(--text-main)",
 };
 
 const subtitle = {
   textAlign: "center",
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   marginTop: "10px",
   marginBottom: "26px",
 };
@@ -355,19 +361,23 @@ const subtitle = {
 const toast = {
   padding: "14px",
   borderRadius: "16px",
-  background: "rgba(255,255,255,0.08)",
-  border: "1px solid rgba(255,255,255,0.12)",
+  background: "var(--card-bg)",
+  border: "1px solid var(--border-color)",
+  color: "var(--text-main)",
   textAlign: "center",
   marginBottom: "20px",
   fontWeight: "700",
 };
 
-const form = { display: "grid", gap: "18px" };
+const form = {
+  display: "grid",
+  gap: "18px",
+};
 
 const label = {
   display: "block",
   marginBottom: "8px",
-  color: "#cbd5e1",
+  color: "var(--text-muted)",
   fontSize: "14px",
   fontWeight: "700",
 };
@@ -376,9 +386,9 @@ const input = {
   width: "100%",
   padding: "16px",
   borderRadius: "16px",
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "rgba(255,255,255,0.08)",
-  color: "white",
+  border: "1px solid var(--border-color)",
+  background: "var(--card-bg)",
+  color: "var(--text-main)",
   outline: "none",
   fontSize: "15px",
 };
@@ -387,8 +397,8 @@ const passwordBox = {
   display: "flex",
   alignItems: "center",
   borderRadius: "16px",
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "rgba(255,255,255,0.08)",
+  border: "1px solid var(--border-color)",
+  background: "var(--card-bg)",
 };
 
 const passwordInput = {
@@ -397,40 +407,40 @@ const passwordInput = {
   background: "transparent",
   border: "none",
   outline: "none",
-  color: "white",
+  color: "var(--text-main)",
   fontSize: "15px",
 };
 
 const showBtn = {
   border: "none",
   background: "transparent",
-  color: "#c084fc",
+  color: "#fb7185",
   padding: "0 16px",
   cursor: "pointer",
   fontWeight: "900",
 };
 
-const registerBtn = {
+const loginBtn = {
   marginTop: "8px",
   padding: "16px",
   borderRadius: "18px",
   border: "none",
-  background: "linear-gradient(90deg,#8b5cf6,#db2777)",
+  background: "linear-gradient(90deg,#f97316,#db2777)",
   color: "white",
   fontSize: "16px",
   fontWeight: "900",
   cursor: "pointer",
-  boxShadow: "0 16px 35px rgba(139,92,246,0.25)",
+  boxShadow: "0 16px 35px rgba(219,39,119,0.25)",
 };
 
 const bottomText = {
   textAlign: "center",
-  color: "#94a3b8",
+  color: "var(--text-muted)",
   marginTop: "24px",
 };
 
 const link = {
-  color: "#c084fc",
+  color: "#fb7185",
   fontWeight: "900",
   textDecoration: "none",
 };
