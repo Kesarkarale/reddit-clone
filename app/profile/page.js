@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-
+ 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -49,8 +48,7 @@ export default function Profile() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(16px); }
