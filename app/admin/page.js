@@ -74,7 +74,7 @@ function removeReport(id) {
   if (!allowed) {
     return (
       <main style={page}>
-        <Navbar />
+      
         <p style={{ textAlign: "center", marginTop: 80 }}>
           Checking admin access...
         </p>
