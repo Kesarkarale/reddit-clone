@@ -82,7 +82,6 @@ const logo = {
   boxShadow:
     "0 15px 35px rgba(219,39,119,.35)",
 };
-
 const title = {
   fontSize: 42,
   margin: 0,
