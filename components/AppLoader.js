@@ -19,12 +19,13 @@ export default function AppLoader() {
         }
       `}</style>
 
-      <div style={loaderWrapper}>
-        <div style={spinner}>
-          <div style={logo}>
-            RX
-          </div>
-        </div>
+     <div style={spinnerWrapper}>
+  <div style={spinnerRing}></div>
+
+  <div style={logo}>
+    RX
+  </div>
+</div>
 
         <h2 style={title}>
           RedditX
@@ -48,21 +49,23 @@ const overlay = {
   justifyContent: "center",
 };
 
-const loaderWrapper = {
-  textAlign: "center",
-};
-
-const spinner = {
+const spinnerWrapper = {
+  position: "relative",
   width: 120,
   height: 120,
+  margin: "0 auto 26px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+const spinnerRing = {
+  position: "absolute",
+  inset: 0,
   borderRadius: "50%",
   border: "6px solid rgba(255,255,255,.12)",
   borderTop: "6px solid #f97316",
   animation: "spin 1s linear infinite",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  margin: "0 auto 26px",
   boxShadow:
     "0 0 60px rgba(249,115,22,.25)",
 };
@@ -79,6 +82,7 @@ const logo = {
   justifyContent: "center",
   fontSize: 30,
   fontWeight: 900,
+  zIndex: 2,
   boxShadow:
     "0 15px 35px rgba(219,39,119,.35)",
 };
