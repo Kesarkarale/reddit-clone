@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Navbar from "../../../components/Navbar";
-
+ 
 export default function CommunityPage({ params }) {
   const slug = params.slug;
 
@@ -69,8 +68,7 @@ export default function CommunityPage({ params }) {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes glowMove {
           0% { transform: translate(0,0) scale(1); }
