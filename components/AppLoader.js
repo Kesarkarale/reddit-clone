@@ -79,7 +79,6 @@ const logo = {
   justifyContent: "center",
   fontSize: 30,
   fontWeight: 900,
-  animation: "pulse 1.5s ease-in-out infinite",
   boxShadow:
     "0 15px 35px rgba(219,39,119,.35)",
 };
