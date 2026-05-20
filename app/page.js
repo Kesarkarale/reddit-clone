@@ -245,7 +245,7 @@ const [communities, setCommunities] = useState([]);
   );
 }
 
-function StatCard({ title, value }: any) {
+function StatCard({ title, value }) {
   return (
     <div style={statCard}>
       <h2 style={statValue}>{value}</h2>
@@ -254,7 +254,7 @@ function StatCard({ title, value }: any) {
   );
 }
 
-function FeatureCard({ icon, title, desc }: any) {
+function FeatureCard({ icon, title, desc }) {
   return (
     <div style={featureCard}>
       <div style={{ fontSize: "36px", marginBottom: "14px" }}>{icon}</div>
