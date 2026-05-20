@@ -365,16 +365,7 @@ export default function Home() {
 
       <Footer />
 
-      <div
-        style={{
-          position: "fixed",
-          right: "24px",
-          bottom: "24px",
-          zIndex: 9999,
-        }}
-      >
-        <ThemeToggle />
-      </div>
+  
     </main>
   );
 }
