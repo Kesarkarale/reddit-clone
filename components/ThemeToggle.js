@@ -27,8 +27,22 @@ document.body.style.color = "#0f172a"; setLight(true);
  }
 
 return (
- <button onClick={toggleTheme} style={btn}>
- {light ? "🌙 Dark" : "☀️ Light"} 
+ <button
+  onClick={toggleTheme}
+  className="relative flex h-14 w-28 items-center rounded-full border border-white/10 bg-white/10 px-2 backdrop-blur-xl transition-all duration-500 hover:scale-105"
+>
+  <div
+    className={`absolute top-1 h-11 w-11 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg transition-all duration-500 ${
+      darkMode
+        ? "translate-x-0"
+        : "translate-x-14"
+    }`}
+  />
+
+  <div className="relative z-10 flex w-full items-center justify-between px-1 text-xl">
+    <span>🌙</span>
+    <span>☀️</span>
+  </div>
 </button> 
 ); 
 }
