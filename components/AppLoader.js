@@ -7,25 +7,16 @@ export default function AppLoader() {
             transform: rotate(360deg);
           }
         }
-
-        @keyframes pulse {
-          0%,100% {
-            transform: scale(1);
-          }
-
-          50% {
-            transform: scale(1.08);
-          }
-        }
       `}</style>
 
-     <div style={spinnerWrapper}>
-  <div style={spinnerRing}></div>
+      <div style={loaderBox}>
+        <div style={spinnerWrapper}>
+          <div style={spinnerRing}></div>
 
-  <div style={logo}>
-    RX
-  </div>
-</div>
+          <div style={logo}>
+            RX
+          </div>
+        </div>
 
         <h2 style={title}>
           RedditX
@@ -49,6 +40,10 @@ const overlay = {
   justifyContent: "center",
 };
 
+const loaderBox = {
+  textAlign: "center",
+};
+
 const spinnerWrapper = {
   position: "relative",
   width: 120,
@@ -63,19 +58,17 @@ const spinnerRing = {
   position: "absolute",
   inset: 0,
   borderRadius: "50%",
-  border: "6px solid rgba(255,255,255,.12)",
+  border: "6px solid rgba(148,163,184,.25)",
   borderTop: "6px solid #f97316",
   animation: "spin 1s linear infinite",
-  boxShadow:
-    "0 0 60px rgba(249,115,22,.25)",
+  boxShadow: "0 0 60px rgba(249,115,22,.25)",
 };
 
 const logo = {
   width: 78,
   height: 78,
   borderRadius: "24px",
-  background:
-    "linear-gradient(135deg,#f97316,#db2777,#8b5cf6)",
+  background: "linear-gradient(135deg,#f97316,#db2777,#8b5cf6)",
   color: "white",
   display: "flex",
   alignItems: "center",
@@ -83,15 +76,14 @@ const logo = {
   fontSize: 30,
   fontWeight: 900,
   zIndex: 2,
-  boxShadow:
-    "0 15px 35px rgba(219,39,119,.35)",
+  boxShadow: "0 15px 35px rgba(219,39,119,.35)",
 };
+
 const title = {
   fontSize: 42,
   margin: 0,
   fontWeight: 900,
-  background:
-    "linear-gradient(90deg,#fb923c,#ec4899,#8b5cf6)",
+  background: "linear-gradient(90deg,#fb923c,#ec4899,#8b5cf6)",
   WebkitBackgroundClip: "text",
   color: "transparent",
 };
