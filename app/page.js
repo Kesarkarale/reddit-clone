@@ -26,7 +26,7 @@ const [communities, setCommunities] = useState([]);
     return () => clearTimeout(timer);
   }, []);
 
-  const scoredPosts = posts.map((post: any) => {
+ const scoredPosts = posts.map((post) => {
     const voteScore = (post.votes || 0) * 2;
     const commentScore = (post.comments || 0) * 3;
     const recencyScore = Date.now() - post.id < 86400000 ? 120 : 20;
@@ -37,7 +37,7 @@ const [communities, setCommunities] = useState([]);
     };
   });
 
-  const sortedPosts = [...scoredPosts].sort((a: any, b: any) => {
+  const sortedPosts = [...scoredPosts].sort((a, b) => {
     if (sort === "top") {
       return b.trendingScore - a.trendingScore;
     }
@@ -194,7 +194,7 @@ const [communities, setCommunities] = useState([]);
                   </div>
                 </a>
               ))
-            : communities.slice(0, 6).map((community: any) => (
+            : communities.slice(0, 6).map((community) => (
                 <a
                   href={`/r/${community.slug}`}
                   style={communityItem}
