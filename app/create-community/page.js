@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../../components/Navbar";
-
+ 
 export default function CreateCommunity() {
   const router = useRouter();
 
@@ -72,8 +71,7 @@ export default function CreateCommunity() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <style>{`
         @keyframes floatCard {
           0% { transform: translateY(0px); }
