@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-
+ 
 export default function SavedPosts() {
   const [savedPosts, setSavedPosts] = useState([]);
   const [search, setSearch] = useState("");
@@ -31,8 +30,7 @@ export default function SavedPosts() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <section style={container}>
         <div style={header}>
           <div>
