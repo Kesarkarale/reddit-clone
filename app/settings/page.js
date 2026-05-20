@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-
+ 
 export default function Settings() {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
@@ -37,8 +36,7 @@ export default function Settings() {
 
   return (
     <main style={page}>
-      <Navbar />
-
+ 
       <section style={container}>
         <div style={header}>
           <h1 style={title}>Settings</h1>
