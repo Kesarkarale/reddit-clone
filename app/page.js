@@ -8,8 +8,8 @@ import SkeletonCard from "../components/SkeletonCard";
 import AppLoader from "../components/AppLoader";
 
 export default function Home() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [communities, setCommunities] = useState<any[]>([]);
+const [posts, setPosts] = useState([]);
+const [communities, setCommunities] = useState([]);
   const [sort, setSort] = useState("new");
   const [loading, setLoading] = useState(true);
   const [appLoading, setAppLoading] = useState(true);
@@ -155,7 +155,7 @@ export default function Home() {
               </a>
             </div>
           ) : (
-            sortedPosts.slice(0, 6).map((post: any, index: number) => (
+            sortedPosts.slice(0, 6).map((post, index) => (
               <a href={`/post/${post.id}`} style={listItem} key={post.id}>
                 <span style={rank}>#{index + 1}</span>
 
