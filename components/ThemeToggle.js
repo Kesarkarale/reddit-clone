@@ -1,97 +1,64 @@
-"use client";
+ "use client";
 
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
   const [light, setLight] = useState(false);
 
-useEffect(() => {
-  const savedTheme =
-    localStorage.getItem("redditxTheme");
-
-  const isLight =
-    savedTheme === "light";
-
-  setLight(isLight);
-
-  if (isLight) {
-    document.body.style.background =
-      "#f8fafc";
-
-    document.body.style.color =
-      "#0f172a";
-  } else {
-    document.body.style.background =
-      "#070b18";
-
-    document.body.style.color =
-      "white";
-  }
-}, []);
-
-function toggleTheme() {
-  const nextLight = !light;
-
-  localStorage.setItem(
-    "redditxTheme",
-    nextLight ? "light" : "dark"
-  );
-
-  if (nextLight) {
-    document.body.style.background = "#f8fafc";
-    document.body.style.color = "#0f172a";
+  function applyTheme(isLight) {
+    document.body.style.background = isLight ? "#f8fafc" : "#070b18";
+    document.body.style.color = isLight ? "#0f172a" : "white";
 
     document.documentElement.style.setProperty(
-      "--card-bg",
-      "#ffffff"
+      "--page-bg",
+      isLight
+        ? "#f8fafc"
+        : "radial-gradient(circle at top left, rgba(255,69,0,0.25), transparent 35%), radial-gradient(circle at bottom right, rgba(124,58,237,0.25), transparent 35%), #070b18"
     );
 
     document.documentElement.style.setProperty(
-      "--text-color",
-      "#0f172a"
+      "--card-bg",
+      isLight ? "#ffffff" : "rgba(255,255,255,0.07)"
+    );
+
+    document.documentElement.style.setProperty(
+      "--text-main",
+      isLight ? "#0f172a" : "white"
+    );
+
+    document.documentElement.style.setProperty(
+      "--text-muted",
+      isLight ? "#475569" : "#94a3b8"
     );
 
     document.documentElement.style.setProperty(
       "--nav-bg",
-      "rgba(255,255,255,.85)"
-    );
-  } else {
-    document.body.style.background = "#070b18";
-    document.body.style.color = "white";
-
-    document.documentElement.style.setProperty(
-      "--card-bg",
-      "rgba(255,255,255,.06)"
-    );
-
-    document.documentElement.style.setProperty(
-      "--text-color",
-      "#ffffff"
-    );
-
-    document.documentElement.style.setProperty(
-      "--nav-bg",
-      "rgba(7,11,24,.88)"
+      isLight ? "rgba(255,255,255,0.9)" : "rgba(7,11,24,0.88)"
     );
   }
 
-  setLight(nextLight);
-}
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("redditxTheme");
+    const isLight = savedTheme === "light";
+    setLight(isLight);
+    applyTheme(isLight);
+  }, []);
+
+  function toggleTheme() {
+    const nextLight = !light;
+    localStorage.setItem("redditxTheme", nextLight ? "light" : "dark");
+    setLight(nextLight);
+    applyTheme(nextLight);
+  }
 
   return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      title={light ? "Switch to dark mode" : "Switch to light mode"}
-      style={toggleBtn}
-    >
+    <button onClick={toggleTheme} style={toggleBtn}>
       <span
         style={{
-          ...toggleCircle,
+          ...circle,
           transform: light ? "translateX(38px)" : "translateX(0px)",
         }}
       />
-
       <span style={icons}>
         <span>🌙</span>
         <span>☀️</span>
@@ -111,10 +78,9 @@ const toggleBtn = {
   padding: 4,
   display: "flex",
   alignItems: "center",
-  flexShrink: 0,
 };
 
-const toggleCircle = {
+const circle = {
   position: "absolute",
   left: 5,
   top: 5,
@@ -123,7 +89,6 @@ const toggleCircle = {
   borderRadius: "50%",
   background: "linear-gradient(135deg,#f97316,#db2777)",
   transition: "transform .3s ease",
-  boxShadow: "0 8px 18px rgba(249,115,22,.35)",
 };
 
 const icons = {
@@ -131,8 +96,6 @@ const icons = {
   zIndex: 2,
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
   width: "100%",
   padding: "0 8px",
-  fontSize: 16,
 };
