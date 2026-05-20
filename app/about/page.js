@@ -1,5 +1,4 @@
- import Footer from "../../components/Footer";
-
+ 
 export default function About() {
   return (
     <main style={page}>
@@ -19,8 +18,7 @@ export default function About() {
         </div>
       </section>
 
-      <Footer />
-    </main>
+     </main>
   );
 }
 
