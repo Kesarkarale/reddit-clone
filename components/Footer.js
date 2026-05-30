@@ -5,10 +5,10 @@ export default function Footer() {
 
       <div style={content}>
         <div style={brandBox}>
-          <h2 style={logo}>PostPilot</h2>
+          <h2 style={logo}>RedditX</h2>
 
           <p style={text}>
-            A modern Post-style social platform for communities, posts,
+            A modern ReddiX style social platform for communities, posts,
             votes and discussions.
           </p>
 
@@ -48,7 +48,7 @@ export default function Footer() {
       </div>
 
       <div style={bottom}>
-        <p style={copy}>© 2026 PostPilot. Built as a modern social media MVP.</p>
+        <p style={copy}>© 2026 RedditX. Built as a modern social media MVP.</p>
         <p style={copy}>Next.js • React • JavaScript • Vercel</p>
       </div>
     </footer>
