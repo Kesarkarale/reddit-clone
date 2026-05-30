@@ -99,7 +99,7 @@ export default function Home() {
       <section style={hero}>
         <div style={heroInner}>
           <p style={badge}>
-            🚀 Modern PostPilot MVP
+            🚀 Modern RedditX MVP
           </p>
 
           <h1 style={heroTitle}>
@@ -110,7 +110,7 @@ export default function Home() {
           </h1>
 
           <p style={heroText}>
-            PstPilot is a modern social
+           RedditX is a modern social
             media platform where users
             can create communities,
             share posts, vote, comment
@@ -342,7 +342,7 @@ export default function Home() {
 
       <section style={cta}>
         <h2 style={ctaTitle}>
-          Ready to join PostPilot?
+          Ready to join RedditX?
         </h2>
 
         <p style={ctaText}>
