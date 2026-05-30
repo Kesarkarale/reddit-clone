@@ -4,9 +4,9 @@ export default function About() {
     <main style={page}>
  
       <section style={container}>
-        <h1 style={title}>About RedditX</h1>
+        <h1 style={title}>About PostPilot</h1>
         <p style={sub}>
-          RedditX is a modern Reddit-style social media MVP where users can
+          PostPilot is a modern Post-style social media MVP where users can
           create communities, publish posts, vote, comment, and explore
           discussions.
         </p>
