@@ -14,12 +14,12 @@ export default function AppLoader() {
           <div style={spinnerRing}></div>
 
           <div style={logo}>
-            RX
+            PP
           </div>
         </div>
 
         <h2 style={title}>
-          RedditX
+          PostPilot
         </h2>
 
         <p style={text}>
