@@ -5,7 +5,7 @@ export default function ErrorPage({ reset }) {
     <main style={page}>
       <div style={card}>
         <h1 style={title}>Something went wrong</h1>
-        <p style={text}>PostPilot could not load this page properly.</p>
+        <p style={text}>RedditX could not load this page properly.</p>
 
         <button onClick={() => reset()} style={btn}>
           Try Again
