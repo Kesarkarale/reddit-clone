@@ -145,7 +145,7 @@ export default function SearchPage() {
 
       <section style={container}>
         <div style={hero}>
-          <p style={badge}>🔍 PostPilot Search</p>
+          <p style={badge}>🔍 RedditX Search</p>
 
           <h1 style={title}>
             Search posts,
@@ -247,7 +247,7 @@ export default function SearchPage() {
 
         {query === "" && (
           <div style={emptyBox}>
-            <h2>Start searching PostPilot</h2>
+            <h2>Start searching RedditX</h2>
             <p>
               Try searching for technology, AI, gaming, design, web development
               or community names.
