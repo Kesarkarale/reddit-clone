@@ -3,8 +3,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "RedditX",
-  description: "Modern Reddit Clone",
+  title: "PostPilot",
+  description: "Modern Post Pilot",
 };
 
 export default function RootLayout({ children }) {
