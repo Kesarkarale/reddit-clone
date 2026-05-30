@@ -19,7 +19,7 @@ export default function AppLoader() {
         </div>
 
         <h2 style={title}>
-          PostPilot
+          RedditX
         </h2>
 
         <p style={text}>
