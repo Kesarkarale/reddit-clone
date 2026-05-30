@@ -40,7 +40,7 @@ export default function Settings() {
       <section style={container}>
         <div style={header}>
           <h1 style={title}>Settings</h1>
-          <p style={sub}>Manage your PostPilot profile and preferences.</p>
+          <p style={sub}>Manage your RedditX profile and preferences.</p>
         </div>
 
         {message && <div style={toast}>✅ {message}</div>}
