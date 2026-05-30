@@ -80,7 +80,7 @@ export default function Navbar() {
         {menuOpen && (
           <div style={sidebar}>
             <div style={sideHeader}>
-              <h2 style={sideLogo}>PostPilot</h2>
+              <h2 style={sideLogo}>RedditX</h2>
 
               <button style={closeBtn} onClick={() => setMenuOpen(false)}>
                 ✕
