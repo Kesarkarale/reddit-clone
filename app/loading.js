@@ -5,7 +5,7 @@ export default function Loading() {
       <div style={glowTwo}></div>
 
       <div style={loaderWrap}>
-        <div style={logo}>PostPilot</div>
+        <div style={logo}>RedditX</div>
 
         <div style={spinner}></div>
 
