@@ -92,7 +92,7 @@ function handleRegister(e) {
 
       <section style={wrapper}>
         <div style={leftPanel}>
-          <span style={badge}>✨ Join PostPilot</span>
+          <span style={badge}>✨ Join RedditX</span>
 
           <h1 style={heroTitle}>
             Start your own
@@ -115,7 +115,7 @@ function handleRegister(e) {
           <div style={iconBox}>🧡</div>
 
           <h2 style={title}>Create Account</h2>
-          <p style={subtitle}>Register to become part of  PostPilot</p>
+          <p style={subtitle}>Register to become part of  RedditX</p>
 
           {message && (
             <div
@@ -180,7 +180,7 @@ function handleRegister(e) {
             </div>
 
             <button type="submit" style={registerBtn}>
-              Create  PostPilot Account
+              Create  RedditX Account
             </button>
           </form>
 
