@@ -89,7 +89,7 @@ function removeReport(id) {
         <div style={header}>
           <div>
             <h1 style={title}>Admin Dashboard</h1>
-            <p style={sub}>Monitor RedditX platform activity.</p>
+            <p style={sub}>Monitor PostPilot platform activity.</p>
           </div>
 
           <button style={dangerBtn} onClick={clearNotifications}>
